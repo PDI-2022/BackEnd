@@ -25,8 +25,8 @@ def upload():
     content_type = request.headers.get('Content-Type')
     if (content_type == 'application/json;charset=UTF-8'):
         data = request.json
-        loadInternal = data["internalImg"]
-        loadExternal = data["externalImg"]
+        loadInternal = json.loads(data["internalImg"])
+        loadExternal = json.loads(data["externalImg"])
         
         #Parte Interna
         filename = loadInternal["filename"]

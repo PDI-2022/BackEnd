@@ -4,7 +4,7 @@ from flask_cors import CORS
 
 
 app = Flask(__name__)
-CORS(app,origins=["http://localhost:8000"])
+CORS(app,origins=["*"])
 
 app.register_blueprint(upload_bp)
 if __name__ == "__main__":

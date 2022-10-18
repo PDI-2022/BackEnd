@@ -4,7 +4,7 @@ import base64
 import csv
 from api.grid_cut import cortar_malha as cut
 
-def extract_white_percentage(input_image):
+def extract_white_percentage(input_image, id=0):
     hsv = cv2.cvtColor(input_image, cv2.COLOR_BGR2HSV)
 
     lower = np.array([0,0,168])
@@ -16,16 +16,20 @@ def extract_white_percentage(input_image):
     pixels_number_seed = np.count_nonzero(input_image)
     pixels_extracted_white = np.count_nonzero(white_extracted_image)
 
+    cv2.imwrite(f'./images/white_extract/white{id}.jpg', np.hstack([input_image, white_extracted_image]))
+
     return pixels_extracted_white/pixels_number_seed
 
 
-def remove_background(input_image):
+def remove_background(input_image, id=0):
     used_threshold, thresholded_bgr_image = cv2.threshold(input_image, 110, 255, cv2.THRESH_BINARY)
     thresholded_blue_component, thresholded_green_component, thresholded_red_component = cv2.split(thresholded_bgr_image)
 
     mask_filtered = cv2.medianBlur(thresholded_red_component, 5)
 
     result_image = cv2.bitwise_and(input_image, input_image, mask = mask_filtered)
+
+    cv2.imwrite(f'./images/background_remove/remove_background{id}.jpg', result_image)
 
     return result_image
 
@@ -48,6 +52,8 @@ def extract_dark_red_percentage(input_image, id=0):
     pixels_number_seed = np.count_nonzero(input_image)
     pixels_extracted_white = np.count_nonzero(dark_red_extracted_image)
 
+    cv2.imwrite(f'./images/red_extract/dark_red_mask{id}.jpg', np.hstack([input_image, dark_red_extracted_image]))
+
     return pixels_extracted_white/pixels_number_seed
 
 
@@ -69,6 +75,8 @@ def extract_light_red_percentage(input_image, id=0):
     pixels_number_seed = np.count_nonzero(input_image)
     pixels_extracted_white = np.count_nonzero(light_red_extracted_image)
 
+    cv2.imwrite(f'./images/red_extract/light_red_mask{id}.jpg', np.hstack([input_image, light_red_extracted_image]))
+
     return pixels_extracted_white/pixels_number_seed
 
 
@@ -89,10 +97,10 @@ def process_data(intern, extern):
 
     for i, seed in enumerate(intern_seeds):
         if not is_empty(seed):
-            removed_background = remove_background(seed)
-            white_percentage = extract_white_percentage(removed_background)
-            light_red_percentage = extract_light_red_percentage(removed_background)
-            dark_red_percentage = extract_dark_red_percentage(removed_background)
+            removed_background = remove_background(seed, f'interno{i}')
+            white_percentage = extract_white_percentage(removed_background, f'interno{i}')
+            light_red_percentage = extract_light_red_percentage(removed_background, f'interno{i}')
+            dark_red_percentage = extract_dark_red_percentage(removed_background, f'interno{i}')
 
             rows.append(
                 [
@@ -106,10 +114,10 @@ def process_data(intern, extern):
     
     for i, seed in enumerate(extern_seeds):
         if not is_empty(seed):
-            removed_background = remove_background(seed)
-            white_percentage = extract_white_percentage(removed_background)
-            light_red_percentage = extract_light_red_percentage(removed_background)
-            dark_red_percentage = extract_dark_red_percentage(removed_background)
+            removed_background = remove_background(seed, f'externo{i}')
+            white_percentage = extract_white_percentage(removed_background, f'externo{i}')
+            light_red_percentage = extract_light_red_percentage(removed_background, f'externo{i}')
+            dark_red_percentage = extract_dark_red_percentage(removed_background, f'externo{i}')
 
             rows.append(
                 [

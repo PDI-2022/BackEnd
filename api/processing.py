@@ -1,4 +1,3 @@
-import email
 import cv2
 import numpy as np
 import base64
@@ -34,14 +33,20 @@ def remove_background(input_image):
 def extract_dark_red_percentage(input_image, id=0):
     hsv = cv2.cvtColor(input_image, cv2.COLOR_BGR2HSV)
 
-    lower = np.array([161, 168, 80])
-    upper = np.array([180 , 255, 240])   
-    mask = cv2.inRange(hsv, lower, upper)
+    first_lower = np.array([161, 168, 80])
+    first_upper = np.array([180 , 255, 240])   
+    first_mask = cv2.inRange(hsv, first_lower, first_upper)
 
-    white_extracted_image = cv2.bitwise_and(input_image, input_image, mask = mask)
+    second_lower = np.array([0, 168, 80])
+    second_upper = np.array([60 , 255, 240])   
+    second_mask = cv2.inRange(hsv, second_lower, second_upper)
+
+    mask = cv2.bitwise_or(first_mask, second_mask)
+
+    dark_red_extracted_image = cv2.bitwise_and(input_image, input_image, mask = mask)
 
     pixels_number_seed = np.count_nonzero(input_image)
-    pixels_extracted_white = np.count_nonzero(white_extracted_image)
+    pixels_extracted_white = np.count_nonzero(dark_red_extracted_image)
 
     return pixels_extracted_white/pixels_number_seed
 
@@ -49,19 +54,23 @@ def extract_dark_red_percentage(input_image, id=0):
 def extract_light_red_percentage(input_image, id=0):
     hsv = cv2.cvtColor(input_image, cv2.COLOR_BGR2HSV)
 
-    lower = np.array([161,90,80])
-    upper = np.array([180,190,240])   
-    mask = cv2.inRange(hsv, lower, upper)
+    first_lower = np.array([161, 90, 80])
+    first_upper = np.array([180 , 190, 240])   
+    first_mask = cv2.inRange(hsv, first_lower, first_upper)
 
-    white_extracted_image = cv2.bitwise_and(input_image, input_image, mask = mask)
+    second_lower = np.array([0, 90, 80])
+    second_upper = np.array([60 , 190, 240])   
+    second_mask = cv2.inRange(hsv, second_lower, second_upper)
+
+    mask = cv2.bitwise_or(first_mask, second_mask)
+
+    light_red_extracted_image = cv2.bitwise_and(input_image, input_image, mask = mask)
 
     pixels_number_seed = np.count_nonzero(input_image)
-    pixels_extracted_white = np.count_nonzero(white_extracted_image)
+    pixels_extracted_white = np.count_nonzero(light_red_extracted_image)
 
     return pixels_extracted_white/pixels_number_seed
 
-def remove_empty_blocks(intern, extern):
-    pass
 
 def process_data(intern, extern):
     buffer_intern = base64.b64decode(intern)
@@ -122,6 +131,6 @@ def process_data(intern, extern):
 
 def is_empty(block):
     removed_background = remove_background(block)
-    percentage = np.count_nonzero(remove_background) / (block.shape[0]*block.shape[1])
+    percentage = np.count_nonzero(removed_background) / (block.shape[0]*block.shape[1])
 
-    return False if percentage < 0.05 else True
+    return True if percentage < 0.05 else False

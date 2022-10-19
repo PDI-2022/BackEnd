@@ -3,6 +3,51 @@ import numpy as np
 import base64
 import csv
 from api.grid_cut import cortar_malha as cut
+from skimage import measure
+from shapely.geometry import Polygon
+
+def count_holes(image) -> int:
+    contours = measure.find_contours(image, 200)
+
+    holes = [Polygon(contour) for contour in contours if len(contour) > 3]
+    
+    seed_polygons = []
+    
+    #ordenando pela maior área (as duas maiores áreas são os próprio feijão)
+    holes.sort(reverse=True, key=lambda element: element.area)
+
+    within = [] 
+    up = 0
+    down = 0    
+    
+
+    # checando se tem buracos
+    if len(holes) > 2:
+        for i in range(2):
+            seed_polygons.append(holes[i])
+            down += holes[i].area
+            
+
+        holes.pop(0)
+        holes.pop(0)
+
+        for hole in holes:
+            for seed_polygon in seed_polygons:
+                if hole.within(seed_polygon):
+                    within.append(hole)
+                    up += hole.area
+
+        return (len(within), (up/down))
+
+    return (0, 0) 
+
+def remove_background_and_get_mask(input_image):
+    used_threshold, thresholded_bgr_image = cv2.threshold(input_image, 110, 255, cv2.THRESH_BINARY)
+    thresholded_blue_component, thresholded_green_component, thresholded_red_component = cv2.split(thresholded_bgr_image)
+
+    mask_filtered = cv2.medianBlur(thresholded_red_component, 5)
+
+    return mask_filtered
 
 def extract_white_percentage(input_image, id=0):
     hsv = cv2.cvtColor(input_image, cv2.COLOR_BGR2HSV)
@@ -92,7 +137,7 @@ def process_data(intern, extern):
     intern_seeds = cut(input_intern_image)
     extern_seeds = cut(input_extern_image)
 
-    header = ['Semente', 'Lado', 'Porcentagem de Branco', 'Porcentagem de Vermelho Carmim Claro', 'Porcentagem de Vermelho Carmim Escuro']
+    header = ['Semente', 'Lado', 'Porcentagem de Branco', 'Porcentagem de Vermelho Carmim Claro', 'Porcentagem de Vermelho Carmim Escuro', 'Quantidade de Buracos', 'Área Buraco/Área Semente']
     rows = []
 
     for i, seed in enumerate(intern_seeds):
@@ -101,6 +146,9 @@ def process_data(intern, extern):
             white_percentage = extract_white_percentage(removed_background, f'interno{i}')
             light_red_percentage = extract_light_red_percentage(removed_background, f'interno{i}')
             dark_red_percentage = extract_dark_red_percentage(removed_background, f'interno{i}')
+            
+            thresholded_red_component = remove_background_and_get_mask(seed)
+            (holes, holes_percentage) = count_holes(thresholded_red_component)
 
             rows.append(
                 [
@@ -108,7 +156,9 @@ def process_data(intern, extern):
                     'Interno', 
                     f'{white_percentage*100:.2f}%', 
                     f'{light_red_percentage*100:.2f}%',
-                    f'{dark_red_percentage*100:.2f}%'
+                    f'{dark_red_percentage*100:.2f}%',
+                    holes,
+                    f'{holes_percentage*100:.2f}%'
                 ]
             )
     
@@ -119,13 +169,18 @@ def process_data(intern, extern):
             light_red_percentage = extract_light_red_percentage(removed_background, f'externo{i}')
             dark_red_percentage = extract_dark_red_percentage(removed_background, f'externo{i}')
 
+            thresholded_red_component = remove_background_and_get_mask(seed)
+            (holes, holes_percentage) = count_holes(thresholded_red_component)
+
             rows.append(
                 [
                     i + 1, 
                     'Externo', 
                     f'{white_percentage*100:.2f}%', 
                     f'{light_red_percentage*100:.2f}%',
-                    f'{dark_red_percentage*100:.2f}%'
+                    f'{dark_red_percentage*100:.2f}%',
+                    holes,
+                    f'{holes_percentage*100:.2f}%'
                 ]
             )
 

@@ -1,4 +1,6 @@
+from io import BytesIO
 import cv2
+from itsdangerous import base64_encode
 import numpy as np
 import base64
 import csv
@@ -125,7 +127,7 @@ def extract_light_red_percentage(input_image, id=0):
     return pixels_extracted_white/pixels_number_seed
 
 
-def process_data(intern, extern):
+def process_data(intern, extern, genImg=False):
     buffer_intern = base64.b64decode(intern)
     nparr = np.frombuffer(buffer_intern, np.uint8)
     input_intern_image = cv2.imdecode(nparr, flags=1)
@@ -133,7 +135,6 @@ def process_data(intern, extern):
     buffer_extern = base64.b64decode(extern)
     nparr = np.frombuffer(buffer_extern, np.uint8)
     input_extern_image = cv2.imdecode(nparr, flags=1)
-
     intern_seeds = cut(input_intern_image)
     extern_seeds = cut(input_extern_image)
 
@@ -160,8 +161,7 @@ def process_data(intern, extern):
                     holes,
                     f'{holes_percentage*100:.2f}%'
                 ]
-            )
-    
+            )        
     for i, seed in enumerate(extern_seeds):
         if not is_empty(seed):
             removed_background = remove_background(seed, f'externo{i}')
@@ -183,17 +183,50 @@ def process_data(intern, extern):
                     f'{holes_percentage*100:.2f}%'
                 ]
             )
-
+            
     with open('relatorio.csv', 'w', encoding='UTF8') as f:
         writer = csv.writer(f)
         writer.writerow(header)
         for row in rows:
             writer.writerow(row)
-        
+    if(genImg):
+        return GenImg(intern_seeds,extern_seeds)
     return 'relatorio.csv'
+
+
 
 def is_empty(block):
     removed_background = remove_background(block)
     percentage = np.count_nonzero(removed_background) / (block.shape[0]*block.shape[1])
 
     return True if percentage < 0.05 else False
+
+def GenImg(intern_seeds,extern_seeds):
+    intSeed = []
+    extSeed = []
+    for i,intt in enumerate(intern_seeds):
+        if not is_empty(intt):
+            intSeed.append({"id":i,"blob":str(base64.b64encode(cv2.imencode(".jpg",intt)[1]))})
+
+    for i,extt in enumerate(extern_seeds):
+        if not is_empty(extt):
+            extSeed.append({"id":i,"blob":str(base64.b64encode(cv2.imencode(".jpg",extt)[1]))})
+
+    csvJson = csv_to_json('relatorio.csv')
+
+    return csvJson,intSeed,extSeed
+
+def csv_to_json(csvFilePath):
+    jsonArray = []
+      
+    #read csv file
+    with open(csvFilePath, encoding='utf-8') as csvf: 
+        #load csv file data using csv library's dictionary reader
+        csvReader = csv.DictReader(csvf) 
+
+        #convert each csv row into python dict
+        for row in csvReader: 
+            #add this python dict to json array
+            jsonArray.append(row)
+  
+    return jsonArray

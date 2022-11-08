@@ -8,6 +8,8 @@ from api.grid_cut import cortar_malha as cut
 from skimage import measure
 from shapely.geometry import Polygon
 
+import api.classificacao as classificacao
+
 def count_holes(image) -> int:
     contours = measure.find_contours(image, 200)
 
@@ -63,7 +65,7 @@ def extract_white_percentage(input_image, id=0):
     pixels_number_seed = np.count_nonzero(input_image)
     pixels_extracted_white = np.count_nonzero(white_extracted_image)
 
-    cv2.imwrite(f'./images/white_extract/white{id}.jpg', np.hstack([input_image, white_extracted_image]))
+    cv2.imwrite(f'./images/white_extract/white_{id}.jpg', np.hstack([input_image, white_extracted_image]))
 
     return pixels_extracted_white/pixels_number_seed
 
@@ -76,7 +78,7 @@ def remove_background(input_image, id=0):
 
     result_image = cv2.bitwise_and(input_image, input_image, mask = mask_filtered)
 
-    cv2.imwrite(f'./images/background_remove/remove_background{id}.jpg', result_image)
+    cv2.imwrite(f'./images/background_remove/remove_background_{id}.jpg', result_image)
 
     return result_image
 
@@ -122,10 +124,15 @@ def extract_light_red_percentage(input_image, id=0):
     pixels_number_seed = np.count_nonzero(input_image)
     pixels_extracted_white = np.count_nonzero(light_red_extracted_image)
 
-    cv2.imwrite(f'./images/red_extract/light_red_mask{id}.jpg', np.hstack([input_image, light_red_extracted_image]))
+    cv2.imwrite(f'./images/red_extract/light_red_mask_{id}.jpg', np.hstack([input_image, light_red_extracted_image]))
 
     return pixels_extracted_white/pixels_number_seed
 
+def createCutImgsFold(index):
+    externo = cv2.imread(f"./images/background_remove/remove_background_externo{index}.jpg")
+    interno = cv2.imread(f"./images/background_remove/remove_background_interno{index}.jpg")
+
+    cv2.imwrite(f'./images/imagens_cortadas/images/semente-' + str(index+1) + '.jpg', np.hstack([externo, interno]))
 
 def process_data(intern, extern, genImg=False):
     buffer_intern = base64.b64decode(intern)
@@ -147,7 +154,7 @@ def process_data(intern, extern, genImg=False):
             white_percentage = extract_white_percentage(removed_background, f'interno{i}')
             light_red_percentage = extract_light_red_percentage(removed_background, f'interno{i}')
             dark_red_percentage = extract_dark_red_percentage(removed_background, f'interno{i}')
-            
+
             thresholded_red_component = remove_background_and_get_mask(seed)
             (holes, holes_percentage) = count_holes(thresholded_red_component)
 
@@ -171,6 +178,7 @@ def process_data(intern, extern, genImg=False):
 
             thresholded_red_component = remove_background_and_get_mask(seed)
             (holes, holes_percentage) = count_holes(thresholded_red_component)
+            createCutImgsFold(i)
 
             rows.append(
                 [
@@ -183,12 +191,15 @@ def process_data(intern, extern, genImg=False):
                     f'{holes_percentage*100:.2f}%'
                 ]
             )
-            
+
     with open('relatorio.csv', 'w', encoding='UTF8') as f:
         writer = csv.writer(f)
         writer.writerow(header)
         for row in rows:
             writer.writerow(row)
+
+    classificacao.classificacao()
+
     if(genImg):
         return GenImg(intern_seeds,extern_seeds)
     return 'relatorio.csv'

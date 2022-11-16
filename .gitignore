@@ -1,3 +1,4 @@
 beans-backend/lib/
 relatorio.csv
 .env
+venv/

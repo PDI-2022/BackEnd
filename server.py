@@ -1,11 +1,12 @@
-from flask import Flask
-from api.upload import upload_bp
+from api.routes.upload import upload_bp
+from api.routes.model import model_bp
 from flask_cors import CORS
+from config import app
 
-
-app = Flask(__name__)
 CORS(app,origins=["*"])
 
 app.register_blueprint(upload_bp)
-if __name__ == "__main__":
-  app.run()
+app.register_blueprint(model_bp)
+
+if __name__ == 'main':
+  app.run(debug=True)

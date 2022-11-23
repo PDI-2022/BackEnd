@@ -34,7 +34,7 @@ def process():
 
     model_path = ''
     if displayClassificationInfos:
-        model_id = data['model_id']
+        model_id = data['modelId']
         model = db.session.query(Model).filter_by(id = model_id).first()
         model_path = model.path
 

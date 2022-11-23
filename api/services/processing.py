@@ -3,10 +3,9 @@ import numpy as np
 import base64
 import csv
 from api.services.grid_cut import cortar_malha as cut
-from api.services.classification import classificacao
+from api.services.classification import classificate
 from skimage import measure
 from shapely.geometry import Polygon
-
 
 def count_holes(image) -> int:
     contours = measure.find_contours(image, 200)
@@ -132,7 +131,7 @@ def createCutImgsFold(index):
 
     cv2.imwrite(f'./images/imagens_cortadas/images/semente-' + str(index+1) + '.jpg', np.hstack([externo, interno]))
 
-def process_data(intern, extern, genImg=False):
+def process_data(intern : str, extern : str, showImgs : bool, showClassification : bool, modelPath : str):
     buffer_intern = base64.b64decode(intern)
     nparr = np.frombuffer(buffer_intern, np.uint8)
     input_intern_image = cv2.imdecode(nparr, flags=1)
@@ -140,6 +139,7 @@ def process_data(intern, extern, genImg=False):
     buffer_extern = base64.b64decode(extern)
     nparr = np.frombuffer(buffer_extern, np.uint8)
     input_extern_image = cv2.imdecode(nparr, flags=1)
+
     intern_seeds = cut(input_intern_image)
     extern_seeds = cut(input_extern_image)
 
@@ -196,12 +196,13 @@ def process_data(intern, extern, genImg=False):
         for row in rows:
             writer.writerow(row)
 
-    classificacao()
+    if showClassification:
+        classificate(modelPath)
 
-    if(genImg):
+    if showImgs:
         return GenImg(intern_seeds,extern_seeds)
-    return 'relatorio.csv'
 
+    return 'relatorio.csv'
 
 
 def is_empty(block):

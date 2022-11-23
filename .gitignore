@@ -1,4 +1,4 @@
-beans-backend/lib/
-relatorio.csv
-.env
 venv/lib
+relatorio.csv
+images
+models

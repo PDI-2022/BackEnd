@@ -1,4 +1,6 @@
+from sqlalchemy import event
 from config import db
+from api.constants.folders import models_folder
 
 class Model(db.Model):
     __tablename__ = 'models'

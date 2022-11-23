@@ -7,11 +7,10 @@ def create_folder(folder : str):
     if not os.path.exists(folder):
         os.makedirs(folder)
 
-def extract_extension(filename : str) -> str:
+def extract_extension(filename : str) -> list:
     if '.' in filename:
-        values = filename.split(".")
-        return values[len(values) - 1]
-    return ''
+        return filename.split(".")
+    return None
 
 def save_base64_image(base64_image : str, folder : str,  filename : str, extension : str):
     create_folder(folder)
@@ -25,12 +24,9 @@ def save_file(file: any, filename : str):
         writer.write(file)
 
 def decompress_and_save(folder : str, file : any, filename : str) -> str:
+    filename, extension = extract_extension(filename)
     final_filename = "{0}/{1}".format(folder, filename)
-    extension = extract_extension(filename)
-
     if 'zip' in extension.lower():
-        print('decompressing zip file...')
         with ZipFile(file, 'r') as zip_ref:
             zip_ref.extractall(folder)
-
     return final_filename

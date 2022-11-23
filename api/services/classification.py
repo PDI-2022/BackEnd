@@ -2,21 +2,21 @@ from tensorflow.keras.layers import Dense, GlobalAveragePooling2D, Dropout
 from tensorflow.keras.preprocessing.image import ImageDataGenerator
 from tensorflow.keras.applications.inception_resnet_v2 import InceptionResNetV2
 from tensorflow.keras.models import Model
+from api.constants.image import height, width
+from api.services.storage import create_folder
 from keras.layers import Dropout
 import tensorflow as tf
 import numpy as np
 import os
 import glob
 
-
 test_data_dir = "./images/imagens_cortadas/"
-model_path = './models/inception4'
 
 batch_size = 1
-img_height = 256
-img_width = 600
 
-def classificacao():
+def classificate(model_path : str):
+
+        create_folder(test_data_dir)
 
         test_datagen = ImageDataGenerator(rescale=1./255)
         for dic in glob.glob(f"{test_data_dir}*"):
@@ -25,7 +25,7 @@ def classificacao():
 
         test_generator = test_datagen.flow_from_directory(
                 test_data_dir,
-                target_size=(img_height, img_width),
+                target_size=(height, width),
                 shuffle=False,
                 batch_size=batch_size)
 

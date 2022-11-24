@@ -10,7 +10,7 @@ model_bp = Blueprint("model", __name__, url_prefix="/api/v1/models")
 @model_bp.route("", methods=['POST'])
 def register():
     content_type = request.headers.get('Content-Type')
-    if (content_type != 'multipart/form-data'):
+    if ('multipart/form-data' not in content_type):
         return 'Content-Type not supported', status.HTTP_415_UNSUPPORTED_MEDIA_TYPE
 
     model_name = request.form.get('name')

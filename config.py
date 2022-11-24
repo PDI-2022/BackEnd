@@ -17,7 +17,7 @@ migrate = Migrate(app, db)
 def seed():
     from db.models import Model
     
-    model_name = 'inception3'
+    model_name = 'inception4'
     default_model = db.session.query(Model).filter_by(name=model_name).first()
     if default_model is None:
         path_to_model = "{0}/{1}".format(models_folder, model_name)

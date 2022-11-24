@@ -198,6 +198,10 @@ def process_data(intern : str, extern : str, showImgs : bool, showClassification
         'Quantidade de Buracos', 
         'Área Buraco/Área Semente'
     ]
+
+    if showClassification:
+        header.append('Classe')
+
     rows = []
 
     for i, seed in enumerate(intern_seeds):
@@ -248,14 +252,19 @@ def process_data(intern : str, extern : str, showImgs : bool, showClassification
                 ]
             )
 
+    if showClassification:
+        classification = classificate(modelPath)
+        classification_number = len(classification)
+        for i, row in enumerate(rows):
+            row.append(classification[i % classification_number])
+
     with open('relatorio.csv', 'w', encoding='UTF8') as f:
         writer = csv.writer(f)
         writer.writerow(header)
         for row in rows:
             writer.writerow(row)
 
-    if showClassification:
-        classificate(modelPath)
+    
 
     if showImgs:
         return GenImg(intern_seeds,extern_seeds)

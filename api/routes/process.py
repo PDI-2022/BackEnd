@@ -42,5 +42,5 @@ def process():
         csv_json, internal_json, external_json = process_data(internal_img, external_img, True, displayClassificationInfos, model_path)
         return jsonify({"csv":csv_json,"internSeeds":internal_json,"externSeeds":external_json}), status.HTTP_200_OK
     
-    csv_file = process_data(internal_img, external_img, False, True, model_path)
+    csv_file = process_data(internal_img, external_img, False, displayClassificationInfos, model_path)
     return send_file(csv_file, 'text/csv'), status.HTTP_200_OK     

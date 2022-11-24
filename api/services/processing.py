@@ -125,6 +125,51 @@ def extract_light_red_percentage(input_image, id=0):
 
     return pixels_extracted_white/pixels_number_seed
 
+def extract_milky_white_percentage(input_image, id=0):
+    converted = cv2.cvtColor(input_image, cv2.COLOR_BGR2HSV)
+    rgb = np.copy(converted)
+
+    inf_red = 169
+    sup_red = 201
+    inf_green = 149
+    sup_green = 171
+    inf_blue = 113
+    sup_blue = 144
+
+    for i, line in enumerate(rgb):
+        for j, pixel in enumerate(line):
+            r, g, b = pixel
+            zero_any_channel = False
+            if r < inf_red:
+                zero_any_channel = True
+                rgb[i][j][0] = 0
+            if r > sup_red:
+                zero_any_channel = True
+                rgb[i][j][0] = 0
+            if g < inf_green:
+                zero_any_channel = True
+                rgb[i][j][1] = 0
+            if g > sup_green:
+                zero_any_channel = True
+                rgb[i][j][1] = 0
+            if b < inf_blue:
+                zero_any_channel = True
+                rgb[i][j][2] = 0
+            if b > sup_blue:
+                zero_any_channel = True
+                rgb[i][j][2] = 0
+            if zero_any_channel == True:
+                rgb[i][j][0] = 0
+                rgb[i][j][1] = 0
+                rgb[i][j][2] = 0
+
+    pixels_number_seed = np.count_nonzero(input_image)
+    pixels_extracted_white = np.count_nonzero(rgb)
+
+    cv2.imwrite(f'./images/white_extract/milky_white_{id}.jpg', cv2.cvtColor(np.hstack([input_image, rgb]), cv2.COLOR_BGR2RGB))
+
+    return pixels_extracted_white/pixels_number_seed
+
 def createCutImgsFold(index):
     externo = cv2.imread(f"./images/background_remove/remove_background_externo{index}.jpg")
     interno = cv2.imread(f"./images/background_remove/remove_background_interno{index}.jpg")
@@ -143,13 +188,23 @@ def process_data(intern : str, extern : str, showImgs : bool, showClassification
     intern_seeds = cut(input_intern_image)
     extern_seeds = cut(input_extern_image)
 
-    header = ['Semente', 'Lado', 'Porcentagem de Branco', 'Porcentagem de Vermelho Carmim Claro', 'Porcentagem de Vermelho Carmim Escuro', 'Quantidade de Buracos', 'Área Buraco/Área Semente']
+    header = [
+        'Semente', 
+        'Lado', 
+        'Porcentagem de Branco', 
+        'Porcentagem de Branco Leitoso',
+        'Porcentagem de Vermelho Carmim Claro', 
+        'Porcentagem de Vermelho Carmim Escuro', 
+        'Quantidade de Buracos', 
+        'Área Buraco/Área Semente'
+    ]
     rows = []
 
     for i, seed in enumerate(intern_seeds):
         if not is_empty(seed):
             removed_background = remove_background(seed, f'interno{i}')
             white_percentage = extract_white_percentage(removed_background, f'interno{i}')
+            milky_white_percentage = extract_milky_white_percentage(removed_background, f'interno{i}')
             light_red_percentage = extract_light_red_percentage(removed_background, f'interno{i}')
             dark_red_percentage = extract_dark_red_percentage(removed_background, f'interno{i}')
 
@@ -160,7 +215,8 @@ def process_data(intern : str, extern : str, showImgs : bool, showClassification
                 [
                     i + 1, 
                     'Interno', 
-                    f'{white_percentage*100:.2f}%', 
+                    f'{white_percentage*100:.2f}%',
+                    f'{milky_white_percentage*100:.2f}%', 
                     f'{light_red_percentage*100:.2f}%',
                     f'{dark_red_percentage*100:.2f}%',
                     holes,
@@ -171,6 +227,7 @@ def process_data(intern : str, extern : str, showImgs : bool, showClassification
         if not is_empty(seed):
             removed_background = remove_background(seed, f'externo{i}')
             white_percentage = extract_white_percentage(removed_background, f'externo{i}')
+            milky_white_percentage = extract_milky_white_percentage(removed_background, f'externo{i}')
             light_red_percentage = extract_light_red_percentage(removed_background, f'externo{i}')
             dark_red_percentage = extract_dark_red_percentage(removed_background, f'externo{i}')
 
@@ -182,7 +239,8 @@ def process_data(intern : str, extern : str, showImgs : bool, showClassification
                 [
                     i + 1, 
                     'Externo', 
-                    f'{white_percentage*100:.2f}%', 
+                    f'{white_percentage*100:.2f}%',
+                    f'{milky_white_percentage*100:.2f}%', 
                     f'{light_red_percentage*100:.2f}%',
                     f'{dark_red_percentage*100:.2f}%',
                     holes,

@@ -54,3 +54,5 @@ def classificate(model_path : str):
         y_pred = np.argmax(predictions, axis=1) + 1
 
         print(y_pred)
+
+        return y_pred

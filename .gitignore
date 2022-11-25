@@ -2,3 +2,6 @@ venv/lib
 relatorio.csv
 images
 models
+*.pyc
+__pycache__/
+**/__pycache__/

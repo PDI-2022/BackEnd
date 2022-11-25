@@ -6,6 +6,8 @@ from api.services.grid_cut import cortar_malha as cut
 from api.services.classification import classificate
 from skimage import measure
 from shapely.geometry import Polygon
+import concurrent.futures
+import time
 
 def count_holes(image) -> int:
     contours = measure.find_contours(image, 200)
@@ -66,7 +68,6 @@ def extract_white_percentage(input_image, id=0):
 
     return pixels_extracted_white/pixels_number_seed
 
-
 def remove_background(input_image, id=0):
     used_threshold, thresholded_bgr_image = cv2.threshold(input_image, 110, 255, cv2.THRESH_BINARY)
     thresholded_blue_component, thresholded_green_component, thresholded_red_component = cv2.split(thresholded_bgr_image)
@@ -78,7 +79,6 @@ def remove_background(input_image, id=0):
     cv2.imwrite(f'./images/background_remove/remove_background_{id}.jpg', result_image)
 
     return result_image
-
 
 def extract_dark_red_percentage(input_image, id=0):
     hsv = cv2.cvtColor(input_image, cv2.COLOR_BGR2HSV)
@@ -101,7 +101,6 @@ def extract_dark_red_percentage(input_image, id=0):
     cv2.imwrite(f'./images/red_extract/dark_red_mask{id}.jpg', np.hstack([input_image, dark_red_extracted_image]))
 
     return pixels_extracted_white/pixels_number_seed
-
 
 def extract_light_red_percentage(input_image, id=0):
     hsv = cv2.cvtColor(input_image, cv2.COLOR_BGR2HSV)
@@ -176,6 +175,29 @@ def createCutImgsFold(index):
 
     cv2.imwrite(f'./images/imagens_cortadas/images/semente-' + str(index+1) + '.jpg', np.hstack([externo, interno]))
 
+
+def extract_seed_information(seed, side, seed_id = 0):
+    removed_background = remove_background(seed, f'{side}{seed_id}')
+    white_percentage = extract_white_percentage(removed_background, f'{side}{seed_id}')
+    milky_white_percentage = extract_milky_white_percentage(removed_background, f'{side}{seed_id}')
+    light_red_percentage = extract_light_red_percentage(removed_background, f'{side}{seed_id}')
+    dark_red_percentage = extract_dark_red_percentage(removed_background, f'{side}{seed_id}')
+
+    thresholded_red_component = remove_background_and_get_mask(seed)
+    (holes, holes_percentage) = count_holes(thresholded_red_component)
+
+    return [
+        seed_id + 1,
+        side, 
+        f'{white_percentage*100:.2f}%',
+        f'{milky_white_percentage*100:.2f}%', 
+        f'{light_red_percentage*100:.2f}%',
+        f'{dark_red_percentage*100:.2f}%',
+        holes,
+        f'{holes_percentage*100:.2f}%'
+    ]
+
+
 def process_data(intern : str, extern : str, showImgs : bool, showClassification : bool, modelPath : str):
     buffer_intern = base64.b64decode(intern)
     nparr = np.frombuffer(buffer_intern, np.uint8)
@@ -204,53 +226,77 @@ def process_data(intern : str, extern : str, showImgs : bool, showClassification
 
     rows = []
 
-    for i, seed in enumerate(intern_seeds):
-        if not is_empty(seed):
-            removed_background = remove_background(seed, f'interno{i}')
-            white_percentage = extract_white_percentage(removed_background, f'interno{i}')
-            milky_white_percentage = extract_milky_white_percentage(removed_background, f'interno{i}')
-            light_red_percentage = extract_light_red_percentage(removed_background, f'interno{i}')
-            dark_red_percentage = extract_dark_red_percentage(removed_background, f'interno{i}')
+    start = time.perf_counter()
+    with concurrent.futures.ProcessPoolExecutor() as executor:
+        futures = []
+        print(f'Número de processos: {executor._max_workers}')
+        for i, seed in enumerate(intern_seeds):
+            if not is_empty(seed):
+                futures.append(
+                    executor.submit(extract_seed_information, seed=seed, side='Interno', seed_id=i)
+                )
 
-            thresholded_red_component = remove_background_and_get_mask(seed)
-            (holes, holes_percentage) = count_holes(thresholded_red_component)
+        for i, seed in enumerate(extern_seeds):
+            if not is_empty(seed):
+                futures.append(
+                    executor.submit(extract_seed_information, seed=seed, side='Externo', seed_id=i)
+                )
 
-            rows.append(
-                [
-                    i + 1, 
-                    'Interno', 
-                    f'{white_percentage*100:.2f}%',
-                    f'{milky_white_percentage*100:.2f}%', 
-                    f'{light_red_percentage*100:.2f}%',
-                    f'{dark_red_percentage*100:.2f}%',
-                    holes,
-                    f'{holes_percentage*100:.2f}%'
-                ]
-            )        
-    for i, seed in enumerate(extern_seeds):
-        if not is_empty(seed):
-            removed_background = remove_background(seed, f'externo{i}')
-            white_percentage = extract_white_percentage(removed_background, f'externo{i}')
-            milky_white_percentage = extract_milky_white_percentage(removed_background, f'externo{i}')
-            light_red_percentage = extract_light_red_percentage(removed_background, f'externo{i}')
-            dark_red_percentage = extract_dark_red_percentage(removed_background, f'externo{i}')
+        for future in concurrent.futures.as_completed(futures):
+            rows.append(future.result())
 
-            thresholded_red_component = remove_background_and_get_mask(seed)
-            (holes, holes_percentage) = count_holes(thresholded_red_component)
-            createCutImgsFold(i)
+    end = time.perf_counter()
 
-            rows.append(
-                [
-                    i + 1, 
-                    'Externo', 
-                    f'{white_percentage*100:.2f}%',
-                    f'{milky_white_percentage*100:.2f}%', 
-                    f'{light_red_percentage*100:.2f}%',
-                    f'{dark_red_percentage*100:.2f}%',
-                    holes,
-                    f'{holes_percentage*100:.2f}%'
-                ]
-            )
+    print(f'Imagens processadas em {end-start} segundos')
+
+
+    # for i, seed in enumerate(intern_seeds):
+    #     if not is_empty(seed):
+    #         removed_background = remove_background(seed, f'interno{i}')
+    #         white_percentage = extract_white_percentage(removed_background, f'interno{i}')
+    #         milky_white_percentage = extract_milky_white_percentage(removed_background, f'interno{i}')
+    #         light_red_percentage = extract_light_red_percentage(removed_background, f'interno{i}')
+    #         dark_red_percentage = extract_dark_red_percentage(removed_background, f'interno{i}')
+
+    #         thresholded_red_component = remove_background_and_get_mask(seed)
+    #         (holes, holes_percentage) = count_holes(thresholded_red_component)
+
+    #         rows.append(
+    #             [
+    #                 i + 1, 
+    #                 'Interno', 
+    #                 f'{white_percentage*100:.2f}%',
+    #                 f'{milky_white_percentage*100:.2f}%', 
+    #                 f'{light_red_percentage*100:.2f}%',
+    #                 f'{dark_red_percentage*100:.2f}%',
+    #                 holes,
+    #                 f'{holes_percentage*100:.2f}%'
+    #             ]
+    #         )        
+    # for i, seed in enumerate(extern_seeds):
+    #     if not is_empty(seed):
+    #         removed_background = remove_background(seed, f'externo{i}')
+    #         white_percentage = extract_white_percentage(removed_background, f'externo{i}')
+    #         milky_white_percentage = extract_milky_white_percentage(removed_background, f'externo{i}')
+    #         light_red_percentage = extract_light_red_percentage(removed_background, f'externo{i}')
+    #         dark_red_percentage = extract_dark_red_percentage(removed_background, f'externo{i}')
+
+    #         thresholded_red_component = remove_background_and_get_mask(seed)
+    #         (holes, holes_percentage) = count_holes(thresholded_red_component)
+    #         createCutImgsFold(i)
+
+    #         rows.append(
+    #             [
+    #                 i + 1, 
+    #                 'Externo', 
+    #                 f'{white_percentage*100:.2f}%',
+    #                 f'{milky_white_percentage*100:.2f}%', 
+    #                 f'{light_red_percentage*100:.2f}%',
+    #                 f'{dark_red_percentage*100:.2f}%',
+    #                 holes,
+    #                 f'{holes_percentage*100:.2f}%'
+    #             ]
+    #         )
 
     if showClassification:
         classification = classificate(modelPath)
@@ -258,13 +304,14 @@ def process_data(intern : str, extern : str, showImgs : bool, showClassification
         for i, row in enumerate(rows):
             row.append(classification[i % classification_number])
 
+    rows.sort(key=lambda value : (0 if value[1] == 'Interno' else 1, value[0]))
+
     with open('relatorio.csv', 'w', encoding='UTF8') as f:
         writer = csv.writer(f)
         writer.writerow(header)
         for row in rows:
             writer.writerow(row)
 
-    
 
     if showImgs:
         return GenImg(intern_seeds,extern_seeds)

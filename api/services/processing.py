@@ -250,54 +250,6 @@ def process_data(intern : str, extern : str, showImgs : bool, showClassification
     print(f'Imagens processadas em {end-start} segundos')
 
 
-    # for i, seed in enumerate(intern_seeds):
-    #     if not is_empty(seed):
-    #         removed_background = remove_background(seed, f'interno{i}')
-    #         white_percentage = extract_white_percentage(removed_background, f'interno{i}')
-    #         milky_white_percentage = extract_milky_white_percentage(removed_background, f'interno{i}')
-    #         light_red_percentage = extract_light_red_percentage(removed_background, f'interno{i}')
-    #         dark_red_percentage = extract_dark_red_percentage(removed_background, f'interno{i}')
-
-    #         thresholded_red_component = remove_background_and_get_mask(seed)
-    #         (holes, holes_percentage) = count_holes(thresholded_red_component)
-
-    #         rows.append(
-    #             [
-    #                 i + 1, 
-    #                 'Interno', 
-    #                 f'{white_percentage*100:.2f}%',
-    #                 f'{milky_white_percentage*100:.2f}%', 
-    #                 f'{light_red_percentage*100:.2f}%',
-    #                 f'{dark_red_percentage*100:.2f}%',
-    #                 holes,
-    #                 f'{holes_percentage*100:.2f}%'
-    #             ]
-    #         )        
-    # for i, seed in enumerate(extern_seeds):
-    #     if not is_empty(seed):
-    #         removed_background = remove_background(seed, f'externo{i}')
-    #         white_percentage = extract_white_percentage(removed_background, f'externo{i}')
-    #         milky_white_percentage = extract_milky_white_percentage(removed_background, f'externo{i}')
-    #         light_red_percentage = extract_light_red_percentage(removed_background, f'externo{i}')
-    #         dark_red_percentage = extract_dark_red_percentage(removed_background, f'externo{i}')
-
-    #         thresholded_red_component = remove_background_and_get_mask(seed)
-    #         (holes, holes_percentage) = count_holes(thresholded_red_component)
-    #         createCutImgsFold(i)
-
-    #         rows.append(
-    #             [
-    #                 i + 1, 
-    #                 'Externo', 
-    #                 f'{white_percentage*100:.2f}%',
-    #                 f'{milky_white_percentage*100:.2f}%', 
-    #                 f'{light_red_percentage*100:.2f}%',
-    #                 f'{dark_red_percentage*100:.2f}%',
-    #                 holes,
-    #                 f'{holes_percentage*100:.2f}%'
-    #             ]
-    #         )
-
     if showClassification:
         classification = classificate(modelPath)
         classification_number = len(classification)

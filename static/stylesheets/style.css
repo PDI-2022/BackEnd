@@ -1,0 +1,241 @@
+@font-face {
+    font-family: NovaFlat;
+    src: url('fonts/NovaFlat-Regular.ttf');
+}
+
+label {
+    font-family: NovaFlat, arial, serif;
+    ;
+}
+.modelHolder{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 8%;
+  }
+.modelHolder select{
+    width: 20%;
+}
+
+body {
+    width: 100vw;
+    height: 100vh;
+}
+
+.navbar {
+    background-color: #712F26;
+}
+
+.drag-section-external {
+    background-color: #D9D9D9;
+    width: 500px;
+    height: 300px;
+    display: flex;
+    align-content: center;
+    justify-content: center;
+    align-items: center;
+    border: none;
+    border-radius: 12px;
+}
+
+.drag-section-internal {
+    background-color: #712F26;
+    width: 450px;
+    height: 270px;
+    display: flex;
+    align-content: center;
+    justify-content: center;
+    align-items: center;
+    border: none;
+    border-radius: 12px;
+}
+
+.drag-drop {
+    background-color: #D9D9D9;
+    width: 400px;
+    height: 240px;
+    border: none;
+    border-radius: 12px;
+}
+
+.drag-title {
+    font-size: 32px;
+    font-weight: bold;
+    color: white;
+}
+
+.container-drag {
+    display: flex;
+    flex-direction: column;
+    align-content: center;
+    justify-content: center;
+    align-items: center;
+}
+
+.container-section {
+    display: flex;
+    align-content: center;
+    justify-content: center;
+    align-items: flex-start;
+    flex-direction: row;
+}
+
+.drag-text {
+    background-image: url("../Assets/Icons/dragAndDropBackground.svg");
+    background-size: 200px 180px;
+    background-repeat: no-repeat;
+    background-position-x: center;
+    width: 100%;
+    height: 180px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+    align-items: center;
+    align-content: center;
+}
+
+.drag-text label {
+    font-size: 24px;
+    text-align: center;
+    font-weight: bold;
+
+}
+
+#img-arquivo {
+    font-size: 20px;
+    color: white;
+    margin: 5px;
+}
+#botao {
+    text-align: center
+}
+#botaoImgs{
+    text-align: center;
+}
+.botao {
+    text-align: center
+}
+
+.botaoEnviar {
+    width: 20%;
+}
+
+#botaoDownload {
+    width: 30%;
+    font-size: 24px;
+    margin-bottom: 10px;
+}
+
+.botaoVoltar {
+    width: 20%;
+}
+
+.modal {
+    text-align: center;
+    padding: 0 !important;
+}
+
+.modal:before {
+    content: '';
+    display: inline-block;
+    height: 100%;
+    vertical-align: middle;
+    margin-right: -4px;
+}
+
+.modal-dialog {
+    display: inline-block;
+    text-align: left;
+    vertical-align: middle;
+}
+
+.modal-body {
+    font-size: 24px;
+    background-color: transparent;
+    background-image: initial;
+    background-repeat: initial;
+    background-attachment: initial;
+    background-position: initial;
+}
+
+#modal-alert {
+    font-size: 24px;
+}
+
+.upload-button {
+    background-color: #5A261E;
+    border: none;
+    border-radius: 22px;
+    cursor: pointer;
+}
+
+.upload-button label {
+    padding: 4px 12px;
+    color: #D8D8D8;
+    font-size: 14px;
+    font-weight: normal;
+    margin: 4px;
+    cursor: pointer;
+}
+
+.label-icon-upload {
+    color: #D8D8D8;
+    font-size: 32px;
+    font-weight: normal;
+}
+
+.imgIntIconContainer,
+.imgExtIconContainer {
+    padding: 10px;
+    display: block;
+    text-align: center;
+    margin: 0px auto;
+}
+
+h6 {
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding-bottom: 15px;
+}
+@media screen and (max-width: 460px) {
+    .drag-title {
+        font-size: 16px;
+    }
+}
+@media screen and (max-width: 1061px) {
+    p,.drag-text label{
+        font-size: 12px;
+    }
+    button{
+        min-width: 200px;
+    }
+    .drag-text {
+        background-image: url("../Assets/Icons/dragAndDropBackground.svg");
+        background-size: 100% 100%;
+    }
+    .drag-title {
+        font-size: 24px;
+    }
+
+    .container-section {
+        flex-direction: column;
+        gap: 24px;
+    }
+
+    .drag-section-external {
+        width: 100%;
+        height: 70vh;
+    }
+
+    .drag-section-internal {
+        width: 90%;
+        height: 80%;
+    }
+
+    .drag-drop {
+        width: 85%;
+        height: 60%;
+    }
+}

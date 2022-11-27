@@ -1,0 +1,72 @@
+:root {
+    --bg-header: #D92626;
+    --color-header:#ffffff;
+}
+nav.navbar.fixed-top.navbar-expand-lg.navbar-light.logo{
+    width: 99vw!important;
+}
+ul.navbar-nav.ml-auto.float-right{
+    border-radius: 12px;
+    background-color: var(--bg-header);
+}
+
+header nav{
+    padding: 25px 80px;
+    height: 100px;
+    justify-content: space-between;
+    align-items: center;
+    background-color: var(--bg-header);
+    box-shadow: 0px 2px 2px 0px rgba(0, 0, 0, 0.4);
+}
+header{
+    background-color: var(--bg-header);
+    margin-bottom: 180px;
+}
+
+.itensNavLink {
+    font-size: 24px;
+    margin-left: 30px;
+}
+
+header img {
+    width: auto;
+    height: 50px;
+    filter: grayscale(100%);
+    transition: all 0.5s ease;
+}
+
+.brandName {
+    margin-left: 10px;
+    font-size: 32px;
+}
+.itensNavLink,.brandName{
+    color: var(--color-header)!important;
+}
+
+header a:hover {
+    color: var(--color-header);
+    text-decoration: none;
+}
+
+header img:hover {
+    filter: grayscale(0%);
+}
+
+.logo {
+    align-items: center;
+    justify-content: space-around;
+    font-weight: 300;
+}
+#inicio,#equipe,#sobre {
+    padding-top: 180px;
+    margin-top: -180px;
+}
+@media (max-width:991px) {
+    .logo strong,.logo div {
+        display: none;
+    }
+    ul.navbar-nav.ml-auto.float-right{
+        border: 1px solid white;
+
+    }
+}

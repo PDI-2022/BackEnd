@@ -1,0 +1,43 @@
+@keyframes fade-text {
+    0%   {color:rgba(217, 38, 38, 0); }
+    100% {color:rgba(217, 38, 38, 1); }
+}
+@keyframes fade-button {
+    0%   {opacity: 0; }
+    100% {opacity: 1; }
+}
+.animationHolder{
+    overflow: hidden;
+    width: 100vw;
+    height: 100vh;
+    background-color: white;
+    display: flex;
+    position: absolute;
+    z-index: 1999;
+    top: 0;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    align-content: center;
+}
+.main-text-animation{
+    animation-name: fade-text;
+    animation-duration: 3s;
+    animation-fill-mode: forwards;
+}
+.secondary-text-animation{
+    animation-name: fade-text;
+    animation-duration: 2s;
+    animation-delay: 1.5s;
+    animation-fill-mode: forwards;
+    color:rgba(217, 38, 38, 0);
+    padding: 0 24px;
+}
+.button-text-animation{
+    animation-name: fade-button ;
+    animation-duration: 3s;
+    animation-delay: 1.5s;
+    animation-fill-mode: forwards;
+    opacity: 0;
+    color:rgba(217, 38, 38, 0);
+}

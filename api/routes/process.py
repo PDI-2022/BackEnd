@@ -1,7 +1,7 @@
 from flask import jsonify, request, send_file, Blueprint
 from flask_api import status
-from api.services.storage import save_base64_image
-from api.constants.folders import images_folder
+from api.services.storage import save_base64_image, create_folder
+from api.constants.folders import images_folder, red_extract_folder, background_removed_folder, white_extract_folder
 from api.services.processing import process_data
 from config import db
 from db.models import Model
@@ -28,6 +28,10 @@ def process():
 
     internal_img = extract_data_and_save(data, 'internalImg')
     external_img = extract_data_and_save(data, 'externalImg')
+
+    create_folder(red_extract_folder)
+    create_folder(background_removed_folder)
+    create_folder(white_extract_folder)
 
     displayClassificationInfos = data['displayClassificationInfos']
     generatePageWithImages = data['generatePageWithImages']

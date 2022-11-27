@@ -1,0 +1,37 @@
+.about {
+    max-width: 100%;
+    justify-content: center;
+    display: flex;
+    flex-direction: row;
+}
+.image-replace{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.image-replace img {
+    width: 200px;
+    height: 200px;
+}
+.about-text {
+    max-width: 634px;
+    align-items: center;
+}
+
+.about-text h2 {
+    margin-bottom: 32px;
+}
+
+.about-text p {
+    text-indent: 32px;
+}
+
+@media (max-width:991px) {
+    .about{
+        flex-direction: column-reverse; 
+        align-items: center;
+    }
+    .about-text{
+        padding: 20px;
+    }
+}

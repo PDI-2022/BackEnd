@@ -76,7 +76,8 @@ def remove_background(input_image, id=0):
 
     result_image = cv2.bitwise_and(input_image, input_image, mask = mask_filtered)
 
-    cv2.imwrite(f'./images/background_remove/remove_background_{id}.jpg', result_image)
+    if id != -1:
+        cv2.imwrite(f'./images/background_remove/remove_background_{id}.jpg', result_image)
 
     return result_image
 
@@ -173,6 +174,9 @@ def createCutImgsFold(index):
     externo = cv2.imread(f"./images/background_remove/remove_background_externo{index}.jpg")
     interno = cv2.imread(f"./images/background_remove/remove_background_interno{index}.jpg")
 
+    externo = cv2.resize(externo, (300, 128))
+    interno = cv2.resize(interno, (300, 128))
+
     cv2.imwrite(f'./images/imagens_cortadas/images/semente-' + str(index+1) + '.jpg', np.hstack([externo, interno]))
 
 
@@ -233,13 +237,13 @@ def process_data(intern : str, extern : str, showImgs : bool, showClassification
         for i, seed in enumerate(intern_seeds):
             if not is_empty(seed):
                 futures.append(
-                    executor.submit(extract_seed_information, seed=seed, side='Interno', seed_id=i)
+                    executor.submit(extract_seed_information, seed=seed, side='interno', seed_id=i)
                 )
 
         for i, seed in enumerate(extern_seeds):
             if not is_empty(seed):
                 futures.append(
-                    executor.submit(extract_seed_information, seed=seed, side='Externo', seed_id=i)
+                    executor.submit(extract_seed_information, seed=seed, side='externo', seed_id=i)
                 )
 
         for future in concurrent.futures.as_completed(futures):
@@ -251,6 +255,9 @@ def process_data(intern : str, extern : str, showImgs : bool, showClassification
 
 
     if showClassification:
+        for i in range(len(extern_seeds)):
+            createCutImgsFold(i)
+
         classification = classificate(modelPath)
         classification_number = len(classification)
         for i, row in enumerate(rows):
@@ -272,7 +279,7 @@ def process_data(intern : str, extern : str, showImgs : bool, showClassification
 
 
 def is_empty(block):
-    removed_background = remove_background(block)
+    removed_background = remove_background(block, -1)
     percentage = np.count_nonzero(removed_background) / (block.shape[0]*block.shape[1])
 
     return True if percentage < 0.05 else False

@@ -2,93 +2,88 @@ import cv2
 import numpy as np
 import api.services.alignment as al
 
-def cortar_malha(imagem_original):
-	"""Funcao que recebe uma imagem de malha com sementes
-	e retorna um vetor com 50 sementes individuais.
-	"""
+def cortar_malha(img):
+    # Alinha a imagem antes do corte
+    img = al.alinhar(img)
 
-	# Alinha a imagem
-	imagem_alinhada = al.alinhar(imagem_original)
+    # limiarizando os canais de cores
+    used_threshold, thresholded_bgr_image = cv2.threshold(img, 130, 255, cv2.THRESH_BINARY)
+    bt, gt, rt = cv2.split(thresholded_bgr_image)
 
-	# Tamanho da imagem
-	[x, y, z] = np.shape(imagem_alinhada)
+    zeros = np.zeros(img.shape[:2], dtype="uint8")
 
-	# Faz a segmentacao com thresholding
-	(T, imagem_thresh) = cv2.threshold(imagem_alinhada, 115, 255, cv2.THRESH_BINARY)
+    # vermelho separado limiarizado
+    rdt = cv2.merge([zeros, zeros, rt])
 
-	# Deixa a imagem em escala de cinza
-	imagem_cinza = cv2.cvtColor(imagem_thresh, cv2.COLOR_BGR2GRAY)
+    # passando imagem do limiar do vermelho para grayscale e fazendo o limiar
+    verm_cinza = cv2.cvtColor(rdt, cv2.COLOR_BGR2GRAY)
+    RER, mask = cv2.threshold(verm_cinza, 40, 255, cv2.THRESH_BINARY)
 
-	# Prepara para corte
-	# Ponto de busca da borda da malha situado no lado esquerdo da imagem
-	ponto_medio1 = [int(x*(1/2)), int(y*(1/10))]
+    # aplicando filtro da mediana com janela=5
+    median = cv2.medianBlur(mask, 5)
 
-	# Ponto situado no lado direito da imagem
-	ponto_medio2 = [int(x*(1/2)), int(y*(9.5/10))]
+    # achando contornos
+    contours, hierarchy = cv2.findContours(median,cv2.RETR_TREE,cv2.CHAIN_APPROX_SIMPLE)
 
-	# Ponto situado na parte inferior da imagem
-	ponto_medio3 = [int(x*0.96866), int(y*(1/2))]
+    #calculando os centros de cada contorno
+    rect = []
 
-	# Ponto situado na parte superior da imagem
-	ponto_medio4 = [int(x*0.03134), int(y*(1/2))]
+    for c in contours:
+        if cv2.contourArea(c) > 2000:
+            
+            xret,yret,wret,hret = cv2.boundingRect(c) # caracatersticas do retangulo delimitador
+            cX = int(xret+wret/2)
+            cY = int(yret+hret/2)
+            rect.append((xret,yret,wret,hret,cX,cY))
 
-	# Move o ponto de busca 1 a direita ate encontrar a borda da malha
-	while True:
-		if (imagem_cinza[ponto_medio1[0], ponto_medio1[1]] == 0):
-			# Sai do loop com coordenada y na borda da malha
-			break
+    # ordenando o vetor pelo valor de y do centro do contorno
+    rect.sort(key=lambda a: a[5])
 
-		# Caso pixel nao possua o valor desejado
-		ponto_medio1[1] = ponto_medio1[1] + 1
-		
-	# Move o ponto de busca 2 a esquerda ate encontrar a borda da malha
-	while True:
-		if (imagem_cinza[ponto_medio2[0], ponto_medio2[1]] == 0):
-			# Sai do loop com coordenada y na borda da malha
-			break
+    by_line=[]
+    cnt=1
+    i=0
 
-		# Caso pixel nao possua o valor desejado
-		ponto_medio2[1] = ponto_medio2[1] - 1
+    # detectando a quantidade de sementes por linha
+    while i<=len(rect)-1:
+        if i>0:
+            if rect[i][5]>rect[i-1][5]+41:
+                by_line.append(cnt)
+                i+=cnt            
+                cnt=1
+            else:
+                cnt+=1
+        i+=1
 
-	# Move o ponto de busca 3 para cima ate encontrar a borda da malha
-	while True:
-		if (imagem_cinza[ponto_medio3[0], ponto_medio3[1]] == 0 ):
-			# Sai do loop com coordenada x na borda da malha
-			break
+    j=0
+    k=0
+    i=0
+    rect_m = [[(0,0,0,0,9999,0) for coluna in range(2*max(by_line))] for linha in range(len(by_line))]
 
-		# Caso pixel nao possua o valor desejado
-		ponto_medio3[0] = ponto_medio3[0] - 1
-		
-	# Move o ponto de busca 4 para baixo ate encontrar a borda da malha
-	while True:
-		if (imagem_cinza[ponto_medio4[0], ponto_medio4[1]] == 0 ):
-			# Sai do loop com coordenada x na borda da malha
-			break
+    # organizando os elementos do vetor em uma matriz
+    for linha in range(len(by_line)):
+        if k==len(by_line):
+            break
+        else:
+            while j<2*by_line[k]:
+                rect_m[k][j]=rect[i]
+                j+=1
+                i+=1
+            j=0
+            k+=1
 
-		# Caso pixel nao possua o valor desejado
-		ponto_medio4[0] = ponto_medio4[0] + 1
-		
-	# Coordenadas do vertice inferior esquerdo da malha
-	coords1 = [ponto_medio3[0], ponto_medio1[1]]
-	coords2 = [ponto_medio3[0], ponto_medio2[1]]
-	y_inicial = coords1[1]
+    # ordenando cada linha da matriz pelo x do centro dos contornos
+    for i in range(len(by_line)):
+        rect_m[i].sort(key=lambda a: a[4])
 
-	# Medidas aproximadas dos lados das secoes
-	comp_malha = coords2[1] - coords1[1]		# Comprimento da malha
-	lado_comp = int(comp_malha/5)			# Comprimento da secao
-	alt_malha = ponto_medio3[0] - ponto_medio4[0]	# Altura da malha
-	lado_alt = int(alt_malha/10)			# Altura da secao
+    sementes = []
 
-	# Define vetor onde sera armazenada cada semente
-	semente = []
-
-	# Popula o vetor com as sementes adequadas, sendo semente[0] a semente 1
-	for i in range(10):
-		for j in range(5):
-			semente.append(imagem_alinhada[(coords1[0] - lado_alt):coords1[0], coords1[1]:(coords1[1] + lado_comp)])
-			coords1[1] = coords1[1] + lado_comp
-		# Prepara para obter as imagens das sementes da linha acima
-		coords1[1] = y_inicial
-		coords1[0] = coords1[0] - lado_alt
-		
-	return semente
+    # recortando as sementes
+    for coluna in range(0, 2*max(by_line), 2):
+        for linha in range(len(by_line)-1, -1, -1):
+            if rect_m[linha][coluna][0]!=0:
+                if rect_m[linha][coluna][5]<rect_m[linha][coluna+1][5]:
+                    sementes.append(img[rect_m[linha][coluna][1]-25:rect_m[linha][coluna+1][1]+rect_m[linha][coluna+1][3]+25 , rect_m[linha][coluna][0]-25:rect_m[linha][coluna+1][0]+rect_m[linha][coluna+1][2]+25])
+                else:
+                    sementes.append(img[rect_m[linha][coluna+1][1]-25:rect_m[linha][coluna][1]+rect_m[linha][coluna][3]+25 , rect_m[linha][coluna][0]-25:rect_m[linha][coluna+1][0]+rect_m[linha][coluna+1][2]+25])           
+    
+    return sementes

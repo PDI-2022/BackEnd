@@ -129,11 +129,11 @@ def extract_milky_white_percentage(input_image, id=0):
     rgb = np.copy(converted)
 
     inf_red = 169
-    sup_red = 201
-    inf_green = 149
-    sup_green = 171
-    inf_blue = 113
-    sup_blue = 144
+    sup_red = 220
+    inf_green = 135
+    sup_green = 190
+    inf_blue = 105
+    sup_blue = 150
 
     for i, line in enumerate(rgb):
         for j, pixel in enumerate(line):

@@ -1,5 +1,3 @@
-venv/lib
-relatorio.csv
 images
 models
 *.pyc

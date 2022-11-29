@@ -25,7 +25,8 @@ header{
 
 .itensNavLink {
     font-size: 24px;
-    margin-left: 30px;
+    margin-left: 10px;
+    padding-right: 10px!important;
 }
 
 header img {

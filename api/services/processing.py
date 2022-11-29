@@ -82,14 +82,16 @@ def remove_background(input_image, id=0):
 
     return result_image
 
-def extract_dark_red_percentage(input_image, id=0):
+def extract_dark_red_percentage(input_image, lim_inf_red, id=0):
     hsv = cv2.cvtColor(input_image, cv2.COLOR_BGR2HSV)
 
-    first_lower = np.array([161, 168, 80])
+    print(f'Limite inferior do vermelho escuro: {lim_inf_red}')
+    
+    first_lower = np.array([161, lim_inf_red, 80])
     first_upper = np.array([180 , 255, 240])   
     first_mask = cv2.inRange(hsv, first_lower, first_upper)
 
-    second_lower = np.array([0, 168, 80])
+    second_lower = np.array([0, lim_inf_red, 80])
     second_upper = np.array([60 , 255, 240])   
     second_mask = cv2.inRange(hsv, second_lower, second_upper)
 
@@ -104,15 +106,17 @@ def extract_dark_red_percentage(input_image, id=0):
 
     return pixels_extracted_white/pixels_number_seed
 
-def extract_light_red_percentage(input_image, id=0):
+def extract_light_red_percentage(input_image, lim_sup_red, id=0):
     hsv = cv2.cvtColor(input_image, cv2.COLOR_BGR2HSV)
 
+    print(f'Limite superior do vermelho claro: {lim_sup_red}')
+
     first_lower = np.array([161, 90, 80])
-    first_upper = np.array([180 , 190, 240])   
+    first_upper = np.array([180 , lim_sup_red, 240])   
     first_mask = cv2.inRange(hsv, first_lower, first_upper)
 
     second_lower = np.array([0, 90, 80])
-    second_upper = np.array([60 , 190, 240])   
+    second_upper = np.array([60 , lim_sup_red, 240])   
     second_mask = cv2.inRange(hsv, second_lower, second_upper)
 
     mask = cv2.bitwise_or(first_mask, second_mask)
@@ -181,12 +185,12 @@ def createCutImgsFold(index):
     cv2.imwrite(f'./images/imagens_cortadas/images/semente-' + str(index+1) + '.jpg', np.hstack([externo, interno]))
 
 
-def extract_seed_information(seed, side, seed_id = 0):
+def extract_seed_information(seed, side, lim_inf_red, lim_sup_red, seed_id = 0 ):
     removed_background = remove_background(seed, f'{side}{seed_id}')
     white_percentage = extract_white_percentage(removed_background, f'{side}{seed_id}')
     milky_white_percentage = extract_milky_white_percentage(removed_background, f'{side}{seed_id}')
-    light_red_percentage = extract_light_red_percentage(removed_background, f'{side}{seed_id}')
-    dark_red_percentage = extract_dark_red_percentage(removed_background, f'{side}{seed_id}')
+    light_red_percentage = extract_light_red_percentage(removed_background, lim_sup_red, f'{side}{seed_id}')
+    dark_red_percentage = extract_dark_red_percentage(removed_background, lim_inf_red, f'{side}{seed_id}')
 
     thresholded_red_component = remove_background_and_get_mask(seed)
     (holes, holes_percentage) = count_holes(thresholded_red_component)
@@ -203,7 +207,15 @@ def extract_seed_information(seed, side, seed_id = 0):
     ]
 
 
-def process_data(intern : str, extern : str, showImgs : bool, showClassification : bool, modelPath : str):
+def process_data(
+    intern : str, 
+    extern : str, 
+    showImgs : bool, 
+    showClassification : bool, 
+    modelPath : str, 
+    limInfRed : int, 
+    limSupRed: int    
+):
     buffer_intern = base64.b64decode(intern)
     nparr = np.frombuffer(buffer_intern, np.uint8)
     input_intern_image = cv2.imdecode(nparr, flags=1)
@@ -244,13 +256,27 @@ def process_data(intern : str, extern : str, showImgs : bool, showClassification
         for i, seed in enumerate(intern_seeds):
             if not is_empty(seed):
                 futures.append(
-                    executor.submit(extract_seed_information, seed=seed, side='interno', seed_id=i)
+                    executor.submit(
+                        extract_seed_information, 
+                        seed=seed, 
+                        side='interno', 
+                        lim_inf_red=limInfRed, 
+                        lim_sup_red=limSupRed, 
+                        seed_id=i
+                    )
                 )
 
         for i, seed in enumerate(extern_seeds):
             if not is_empty(seed):
                 futures.append(
-                    executor.submit(extract_seed_information, seed=seed, side='externo', seed_id=i)
+                    executor.submit(
+                        extract_seed_information, 
+                        seed=seed, 
+                        side='externo',
+                        lim_inf_red=limInfRed,
+                        lim_sup_red=limSupRed,
+                        seed_id=i
+                    )
                 )
 
         for future in concurrent.futures.as_completed(futures):

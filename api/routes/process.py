@@ -41,6 +41,9 @@ def process():
     limSup = data["limSup"]
     limInf = data["limInf"]
 
+    print(f'Limite superior do vermelho claro {limSup}')
+    print(f'Limite inferior do vermelho escuro {limInf}')
+
     seedTogether = data["seedTogether"]
 
     displayClassificationInfos = data['displayClassificationInfos']
@@ -51,12 +54,16 @@ def process():
         model_id = data['modelId']
         model = db.session.query(Model).filter_by(id = model_id).first()
         model_path = model.path
-
-    # if generatePageWithImages:
-    #     csv_json, internal_json, external_json = process_data(internal_img, external_img, True, displayClassificationInfos, model_path)
-    #     return jsonify({"csv":csv_json,"internSeeds":internal_json,"externSeeds":external_json}), status.HTTP_200_OK
     
-    csv_file = process_data(internal_img, external_img, False, displayClassificationInfos, model_path)
+    csv_file = process_data(
+        internal_img, 
+        external_img, 
+        False, 
+        displayClassificationInfos, 
+        model_path,
+        int(limInf),
+        int(limSup)
+    )
     return send_file(csv_file, 'text/csv'), status.HTTP_200_OK     
 
 @process_bp.route("/pagination", methods=['POST'])

@@ -7,8 +7,7 @@ from api.services.storage import create_folder
 from keras.layers import Dropout
 import tensorflow as tf
 import numpy as np
-import os
-import glob
+import pandas as pd
 
 test_data_dir = "./images/imagens_cortadas/"
 
@@ -19,9 +18,6 @@ def classificate(model_path : str):
         create_folder(test_data_dir)
 
         test_datagen = ImageDataGenerator(rescale=1./255)
-        for dic in glob.glob(f"{test_data_dir}*"):
-                for img_path in glob.glob(os.path.join(dic, "*.jpg")):
-                        label = img_path.split("_")
 
         test_generator = test_datagen.flow_from_directory(
                 test_data_dir,
@@ -29,11 +25,22 @@ def classificate(model_path : str):
                 shuffle=False,
                 batch_size=batch_size)
 
+        image_list = []      
+        files = test_generator.filenames
+        for img_path in files:
+                label = img_path.split("-")
+                print(label)
+                label = label[-1].split(".jpg")
+                dados = int(label[0])
+                image_list.append(dados)
+
+
         base_model = InceptionResNetV2(include_top=False, weights="imagenet")
         x = base_model.output
         x = GlobalAveragePooling2D()(x)
         x = Dense(1024, activation='sigmoid')(x)
         x = Dense(128, activation='relu')(x)
+        x = Dense(32, activation='relu')(x)
         x = Dropout(0.2)(x)
         predictions = Dense(7, activation='softmax')(x)
         model = Model(inputs=base_model.input, outputs=predictions)
@@ -55,4 +62,14 @@ def classificate(model_path : str):
 
         print(y_pred)
 
-        return y_pred
+        y_pred = np.argmax(predictions, axis=1) + 1
+        list_csv = []
+        for i in range(len(y_pred)):
+                csv = [image_list[i], y_pred[i]]
+                list_csv.append(csv)
+
+        df = pd.DataFrame(list_csv, columns=['SEMENTE', 'CLASSE'])
+        df = df.sort_values(by=['SEMENTE'])
+        predicao = df['CLASSE'].to_numpy()
+
+        return predicao

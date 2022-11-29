@@ -62,7 +62,8 @@ def process():
         displayClassificationInfos, 
         model_path,
         int(limInf),
-        int(limSup)
+        int(limSup),
+        seedTogether
     )
     return send_file(csv_file, 'text/csv'), status.HTTP_200_OK     
 

@@ -179,8 +179,8 @@ def createCutImgsFold(index):
     externo = cv2.imread(f"./images/background_remove/remove_background_externo{index}.jpg")
     interno = cv2.imread(f"./images/background_remove/remove_background_interno{index}.jpg")
 
-    externo = cv2.resize(externo, (300, 128))
-    interno = cv2.resize(interno, (300, 128))
+    externo = cv2.resize(externo, (300, 256))
+    interno = cv2.resize(interno, (300, 256))
 
     cv2.imwrite(f'./images/imagens_cortadas/images/semente-' + str(index+1) + '.jpg', np.hstack([externo, interno]))
 
@@ -214,7 +214,8 @@ def process_data(
     showClassification : bool, 
     modelPath : str, 
     limInfRed : int, 
-    limSupRed: int    
+    limSupRed: int,
+    imgJoined: bool    
 ):
     buffer_intern = base64.b64decode(intern)
     nparr = np.frombuffer(buffer_intern, np.uint8)
@@ -224,8 +225,8 @@ def process_data(
     nparr = np.frombuffer(buffer_extern, np.uint8)
     input_extern_image = cv2.imdecode(nparr, flags=1)
 
-    intern_seeds = cut(input_intern_image)
-    extern_seeds = cut(input_extern_image)
+    intern_seeds = cut(input_intern_image,imgJoined)
+    extern_seeds = cut(input_extern_image,imgJoined)
     
     for id, int_seed in enumerate(intern_seeds):
         cv2.imwrite(f'{pagination_folder}/Internal_seed_{id}.jpg', int_seed)
@@ -287,16 +288,17 @@ def process_data(
     print(f'Imagens processadas em {end-start} segundos')
 
 
+    rows.sort(key=lambda value : (0 if value[1] == 'Interno' else 1, value[0]))
     if showClassification:
         for i in range(len(extern_seeds)):
             createCutImgsFold(i)
 
         classification = classificate(modelPath)
-        classification_number = len(classification)
+        index = 0
         for i, row in enumerate(rows):
-            row.append(classification[i % classification_number])
-
-    rows.sort(key=lambda value : (0 if value[1] == 'Interno' else 1, value[0]))
+            row.append(classification[index])
+            if(((i+1) % 2) == 0):
+                index = index + 1
 
     with open('relatorio.csv', 'w', encoding='UTF8') as f:
         writer = csv.writer(f)

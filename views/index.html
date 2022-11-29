@@ -19,7 +19,7 @@
     <link href="./static/stylesheets/About.css" rel="stylesheet">
     <link href="./static/stylesheets/Team.css" rel="stylesheet">
     <link href="./static/stylesheets/Footer.css" rel="stylesheet">
-    <link href="./static/stylesheets/teste.css" rel="stylesheet">
+    <link href="./static/stylesheets/animation.css" rel="stylesheet">
     <link href="./static/stylesheets/Configuration.css" rel="stylesheet">
 
 </head>
@@ -123,8 +123,8 @@
                         <img class="imgIntIconContainer" id="previews" src="" width="40%">
                     </div>
                 </div>
-
             </div>
+            <label style="color: gray;" id="img-formats"></label>
             <section class="menu-config">
                 <h3>Configurações gerais</h3>
                 <div class="config-row">
@@ -152,11 +152,11 @@
                         </div>
                         <div class="mainCheckbox" id="menu-processing-sup-limit">
                             <label class="img-title">Limite superior do vermelho claro</label>
-                            <input type="number" id="processing-sup-limit" name="InputName" min="91" max="255" value="190">
+                            <input type="number" id="processing-sup-limit" name="InputName" min="91" step="1" max="255" value="190">
                         </div>
                         <div class="mainCheckbox" id="menu-processing-inf-limit">
                             <label class="img-title">Limite inferior do vermelho escuro</label>
-                            <input type="number" id="processing-inf-limit" name="InputName" min="91" max="255" value="168">
+                            <input type="number" id="processing-inf-limit" name="InputName" min="91" step="1" max="255" value="168">
                         </div>
                     </div>
                     <div class="config-itens">
@@ -164,6 +164,13 @@
                         <div class="mainCheckbox" id="menu-pre-processing-seeds-division">
                             <input type="checkbox" name="InputName" id="pre-processing-seeds-division">
                             <label class="img-title" for="pre-processing-seeds-division">Metade das imagens estão juntas</label>
+                        </div>
+                    </div>
+                    <div class="config-itens">
+                        <h4>Classificação das imagens</h4>
+                        <div class="mainCheckbox" id="menu-classification-seeds-yolo">
+                            <input type="checkbox" name="InputName" id="classification-seeds-yolo">
+                            <label class="img-title" for="classification-seeds-yolo">Classificar o embrião</label>
                         </div>
                     </div>
                 </div>
@@ -194,9 +201,8 @@
         <section id="sobre" class="about">
             <div class="about-text flex">
                 <h2><strong>Sobre a <span class="red-text">TetraSeed</span></strong></h2>
-                <p> Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
-                <br/>
-                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+                <p> O projeto surgiu com o intuito de automatizar e auxiliar a pesquisa feita pela docente do PROGRAMA DE PÓS-GRADUAÇÃO EM AGRONOMIA/FITOTECNIA, Lucimara Ribeiro Venial, no qual é realizado TESTE DE TRETAZÓLIO EM SEMENTES DE FEIJÃO CAUPI.</p>
+                <p>O projeto visa analizar as imagens de sementes dessa espécie e gerar os resultados de % de cor de vermelho carmim clara, % de cor de vermelho carmim escura, % de cor de branco, % de cor de branco leitoso, detecção de buracos nas sementes, e classificar elas de acordo com parâmetros estabelecidos.</p>
             </div>
             <div class="image-replace">
                 <img src="{{ url_for('static', filename='Assets/Logo/logo.svg') }}">

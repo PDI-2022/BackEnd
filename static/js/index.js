@@ -21,7 +21,8 @@ function displayApplication(){
 }
 
 window.onload = function () {
-
+    let imgFormatsView = document.querySelector("#img-formats")
+    imgFormatsView.innerHTML = `Formatos aceitos: ${validFormatsImgs.map(img=>" " + img)}`
     getPageBody()
     let displayWelcomeScreen = sessionStorage.getItem("displayWelcomeScreen")
 
@@ -59,15 +60,25 @@ async function sendToBack() {
     let displayClassificationInfos = document.querySelector("#InputClass").checked
     let generatePageWithImages = document.querySelector("#InputPagaWithImages").checked
     let chooseLimiar = document.querySelector("#processing-seeds-classification").checked
-
     let limSup = chooseLimiar ? document.querySelector("#processing-sup-limit").value : 190
     let limInf = chooseLimiar ? document.querySelector("#processing-inf-limit").value : 168
+
+    let classificationYolo = document.querySelector("#classification-seeds-yolo").checked
+
     if(limSup < 91 || limSup > 255){
         window.alert(`O valor do limite superior deve ser maior que 91 e menor que 255. Valor atual ${limSup} `)
         return
     }
+    else if(limSup.toString().includes(".") || limSup.toString().includes(",")){
+        window.alert(`O valor do limite superior deve ser inteiro ${limSup} `)
+        return
+    }
     if(limInf < 91 || limInf > 255){
         window.alert(`O valor do limite inferior deve ser maior que 91 e menor que 255. Valor atual ${limInf} `)
+        return
+    }
+    else if(limInf.toString().includes(".") || limInf.toString().includes(",")){
+        window.alert(`O valor do limite inferior deve ser inteiro ${limInf} `)
         return
     }
 
@@ -93,6 +104,7 @@ async function sendToBack() {
             "limSup":limSup,
             "limInf":limInf,
             "seedTogether":seedTogether,
+            "classificationYolo":classificationYolo,
             "internalImg":json["interna"],
             "externalImg":json["externa"]
         }
@@ -118,12 +130,13 @@ async function sendToBack() {
                     $('#modal-comp').modal('hide');
 
                     if(generatePageWithImages){
-                        window.location.href = "/seeds"
                         $('#modal-redirecting').modal({
                             show:true,
                             backdrop: 'static',
                             keyboard: false
                         })
+                        window.location.href = "/seeds"
+                        
                     }
                     else{
                         generateDownloadScreen()

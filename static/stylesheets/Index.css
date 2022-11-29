@@ -11,14 +11,7 @@ html{
     width: 100%;
 }
 
-.mainCheckbox{
-    display: flex;
-    flex-direction: row;
-    justify-content: center;
-    align-content: center;
-    align-items: baseline;
-    gap: 12px;
-}
+
 .disableOverflow{
     overflow-y: hidden;
 }
@@ -29,9 +22,7 @@ html{
     flex-direction: column;
     justify-content: space-between;
 }
-.mainCheckbox label{
-    font-size: 18px;
-}
+
 .IndexButtonsSend{
     display: flex;
     align-items: center;

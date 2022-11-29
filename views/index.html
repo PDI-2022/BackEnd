@@ -20,6 +20,7 @@
     <link href="./static/stylesheets/Team.css" rel="stylesheet">
     <link href="./static/stylesheets/Footer.css" rel="stylesheet">
     <link href="./static/stylesheets/teste.css" rel="stylesheet">
+    <link href="./static/stylesheets/Configuration.css" rel="stylesheet">
 
 </head>
 
@@ -124,17 +125,51 @@
                 </div>
 
             </div>
+            <section class="menu-config">
+                <h3>Configurações gerais</h3>
+                <div class="config-row">
+                    <div class="config-itens">
+                        <h4>Geração de arquivos</h4>
+                        <div class="mainCheckbox" id="menu-file-seeds-classification">
+                            <input type="checkbox" name="InputName" id="InputClass">
+                            <label class="img-title" for="InputClass">Classificar sementes</label>
+                        </div>
+                        <div class="mainCheckbox" id="menu-file-images-page">
+                            <input type="checkbox" name="InputName" id="InputPagaWithImages">
+                            <label class="img-title" for="InputPagaWithImages">Gerar relatório com imagens</label>
+                        </div>
+                    </div>
+                    <div class="config-itens">
+                        <h4>Processamento das imagens</h4>
+                        <div class="mainCheckbox" id="menu-processing-seeds-classification">
+                            <input type="checkbox" name="InputName" id="processing-seeds-classification">
+                            <label class="img-title tooltip-menu" for="processing-seeds-classification">
+                                Escolher limiar das sementes
+                                    <span class="tooltiptext-menu">
+                                        *Caso não selecionada, será usado o valor default de 190 para o limite superior do vermelho claro, e 168 para o limite inferior do vermelho escuro.
+                                    </span>                                
+                            </label>
+                        </div>
+                        <div class="mainCheckbox" id="menu-processing-sup-limit">
+                            <label class="img-title">Limite superior do vermelho claro</label>
+                            <input type="number" id="processing-sup-limit" name="InputName" min="91" max="255" value="190">
+                        </div>
+                        <div class="mainCheckbox" id="menu-processing-inf-limit">
+                            <label class="img-title">Limite inferior do vermelho escuro</label>
+                            <input type="number" id="processing-inf-limit" name="InputName" min="91" max="255" value="168">
+                        </div>
+                    </div>
+                    <div class="config-itens">
+                        <h4>Pre-processamento das imagens</h4>
+                        <div class="mainCheckbox" id="menu-pre-processing-seeds-division">
+                            <input type="checkbox" name="InputName" id="pre-processing-seeds-division">
+                            <label class="img-title" for="pre-processing-seeds-division">Metade das imagens estão juntas</label>
+                        </div>
+                    </div>
+                </div>
+                
+            </section>
 
-            <div class="mainCheckbox">
-                <input type="checkbox" name="InputName" id="InputClass">
-                <label class="img-title" for="InputClass">Processar as classes das sementes?</label>
-            </div>
-            <div class="mainCheckbox">
-                <input type="checkbox" name="InputName" id="InputPagaWithImages">
-                <label class="img-title" for="InputPagaWithImages">Gerar página com as imagens?</label>
-            </div>
-
-            <!-- /Necessário paginar/ -->
             <div class="modelHolder img-titles">
                 <h3>Selecione o modelo a ser utilizado</h3>
                 <select name="model">
@@ -143,7 +178,6 @@
                     {% endfor %}
                 </select>
             </div>
-            <!-- // -->
 
             <modal-loading></modal-loading>
             <modal-error></modal-error>
@@ -375,6 +409,7 @@
     </footer>
 </body>
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/css/bootstrap.min.css">
+<script src="{{ url_for('static', filename='js/menu-buttons.js') }}"></script>
 
 <script src="{{ url_for('static', filename='js/drag-n-drop.js') }}"></script>
 

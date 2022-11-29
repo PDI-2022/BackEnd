@@ -37,6 +37,12 @@ def process():
     create_folder(white_extract_folder)
     create_folder(pagination_folder)
 
+    chooseLimiar = data["chooseLimiar"]
+    limSup = data["limSup"]
+    limInf = data["limInf"]
+
+    seedTogether = data["seedTogether"]
+
     displayClassificationInfos = data['displayClassificationInfos']
     generatePageWithImages = data['generatePageWithImages']
 

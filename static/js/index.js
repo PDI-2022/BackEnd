@@ -22,7 +22,6 @@ function displayApplication(){
 
 window.onload = function () {
 
-    let modelHolder = document.querySelector(".modelHolder")
     getPageBody()
     let displayWelcomeScreen = sessionStorage.getItem("displayWelcomeScreen")
 
@@ -33,16 +32,20 @@ window.onload = function () {
         applicationBody = document.querySelector("body")
         applicationBody.setAttribute("class","disableOverflow")
     }
-    
-    let inputClass = document.querySelector("#InputClass")
-
     localStorage.clear();
+
+    // Esconde o select dos modelos
+    let modelHolder = document.querySelector(".modelHolder")
     modelHolder.style.display = "none"
+
+    // Esconde os inputs dos limiares de processamento
+    let processingSupLimit = document.querySelector("#menu-processing-sup-limit")
+    let processingInfLimit = document.querySelector("#menu-processing-inf-limit")
+    processingSupLimit.style.display = "none" 
+    processingInfLimit.style.display = "none"
     
-    inputClass.addEventListener("change",()=>{
-        let modelHolder = document.querySelector(".modelHolder")
-        modelHolder.style.display = inputClass.checked ? "flex" : "none" 
-    })
+    clickHandleModel()
+    clickHandleProcessing()
 }
 
 function returnHome(){
@@ -55,9 +58,26 @@ function dragOverHandler(event, input) {
 async function sendToBack() {
     let displayClassificationInfos = document.querySelector("#InputClass").checked
     let generatePageWithImages = document.querySelector("#InputPagaWithImages").checked
+    let chooseLimiar = document.querySelector("#processing-seeds-classification").checked
+
+    let limSup = chooseLimiar ? document.querySelector("#processing-sup-limit").value : 190
+    let limInf = chooseLimiar ? document.querySelector("#processing-inf-limit").value : 168
+    if(limSup < 91 || limSup > 255){
+        window.alert(`O valor do limite superior deve ser maior que 91 e menor que 255. Valor atual ${limSup} `)
+        return
+    }
+    if(limInf < 91 || limInf > 255){
+        window.alert(`O valor do limite inferior deve ser maior que 91 e menor que 255. Valor atual ${limInf} `)
+        return
+    }
+
+    let seedTogether= document.querySelector("#pre-processing-seeds-division").checked
+
     let modelId = displayClassificationInfos ? document.querySelector("select").value : -1
     var tableAux = 0
-
+    if(generatePageWithImages){
+        localStorage.setItem("hasClass","true")
+    }
     if(!!json["interna"] && !!json["externa"]){
         var req = new XMLHttpRequest();
         req.timeout = 10 * 60 * 1000;
@@ -69,6 +89,10 @@ async function sendToBack() {
             "displayClassificationInfos":displayClassificationInfos,
             "modelId":modelId,
             "generatePageWithImages":generatePageWithImages,
+            "chooseLimiar":chooseLimiar,
+            "limSup":limSup,
+            "limInf":limInf,
+            "seedTogether":seedTogether,
             "internalImg":json["interna"],
             "externalImg":json["externa"]
         }

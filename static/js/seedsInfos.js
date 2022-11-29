@@ -132,7 +132,7 @@ function fillTable(externSeeds,internSeeds,arrayCsv){
     const finalValue = ((state.perPage*state.page)+1)
 
     let hasClass = localStorage.getItem("hasClass")
-    let maxNumberOffColumns = hasClass == "true" ? 8 : 7
+    let maxNumberOffColumns = hasClass == "true" ? 9 : 8
     
 
     let imgsContainer = []

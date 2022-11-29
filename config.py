@@ -5,9 +5,14 @@ from flask.cli import with_appcontext
 import click 
 from api.constants.folders import models_folder
 import os
+import sys
 
 template_dir = os.path.abspath('./views')
 static_dir = os.path.abspath('./static')
+
+if getattr(sys, 'frozen', False):
+    template_dir = os.path.join(sys._MEIPASS, 'views')
+    static_dir = os.path.join(sys._MEIPASS, 'static')
 
 app = Flask(__name__, template_folder=template_dir, static_folder=static_dir)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///app.db'

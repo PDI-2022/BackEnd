@@ -77,7 +77,7 @@ function generateTable(externSeeds,internSeeds) {
 
 async function changePage(action){
     let maxItem = arrayCsv.length - 2
-    state.totalPages = maxItem / (2*state.perPage)
+    state.totalPages = Math.ceil(maxItem / (2*state.perPage))
 
     switch (action){
         case 'inc':

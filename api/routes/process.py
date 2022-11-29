@@ -41,9 +41,6 @@ def process():
     limSup = data["limSup"]
     limInf = data["limInf"]
 
-    print(f'Limite superior do vermelho claro {limSup}')
-    print(f'Limite inferior do vermelho escuro {limInf}')
-
     seedTogether = data["seedTogether"]
 
     displayClassificationInfos = data['displayClassificationInfos']

@@ -63,8 +63,8 @@ async function sendToBack() {
     let limSup = chooseLimiar ? document.querySelector("#processing-sup-limit").value : 190
     let limInf = chooseLimiar ? document.querySelector("#processing-inf-limit").value : 168
 
-    let classificationYolo = document.querySelector("#classification-seeds-yolo").checked
-
+    // let classificationYolo = document.querySelector("#classification-seeds-yolo").checked
+    let classificationYolo = true
     if(limSup < 91 || limSup > 255){
         window.alert(`O valor do limite superior deve ser maior que 91 e menor que 255. Valor atual ${limSup} `)
         return
@@ -86,8 +86,8 @@ async function sendToBack() {
 
     let modelId = displayClassificationInfos ? document.querySelector("select").value : -1
     var tableAux = 0
-    if(generatePageWithImages){
-        localStorage.setItem("hasClass","true")
+    if(displayClassificationInfos){
+        localStorage.setItem("hasClass",displayClassificationInfos)
     }
     if(!!json["interna"] && !!json["externa"]){
         var req = new XMLHttpRequest();

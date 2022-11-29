@@ -1,3 +1,5 @@
+import os
+import shutil
 import cv2
 import numpy as np
 import base64
@@ -84,8 +86,6 @@ def remove_background(input_image, id=0):
 
 def extract_dark_red_percentage(input_image, lim_inf_red, id=0):
     hsv = cv2.cvtColor(input_image, cv2.COLOR_BGR2HSV)
-
-    print(f'Limite inferior do vermelho escuro: {lim_inf_red}')
     
     first_lower = np.array([161, lim_inf_red, 80])
     first_upper = np.array([180 , 255, 240])   
@@ -108,8 +108,6 @@ def extract_dark_red_percentage(input_image, lim_inf_red, id=0):
 
 def extract_light_red_percentage(input_image, lim_sup_red, id=0):
     hsv = cv2.cvtColor(input_image, cv2.COLOR_BGR2HSV)
-
-    print(f'Limite superior do vermelho claro: {lim_sup_red}')
 
     first_lower = np.array([161, 90, 80])
     first_upper = np.array([180 , lim_sup_red, 240])   
@@ -228,6 +226,9 @@ def process_data(
     intern_seeds = cut(input_intern_image,imgJoined)
     extern_seeds = cut(input_extern_image,imgJoined)
     
+    if os.path.exists(pagination_folder):
+        shutil.rmtree(pagination_folder)
+    os.makedirs(pagination_folder)
     for id, int_seed in enumerate(intern_seeds):
         cv2.imwrite(f'{pagination_folder}/Internal_seed_{id}.jpg', int_seed)
 

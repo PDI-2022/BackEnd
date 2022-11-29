@@ -132,7 +132,12 @@
                         <h4>Geração de arquivos</h4>
                         <div class="mainCheckbox" id="menu-file-seeds-classification">
                             <input type="checkbox" name="InputName" id="InputClass">
-                            <label class="img-title" for="InputClass">Classificar sementes</label>
+                            <label class="img-title tooltip-menu" for="InputClass">
+                                Classificar sementes
+                                <span class="tooltiptext-menu">
+                                    *Será gerada a classe da semente no csv
+                                </span>  
+                            </label>
                         </div>
                         <div class="mainCheckbox" id="menu-file-images-page">
                             <input type="checkbox" name="InputName" id="InputPagaWithImages">
@@ -163,16 +168,21 @@
                         <h4>Pre-processamento das imagens</h4>
                         <div class="mainCheckbox" id="menu-pre-processing-seeds-division">
                             <input type="checkbox" name="InputName" id="pre-processing-seeds-division">
-                            <label class="img-title" for="pre-processing-seeds-division">Metade das imagens estão juntas</label>
+                            <label class="img-title tooltip-menu" for="pre-processing-seeds-division">
+                                Metade das imagens estão juntas
+                                <span class="tooltiptext-menu">
+                                    *Resolução mínima de 300dpi
+                                </span>  
+                            </label>
                         </div>
                     </div>
-                    <div class="config-itens">
+                    <!-- <div class="config-itens">
                         <h4>Classificação das imagens</h4>
                         <div class="mainCheckbox" id="menu-classification-seeds-yolo">
                             <input type="checkbox" name="InputName" id="classification-seeds-yolo">
                             <label class="img-title" for="classification-seeds-yolo">Classificar o embrião</label>
                         </div>
-                    </div>
+                    </div> -->
                 </div>
                 
             </section>

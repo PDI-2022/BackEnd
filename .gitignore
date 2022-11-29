@@ -10,5 +10,4 @@ __pycache__/
 __pycache__
 build
 dist
-app.spec
-tetraseed.spec
+*.spec

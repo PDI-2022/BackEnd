@@ -182,7 +182,28 @@ class ModalError extends HTMLElement {
     }
 }
 
+class PaginationComponent extends HTMLElement {
+    connectedCallback() {
+        var page = this.hasAttribute("page")? this.getAttribute("page"): "-";
+        this.innerHTML = ` 
+        <section id="paginate">
+            <div class="controls">
+                <div class="first" onclick="changePage('first')">&lt;&lt;</div>
+                <div class="prev" onclick="changePage('dec')">&lt;</div>
+                <div>
+                    <div class="numbers">
+                        ${page}
+                    </div>
+                </div>
+                <div class="next" onclick="changePage('inc')">&gt;</div>
+                <div class="last" onclick="changePage('last')">&gt;&gt;</div>
+            </div>
+        </section>
+      `
+    }
+}
 
+customElements.define('custom-pagination',PaginationComponent);
 customElements.define('main-header', Header);
 customElements.define('main-footer', Footer);
 customElements.define('modal-loading', ModalLoading);

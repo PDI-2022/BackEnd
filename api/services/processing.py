@@ -8,6 +8,7 @@ from skimage import measure
 from shapely.geometry import Polygon
 import concurrent.futures
 import time
+from api.constants.folders import pagination_folder
 
 def count_holes(image) -> int:
     contours = measure.find_contours(image, 200)
@@ -213,6 +214,12 @@ def process_data(intern : str, extern : str, showImgs : bool, showClassification
 
     intern_seeds = cut(input_intern_image)
     extern_seeds = cut(input_extern_image)
+    
+    for id, int_seed in enumerate(intern_seeds):
+        cv2.imwrite(f'{pagination_folder}/Internal_seed_{id}.jpg', int_seed)
+
+    for id, ext_seed in enumerate(extern_seeds):
+        cv2.imwrite(f'{pagination_folder}/External_seed_{id}.jpg', ext_seed)
 
     header = [
         'Semente', 

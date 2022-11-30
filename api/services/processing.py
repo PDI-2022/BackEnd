@@ -292,6 +292,7 @@ def process_data(
     rows.sort(key=lambda value : (0 if value[1] == 'Interno' else 1, value[0]))
     if showClassification:
         for i in range(len(extern_seeds)):
+            print(i)
             createCutImgsFold(i)
 
         classification = classificate(modelPath)
@@ -301,7 +302,7 @@ def process_data(
             if(((i+1) % 2) == 0):
                 index = index + 1
 
-    with open('relatorio.csv', 'w', encoding='UTF8') as f:
+    with open('relatorio.csv', 'w', encoding='UTF8', newline='') as f:
         writer = csv.writer(f)
         writer.writerow(header)
         for row in rows:

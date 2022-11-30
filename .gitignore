@@ -1,4 +1,6 @@
-venv/lib
+.env
+venv
+env
 relatorio.csv
 images
 models
@@ -6,3 +8,6 @@ models
 __pycache__/
 **/__pycache__/
 __pycache__
+build
+dist
+*.spec

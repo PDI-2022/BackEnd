@@ -1,7 +1,7 @@
 from flask import jsonify, request, send_file, Blueprint
 from flask_api import status
 from api.services.storage import save_base64_image, create_folder
-from api.constants.folders import images_folder, red_extract_folder, background_removed_folder, white_extract_folder, pagination_folder
+from api.constants.folders import images_folder, red_extract_folder, background_removed_folder, white_extract_folder, pagination_folder, imagens_cortadas_folder
 from api.services.processing import process_data
 from config import db
 from db.models import Model
@@ -36,6 +36,7 @@ def process():
     create_folder(background_removed_folder)
     create_folder(white_extract_folder)
     create_folder(pagination_folder)
+    create_folder(imagens_cortadas_folder)
 
     chooseLimiar = data["chooseLimiar"]
     limSup = data["limSup"]

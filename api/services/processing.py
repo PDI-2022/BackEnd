@@ -292,6 +292,7 @@ def process_data(
     rows.sort(key=lambda value : (0 if value[1] == 'Interno' else 1, value[0]))
     if showClassification:
         for i in range(len(extern_seeds)):
+            print(i)
             createCutImgsFold(i)
 
         classification = classificate(modelPath)

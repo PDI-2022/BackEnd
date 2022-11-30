@@ -302,7 +302,7 @@ def process_data(
             if(((i+1) % 2) == 0):
                 index = index + 1
 
-    with open('relatorio.csv', 'w', encoding='UTF8') as f:
+    with open('relatorio.csv', 'w', encoding='UTF8', newline='') as f:
         writer = csv.writer(f)
         writer.writerow(header)
         for row in rows:

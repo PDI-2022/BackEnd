@@ -5,12 +5,23 @@ let body = {
 }
 var applicationBody
 
-function changeLimiarVermelho(input){
-    var red = document.querySelector(`#processing-${input}-limit`);
-    var divCor = document.querySelector(`#cor-${input}-limit`);
-    var divNumero = document.querySelector(`#numero-${input}-limit`);
-    divCor.style.background = `rgb(${red.value}, 0, 0)`;
-    divNumero.textContent = red.value;
+function changeLimiarVermelho(input, type){
+
+    if(type == 'range'){
+        var red = document.querySelector(`#processing-${input}-limit`);
+        var divCor = document.querySelector(`#cor-${input}-limit`);
+        divCor.style.background = `rgb(${red.value}, 0, 0)`;
+        var number = document.querySelector(`#numero-${input}-limit`);
+        number.value = red.value;
+    }
+    else if(type == "number"){
+        var red = document.querySelector(`#numero-${input}-limit`);
+        var divCor = document.querySelector(`#cor-${input}-limit`);
+        divCor.style.background = `rgb(${red.value}, 0, 0)`;
+        var range = document.querySelector(`#processing-${input}-limit`);
+        range.value = red.value
+    }
+
 }
 
 function getPageBody(){
@@ -48,6 +59,8 @@ window.onload = function () {
     modelHolder.style.display = "none"
 
     // Esconde os inputs dos limiares de processamento
+    changeLimiarVermelho('inf')
+    changeLimiarVermelho('sup')
     let processingSupLimit = document.querySelector("#menu-processing-sup-limit")
     let processingInfLimit = document.querySelector("#menu-processing-inf-limit")
     processingSupLimit.style.display = "none" 

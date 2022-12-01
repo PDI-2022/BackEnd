@@ -20,6 +20,16 @@
     border-radius: 30px;
 }
 
+#cor-sup-limit{
+    background: rgb(190, 0,0);
+}
+#cor-inf-limit{
+    background: rgb(168, 0,0);
+}
+.barra-cor{
+    border: 1px solid #424242;
+    border-radius: 5px;
+}
 .container-drag {
     display: flex;
     flex-direction: column;

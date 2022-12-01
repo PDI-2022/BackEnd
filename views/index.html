@@ -141,11 +141,29 @@
                         </div>
                         <div class="mainCheckbox" id="menu-processing-sup-limit">
                             <label class="img-title">Limite superior do vermelho claro</label>
-                            <input type="number" id="processing-sup-limit" name="InputName" min="91" step="1" max="255" value="190">
+                            <div class="row">
+                                <div class="col-7">
+                                    <input type="range" id="processing-sup-limit" name="InputName" min="91" max="255" step="1" value ="190" onchange="changeLimiarVermelho('sup','range')">
+                                </div>
+                                <div class="col-2">
+                                    <input  style="width: 52px;" type="number" min="91" max="255" step="1" value ="190" id="numero-sup-limit" onchange="changeLimiarVermelho('sup','number')">
+                                </div>
+                                <div class="col-1 barra-cor" id="cor-sup-limit" style="margin-left: 24px;">
+                                </div>
+                            </div>
                         </div>
                         <div class="mainCheckbox" id="menu-processing-inf-limit">
                             <label class="img-title">Limite inferior do vermelho escuro</label>
-                            <input type="number" id="processing-inf-limit" name="InputName" min="91" step="1" max="255" value="168">
+                            <div class="row">
+                                <div class="col-7">
+                                    <input type="range" id="processing-inf-limit" name="InputName" min="91" max="255" step="1" value ="168" onchange="changeLimiarVermelho('inf','range')">
+                                </div>
+                                <div class="col-2">
+                                    <input style="width: 52px;" type="number" min="91" max="255" step="1" value ="168" id="numero-inf-limit" onchange="changeLimiarVermelho('inf','number')">
+                                </div>
+                                <div class="col-1 barra-cor" id="cor-inf-limit" style="margin-left: 24px;">
+                                </div>
+                            </div>
                         </div>
                     </div>
                     <div class="config-itens">

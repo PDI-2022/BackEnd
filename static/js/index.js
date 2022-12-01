@@ -5,6 +5,14 @@ let body = {
 }
 var applicationBody
 
+function changeLimiarVermelho(input){
+    var red = document.querySelector(`#processing-${input}-limit`);
+    var divCor = document.querySelector(`#cor-${input}-limit`);
+    var divNumero = document.querySelector(`#numero-${input}-limit`);
+    divCor.style.background = `rgb(${red.value}, 0, 0)`;
+    divNumero.textContent = red.value;
+}
+
 function getPageBody(){
     body.main = document.querySelector("main")
     body.footer = document.querySelector("footer")

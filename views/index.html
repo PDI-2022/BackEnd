@@ -157,11 +157,31 @@
                         </div>
                         <div class="mainCheckbox" id="menu-processing-sup-limit">
                             <label class="img-title">Limite superior do vermelho claro</label>
-                            <input type="number" id="processing-sup-limit" name="InputName" min="91" step="1" max="255" value="190">
+                            <div class="row">
+                                <div class="col-7">
+                                    <input type="range" id="processing-sup-limit" name="InputName" min="91" max="255" step="1" value ="190" onchange="changeLimiarVermelho('sup')">
+                                </div>
+                                <div class="col-2">
+                                    <span id="numero-sup-limit"></span>
+                                </div>
+                                <div class="col-1 barra-cor" id="cor-sup-limit">
+                                </div>
+                            </div>
+                            <!-- <input type="number" id="processing-sup-limit" name="InputName" min="91" step="1" max="255" value="190"> -->
                         </div>
                         <div class="mainCheckbox" id="menu-processing-inf-limit">
                             <label class="img-title">Limite inferior do vermelho escuro</label>
-                            <input type="number" id="processing-inf-limit" name="InputName" min="91" step="1" max="255" value="168">
+                            <div class="row">
+                                <div class="col-7">
+                                    <input type="range" id="processing-inf-limit" name="InputName" min="91" max="255" step="1" value ="168" onchange="changeLimiarVermelho('inf')">
+                                </div>
+                                <div class="col-2">
+                                    <span id="numero-inf-limit"></span>
+                                </div>
+                                <div class="col-1 barra-cor" id="cor-inf-limit">
+                                </div>
+                            </div>
+                            <!-- <input type="number" id="processing-inf-limit" name="InputName" min="91" step="1" max="255" value="168"> -->
                         </div>
                     </div>
                     <div class="config-itens">

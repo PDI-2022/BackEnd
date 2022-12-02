@@ -6,7 +6,8 @@ const validFormats = [
     ".7zip",
 ]
 
-window.onload = ()=>{
+window.onload = async function () {
+    await auth()
     handleSendButton()
 }
 
@@ -77,6 +78,7 @@ function validateFormat(name){
 }
 
 async function sendModel(){
+    await auth()
     let button = document.querySelector("#sendModelBtn");
     button.disabled = true
     $('#modal-comp').modal({

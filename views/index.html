@@ -25,22 +25,6 @@
 </head>
 
 <body style="background-color: #FAFAFA">
-    
-    <section id="animation">
-        <div class="animationHolder">
-            <div class="main-text-animation">
-                <h1>TetraSeed</h1>
-            </div>
-            <div class="secondary-text-animation">
-                <h2>Sua Ferramenta para classificar sementes</h2>
-            </div>
-            <div class="button-text-animation">
-                <div id="botao" class="mt-5 defaultButton">
-                    <button type="button" class="btn btn-danger btn-lg white" onclick="displayApplication()">Iniciar</button>
-                </div>
-            </div>
-        </div>
-    </section>
 
     <header>
         <nav class="navbar fixed-top navbar-expand-lg navbar-light logo">
@@ -71,6 +55,9 @@
                         </li>
                         <li class="nav-item">
                             <a class="nav-link itensNavLink" href="/uploadModel">Upload de modelo</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link itensNavLink" href="/new-user">Novo Usuário</a>
                         </li>
                     </ul>
                 </div>
@@ -446,8 +433,8 @@
 <script src="{{ url_for('static', filename='js/menu-buttons.js') }}"></script>
 
 <script src="{{ url_for('static', filename='js/drag-n-drop.js') }}"></script>
-
 <script src="{{ url_for('static', filename='js/index.js') }}"></script>
+<script src="{{ url_for('static', filename='js/auth.js') }}"></script>
 <script src="{{ url_for('static', filename='js/components/index.js') }}"></script>
 
 <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"

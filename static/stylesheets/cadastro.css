@@ -1,0 +1,78 @@
+@import url(https://fonts.googleapis.com/css?family=Roboto:400,700,300);
+
+:root{
+    --darkRed: #821717
+}
+body{
+    width: 100vw;
+    height: 100vh;
+}
+section,main{
+    height: 100%;
+}
+.cadastroContainer{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+    padding: 36px 12px;
+}
+.cadastroLogoName{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    color: var(--darkRed);
+    font-weight: 700;
+
+    font-size: 48px;
+    line-height: 59px;
+    margin-bottom: 48px;
+}
+.cadastroLogoName img{
+    max-width: 50px;
+    max-height: 50px;
+    margin-right: 12px;
+}
+.cadastroInfosContainer{
+    height: 100%;
+    width: 100%;
+    max-height: 454px;
+    max-width: 454px;
+    background-color: #ffffff;
+    border-radius: 12px;
+    display: flex;
+    flex-direction: column;
+    margin: 12px;
+}
+.cadastroInfosContainer h3{
+    text-align: center;
+    margin-top: 24px;
+}
+.cadastroInfosRow{
+    display: flex;
+    flex-direction: column;
+    padding: 32px;
+}
+.cadastroInfosRow label{
+    font-style: normal;
+    font-weight: 400;
+    font-size: 24px;
+    line-height: 29px;
+    color: #000000;
+}
+.cadastroInfosRow input{
+    border: 1px solid #171782;
+    border-radius: 12px;
+    padding: 4px;
+    margin-bottom: 12px;
+}
+.buttonRow{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.buttonRow button{
+    min-width: 200px;
+}

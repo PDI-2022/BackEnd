@@ -6,7 +6,7 @@ const validFormatsImgs = [
     ".jpeg",
     ".jpg",
     ".png",
-    ".vsg"
+    ".svg"
 ]
 function dropHandler(event, input) {
     try {

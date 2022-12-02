@@ -8,7 +8,7 @@ from db.models import Model
 model_bp = Blueprint("model", __name__, url_prefix="/api/v1/models")
 
 @model_bp.route("", methods=['POST'])
-def register():
+def create():
     content_type = request.headers.get('Content-Type')
     if ('multipart/form-data' not in content_type):
         return 'Content-Type not supported', status.HTTP_415_UNSUPPORTED_MEDIA_TYPE

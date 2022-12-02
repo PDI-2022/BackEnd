@@ -16,7 +16,7 @@
     <link href="./static/stylesheets/Index.css" rel="stylesheet">
     <link href="./static/stylesheets/animation.css" rel="stylesheet">
     <link href="./static/stylesheets/Configuration.css" rel="stylesheet">
-    <link href="./static/stylesheets/Login.css" rel="stylesheet">
+    <link href="./static/stylesheets/login.css" rel="stylesheet">
     <link href="./static/stylesheets/Header.css" rel="stylesheet">
 
 </head>
@@ -47,7 +47,7 @@
                         </div>
                         <div class="buttonRow" style="flex-direction: row;gap: 12px;">
                             <div id="NewPassword" class="defaultButton">
-                                <button id="botaoNewPassword" type="button" class="btn btn-danger btn-lg botaoEnviar" onclick="login()">Enviar</button>
+                                <button id="botaoNewPassword" type="button" class="btn btn-danger btn-lg botaoEnviar" onclick="sendData()">Enviar</button>
                             </div>
                             <div id="NewPassword" class="defaultButton">
                                 <button id="botaoNewPassword" type="button" class="btn btn-danger btn-lg botaoEnviar" onclick="cancel()">Cancelar</button>
@@ -62,7 +62,7 @@
        
 </body>
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/css/bootstrap.min.css">
-<script src="{{ url_for('static', filename='js/NewPassword.js') }}"></script>
+<script src="{{ url_for('static', filename='js/newPassword.js') }}"></script>
 
 <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
     integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"

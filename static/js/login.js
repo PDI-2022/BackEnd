@@ -9,47 +9,57 @@ async function login(){
     let url = "http://localhost:5000/api/v1/login"
     let response = await fetch(url,{
         method: "POST",
+        headers: {
+            'Content-Type': 'application/json'
+        },
         body:body
-    }).then(response=>{
-        if(response.status != 200)
-            window.alert("Usuário e/ou senha inválidos")
     }).catch(err=>{
         console.error(err)
         window.alert("Usuário e/ou senha inválidos")
     })
-    let json = await response.json()
-    if(!!json){
-        sessionStorage.setItem("token",json)
-    }
-    else{
+    if(response.status != 200)
         window.alert("Usuário e/ou senha inválidos")
+    else{
+        let json = await response.json()
+        console.log(json)
+        if(!!json){
+            sessionStorage.setItem("token",json.token)
+            window.location.href = "/"
+        }
+        else{
+            window.alert("Usuário e/ou senha inválidos")
+        }
     }
+
 }
 
 function formatBody(){
-    let user = document.querySelector("#loginUserInput")
-    let password = document.querySelector("#loginPasswordInput")
+    let user = document.querySelector("#loginUserInput").value
+    let password = document.querySelector("#loginPasswordInput").value
     return JSON.stringify({
         "user":user,
         "password":password
     })
 }
 
-async function auth(){
-    let url = "http://localhost:5000/api/v1/authenticate"
-    let token = sessionStorage.getItem("token")
-    let response = await fetch(url,{
-        method: "POST",
-        body:token
-    }).then(response=>{
-        if(response.status == 401)
-            window.location.href = "login"
-    }).catch(err=>{
-        window.location.href = "login"
-    })
-    let json = await response.json()
-    if(json == "autorizado")
-        return
-    else
-        window.location.href = "login"
-}
+// async function auth(){
+//     let url = "http://localhost:5000/api/v1/authenticate"
+//     let token = sessionStorage.getItem("token")
+//     if(!!token){
+//         let response = await fetch(url,{
+//             method: "POST",
+//             headers: {
+//                 'Content-Type': 'application/json'
+//             },
+//             body:JSON.stringify({"token":token})
+//         }).then(response=>{
+//             if(response.status == 401)
+//                 window.location.href = "login"
+//         }).catch(err=>{
+//             window.location.href = "login"
+//         })
+//     }
+//     else{
+//         window.location.href = "login"
+//     }
+// }

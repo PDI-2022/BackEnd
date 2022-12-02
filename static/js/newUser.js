@@ -1,3 +1,7 @@
+window.onload = async function () {
+    await auth()
+}
+
 const localGet = () => JSON.parse(localStorage.getItem('dados_usuario')) ?? []
 
 const localSet = async (dadosUsuario) => localStorage.setItem("dados_usuario", JSON.stringify(dadosUsuario))
@@ -27,20 +31,24 @@ const validFields = () => {
 }
 
 const saveUser = async () => {
-    let url = "http://localhost:5000//api/v1/newUser"
+    await auth()
+    let url = "http://localhost:5000/api/v1/register"
     if(validFields()){
         const usuario = {
-            email: document.getElementById('email').value,
-            senha: document.getElementById('senha').value
+            user: document.getElementById('email').value,
+            password: document.getElementById('senha').value
         }
         let response = await fetch(url,{
             method:"POST",
+            headers: {
+                'Content-Type': 'application/json'
+            },
             body:JSON.stringify(usuario)
         }).then(response=>{
-            if(response.status != 200)
+            if(response.status != 201)
                 window.alert("Ops, alguma coisa deu errado!")
             else{
-                window.location.href = ""
+                window.location.href = "/"
             }
         })
         let responseJson = await response.json()
@@ -50,3 +58,6 @@ const saveUser = async () => {
 
 //evento ao clicar em salvar
 document.getElementById('salvar').addEventListener('click', saveUser)
+document.getElementById('cancelar').addEventListener('click', ()=>{
+    window.location.href = "/"
+})

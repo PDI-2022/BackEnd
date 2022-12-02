@@ -30,7 +30,8 @@ function getPageBody(){
     body.header = document.querySelector("header")
 }
 
-window.onload = function () {
+window.onload = async function () {
+    await auth()
     let imgFormatsView = document.querySelector("#img-formats")
     imgFormatsView.innerHTML = `Formatos aceitos: ${validFormatsImgs.map(img=>" " + img)}`
     getPageBody()
@@ -61,6 +62,7 @@ function dragOverHandler(event, input) {
 }
 
 async function sendToBack() {
+    await auth()
     let displayClassificationInfos = document.querySelector("#InputClass").checked
     let generatePageWithImages = document.querySelector("#InputPagaWithImages").checked
     let chooseLimiar = document.querySelector("#processing-seeds-classification").checked

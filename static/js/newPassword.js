@@ -5,34 +5,41 @@ window.onload = function(){
 function handleInputAndButton(){
     let buttonSend = document.querySelector("#botaoNewPassword")
     buttonSend.disabled = true
+
     let newPassword = document.querySelector("#loginNewPasswordInput")
     let passwordConfirm = document.querySelector("#loginNewPasswordConfirmInput")
+    let email = document.querySelector("#loginUserInput")
+
     passwordConfirm.addEventListener("keyup",()=>{
-        let buttonSend = document.querySelector("#botaoNewPassword")
-        let newPassword1 = document.querySelector("#loginNewPasswordInput").value
-        let passwordConfirm1 = document.querySelector("#loginNewPasswordConfirmInput").value
-        if(!!newPassword1 && !!passwordConfirm1){
-            buttonSend.disabled = (newPassword1 != passwordConfirm1)
-        }
+        buttonSend.disabled =  validateButton()
     })
     newPassword.addEventListener("keyup",()=>{
-        let buttonSend = document.querySelector("#botaoNewPassword")
-        let newPassword1 = document.querySelector("#loginNewPasswordInput").value
-        let passwordConfirm1 = document.querySelector("#loginNewPasswordConfirmInput").value
-
-        if(!!newPassword && !!passwordConfirm){
-            buttonSend.disabled = (newPassword1 != passwordConfirm1)
-        }
+        buttonSend.disabled =  validateButton()
     })
-    buttonSend.setAttribute("onclick","sendData")
+    email.addEventListener("keyup",()=>{
+        buttonSend.disabled =  validateButton()
+    })
+    buttonSend.setAttribute("onclick","sendData()")
 }
+function validateButton(){
+    let email = document.querySelector("#loginUserInput").value
+    let newPassword = document.querySelector("#loginNewPasswordInput").value
+    let passwordConfirm = document.querySelector("#loginNewPasswordConfirmInput").value
+    let diferentPassword = (newPassword != passwordConfirm) 
+    let emptyInput = (!newPassword || !passwordConfirm || !email)
+    return (diferentPassword || emptyInput)
+}
+
 async function sendData(){
-    let url = "http://localhost:5000/api/v1/newPassword"
+    let url = "http://localhost:5000/api/v1/forgot-password"
     body = formatBody()
     let buttonSend = document.querySelector("#botaoNewPassword").disabled
     if(!buttonSend){
         await fetch(url,{
             method:"POST",
+            headers: {
+                'Content-Type': 'application/json'
+            },
             body:body
         }).then(response=>{
             if(response.status != 200)
@@ -45,10 +52,13 @@ async function sendData(){
 } 
 
 function formatBody(){
-    let user = document.querySelector("#loginUserInput")
-    let password = document.querySelector("#loginNewPasswordInput")
+    let user = document.querySelector("#loginUserInput").value
+    let password = document.querySelector("#loginNewPasswordInput").value
     return JSON.stringify({
         "user":user,
         "password":password
     })
+}
+function cancel(){
+    window.location.href="/login"
 }

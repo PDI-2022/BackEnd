@@ -4,6 +4,7 @@ import cv2
 import numpy as np
 import base64
 import csv
+from api.services.detect import deteccao
 from api.services.grid_cut import cortar_malha as cut
 from api.services.classification import classificate
 from skimage import measure
@@ -287,7 +288,10 @@ def process_data(
     end = time.perf_counter()
 
     print(f'Imagens processadas em {end-start} segundos')
-
+    for i in range(len(extern_seeds)):
+        path=f"./images/background_remove/remove_background_interno{i}.jpg"
+        img = cv2.imread(path)
+        deteccao(img,i)
 
     rows.sort(key=lambda value : (0 if value[1] == 'Interno' else 1, value[0]))
     if showClassification:

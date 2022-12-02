@@ -1,14 +1,11 @@
 import sys
 import cv2
 import traceback
-import torch
-
-embriao_model = torch.hub.load('ultralytics/yolov5', 'custom', path="models_embriao/V5/bestM.pt")
-
-device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
 
-def embriao_detect(frame):
+
+
+def embriao_detect(embriao_model, frame):
     rets = []
     res = embriao_model(frame)
 

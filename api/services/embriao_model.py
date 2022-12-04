@@ -2,9 +2,6 @@ import sys
 import cv2
 import traceback
 
-
-
-
 def embriao_detect(embriao_model, frame):
     rets = []
     res = embriao_model(frame)

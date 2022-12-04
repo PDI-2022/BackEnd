@@ -296,12 +296,13 @@ def process_data(
         deteccao(embriao_model, img,i)
 
     rows.sort(key=lambda value : (0 if value[1] == 'Interno' else 1, value[0]))
+    classes = 7
     if showClassification:
         for i in range(len(extern_seeds)):
             print(i)
             createCutImgsFold(i)
 
-        classification = classificate(model, modelPath)
+        classification = classificate(model, modelPath, classes)
         index = 0
         for i, row in enumerate(rows):
             row.append(classification[index])

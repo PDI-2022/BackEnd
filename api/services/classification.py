@@ -24,7 +24,7 @@ def model():
     predictions = Dense(7, activation='softmax')(x)
     model = Model(inputs=base_model.input, outputs=predictions)
 
-def classificate(model ,model_path : str):
+def classificate(model ,model_path : str, classes):
 
         create_folder(test_data_dir)
 
@@ -57,7 +57,7 @@ def classificate(model ,model_path : str):
 
         predictions = model.predict(test_generator)
 
-        y_pred = np.argmax(predictions, axis=1) + 1
+        y_pred = (np.floor((np.argmax(predictions, axis=1) * classes/7)) + 1)
 
 
         list_csv = []

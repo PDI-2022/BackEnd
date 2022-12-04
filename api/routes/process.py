@@ -17,6 +17,7 @@ embriao_model = torch.hub.load('ultralytics/yolov5', 'custom', path="models_embr
 
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 model = model()
+
 def extract_data_and_save(data : any, identifier : str) -> str:
     payload = data[identifier]
 

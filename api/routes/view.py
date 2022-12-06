@@ -21,3 +21,15 @@ def seeds():
 @app.route("/uploadModel", methods=['GET'])
 def model():
     return render_template("uploadModel.html")
+
+@app.route("/login", methods=['GET'])
+def login():
+    return render_template("login.html")
+
+@app.route("/new-user", methods=['GET'])
+def novoUsuario():
+    return render_template("novoUsuario.html")
+
+@app.route("/forgot-password", methods=['GET'])
+def novaSenha():
+    return render_template("novaSenha.html")

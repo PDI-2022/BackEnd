@@ -1,0 +1,77 @@
+<!doctype html>
+<html lang="pt">
+
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css"
+        integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <link href=' http://fonts.googleapis.com/css?family=Droid+Sans' rel='stylesheet' type='text/css'>
+
+    <title>TetraSeed - Ferramenta de Classificação de sementes</title>
+    <link rel="icon" type="image/x-icon" href="./static/Assets/Logo/logo.svg">
+    <link href="./static/stylesheets/Index.css" rel="stylesheet">
+    <link href="./static/stylesheets/animation.css" rel="stylesheet">
+    <link href="./static/stylesheets/Configuration.css" rel="stylesheet">
+    <link href="./static/stylesheets/login.css" rel="stylesheet">
+    <link href="./static/stylesheets/Header.css" rel="stylesheet">
+
+</head>
+
+<body style="background-color: #FAFAFA">
+    
+    <body style="background-color: #FAFAFA">
+    
+        <main>
+            <section>
+                <div class="loginContainer">
+                    <div class="loginLogoName">
+                        <img src="{{ url_for('static', filename='Assets/Logo/logo-brown.svg') }}">
+                        <strong>Tetra</strong><span class="red-text">Seed</span>            
+                    </div>
+                    <div class="loginSubText">
+                        <h3>Ferramenta de Classificação de Sementes</h3>
+                    </div>
+                    <div class="LoginInfosContainer">
+                        <h3>Nova Senha</h3>
+                        <div class="LoginInfosRow">
+                            <label for="loginUserInput">Usuário</label>
+                            <input type="email" name="loginUserInput" id="loginUserInput">
+                            <label for="loginNewPasswordInput">Nova Senha</label>
+                            <input type="text" name="loginNewPasswordInput" id="loginNewPasswordInput">
+                            <label for="loginNewPasswordConfirmInput">Confirmar Senha</label>
+                            <input type="text" name="loginNewPasswordConfirmInput" id="loginNewPasswordConfirmInput">
+                        </div>
+                        <div class="buttonRow" style="flex-direction: row;gap: 12px;">
+                            <div id="NewPassword" class="defaultButton">
+                                <button id="botaoNewPassword" type="button" class="btn btn-danger btn-lg botaoEnviar" onclick="sendData()">Enviar</button>
+                            </div>
+                            <div id="NewPassword" class="defaultButton">
+                                <button id="botaoNewPassword" type="button" class="btn btn-danger btn-lg botaoEnviar" onclick="cancel()">Cancelar</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+    
+            </section>
+        </main>
+
+       
+</body>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/css/bootstrap.min.css">
+<script src="{{ url_for('static', filename='js/newPassword.js') }}"></script>
+
+<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
+    integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
+    crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
+    integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+    crossorigin="anonymous"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
+    integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+    crossorigin="anonymous"></script>
+
+</html>

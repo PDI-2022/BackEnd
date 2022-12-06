@@ -32,7 +32,8 @@ async function paginacao () {
     generateTable(response["externSeeds"],response["internSeeds"])
 }
 
-window.onload = async function(){
+window.onload = async function () {
+    await auth()
     if(localStorage.getItem("csv") == '' || !localStorage.getItem("csv"))
         window.location.href="/"
     

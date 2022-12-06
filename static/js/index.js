@@ -30,28 +30,12 @@ function getPageBody(){
     body.header = document.querySelector("header")
 }
 
-function displayApplication(){
-    applicationBody = document.querySelector("body")
-    applicationBody.removeAttribute("class")
-    sessionStorage.setItem("displayWelcomeScreen","false")
-    let animation = document.querySelector("#animation")
-    let main = document.querySelector("body")
-    main.removeChild(animation)
-}
-
-window.onload = function () {
+window.onload = async function () {
+    await auth()
     let imgFormatsView = document.querySelector("#img-formats")
     imgFormatsView.innerHTML = `Formatos aceitos: ${validFormatsImgs.map(img=>" " + img)}`
     getPageBody()
-    let displayWelcomeScreen = sessionStorage.getItem("displayWelcomeScreen")
 
-    if(displayWelcomeScreen == "false"){
-        displayApplication()
-    }
-    else{
-        applicationBody = document.querySelector("body")
-        applicationBody.setAttribute("class","disableOverflow")
-    }
     localStorage.clear();
 
     // Esconde o select dos modelos
@@ -78,6 +62,7 @@ function dragOverHandler(event, input) {
 }
 
 async function sendToBack() {
+    await auth()
     let displayClassificationInfos = document.querySelector("#InputClass").checked
     let generatePageWithImages = document.querySelector("#InputPagaWithImages").checked
     let chooseLimiar = document.querySelector("#processing-seeds-classification").checked

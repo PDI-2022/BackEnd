@@ -1,450 +1,681 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="pt">
-
-<head>
+  <head>
     <!-- Required meta tags -->
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta charset="utf-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, shrink-to-fit=no"
+    />
 
     <!-- Bootstrap CSS -->
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css"
-        integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
-    <link href=' http://fonts.googleapis.com/css?family=Droid+Sans' rel='stylesheet' type='text/css'>
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css"
+      integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm"
+      crossorigin="anonymous"
+    />
+    <link
+      href=" http://fonts.googleapis.com/css?family=Droid+Sans"
+      rel="stylesheet"
+      type="text/css"
+    />
 
     <title>TetraSeed - Ferramenta de Classificação de sementes</title>
-    <link rel="icon" type="image/x-icon" href="./static/Assets/Logo/logo.svg">
-    <link href="./static/stylesheets/UploadSection.css" rel="stylesheet">
-    <link href="./static/stylesheets/Header.css" rel="stylesheet">
-    <link href="./static/stylesheets/Index.css" rel="stylesheet">
-    <link href="./static/stylesheets/About.css" rel="stylesheet">
-    <link href="./static/stylesheets/Team.css" rel="stylesheet">
-    <link href="./static/stylesheets/Footer.css" rel="stylesheet">
-    <link href="./static/stylesheets/animation.css" rel="stylesheet">
-    <link href="./static/stylesheets/Configuration.css" rel="stylesheet">
+    <link rel="icon" type="image/x-icon" href="./static/Assets/Logo/logo.svg" />
+    <link href="./static/stylesheets/UploadSection.css" rel="stylesheet" />
+    <link href="./static/stylesheets/Header.css" rel="stylesheet" />
+    <link href="./static/stylesheets/Index.css" rel="stylesheet" />
+    <link href="./static/stylesheets/About.css" rel="stylesheet" />
+    <link href="./static/stylesheets/Team.css" rel="stylesheet" />
+    <link href="./static/stylesheets/Footer.css" rel="stylesheet" />
+    <link href="./static/stylesheets/animation.css" rel="stylesheet" />
+    <link href="./static/stylesheets/Configuration.css" rel="stylesheet" />
+  </head>
 
-</head>
-
-<body style="background-color: #FAFAFA">
-
+  <body style="background-color: #ffffff">
     <header>
-        <nav class="navbar fixed-top navbar-expand-lg navbar-light logo">
-            <a href="/" class="navbar-brand">
-                <div style="display: flex;">
-                    <img src="{{ url_for('static', filename='Assets/Logo/logo.svg') }}"
-                        style="width: 50px;height: 50px;" alt="logo">
-                    <div class="brandName"><strong>Tetra</strong>Seed</div>
-
-                </div>
-            </a>
-            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
-                aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="container-fluid">
-
-                <div class="collapse navbar-collapse" id="navbarNav">
-                    <ul class="navbar-nav ml-auto float-right" style="margin-left:10px ;">
-                        <li class="nav-item">
-                            <a class="nav-link itensNavLink" href="#inicio">Inicio</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link itensNavLink" href="#sobre">Sobre</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link itensNavLink" href="#equipe">Equipe</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link itensNavLink" href="/uploadModel">Upload de modelo</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link itensNavLink" href="/new-user">Novo Usuário</a>
-                        </li>
-                    </ul>
-                </div>
-            </div>
-        </nav>
+      <nav class="navbar fixed-top navbar-expand-lg navbar-light logo">
+        <a href="/" class="navbar-brand">
+          <div style="display: flex">
+            <img
+              src="{{ url_for('static', filename='Assets/Logo/logo.svg') }}"
+              style="width: 50px; height: 50px"
+              alt="logo"
+            />
+            <div class="brandName"><strong>Tetra</strong>Seed</div>
+          </div>
+        </a>
+        <button
+          class="navbar-toggler"
+          type="button"
+          data-toggle="collapse"
+          data-target="#navbarNav"
+          aria-controls="navbarNav"
+          aria-expanded="false"
+          aria-label="Toggle navigation"
+        >
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="container-fluid">
+          <div class="collapse navbar-collapse" id="navbarNav">
+            <ul
+              class="navbar-nav ml-auto float-right"
+              style="margin-left: 10px"
+            >
+              <li class="nav-item">
+                <a class="nav-link itensNavLink" href="#inicio">Inicio</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link itensNavLink" href="#sobre">Sobre</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link itensNavLink" href="#equipe">Equipe</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link itensNavLink" href="/uploadModel"
+                  >Upload de modelo</a
+                >
+              </li>
+              <li class="nav-item">
+                <a class="nav-link itensNavLink" href="/new-user"
+                  >Novo Usuário</a
+                >
+              </li>
+            </ul>
+          </div>
+        </div>
+      </nav>
     </header>
     <main>
-
-        <section id="inicio" class="flex images">
-
-            <div class=" container-section upload-section">
-
-                <div class="container-drag ext">
-                    <div class="img-container" id="drag-drop-ext" ondrop="dropHandler(event,'externa');"
-                        ondragover="dragOverHandler(event,'externa');">
-                        <div class="img-titles flex">
-                            <h2 class="img-title">Parte <span class="red-text">externa</span> da semente</h2>
-                            <h3>Arraste e solte a imagem aqui</h3>
-                        </div>
-                        <button class="upload-button">
-                            <label class="label-button" for="imgButtonExt">Ou selecione o arquivo</label>
-
-                            <input class="input-button" type="file" name="imgButtonExt" id="imgButtonExt"
-                                style="display: none;" accept="image/png,image/jpeg,image/jpg,image/svg+xml" 
-                                onchange="uploadImgInput(event,'externa')">
-                        </button>
-
-                    </div>
-                    <div class="imgExtIconContainer">
-                        <img class="imgExtIconContainer" id="preview" src="" width="40%">
-                    </div>
+      <section id="inicio" class="flex images">
+        <div>
+          <div class="container-section upload-section">
+            <div class="container-drag ext">
+              <div
+                class="img-container"
+                id="drag-drop-ext"
+                ondrop="dropHandler(event,'externa');"
+                ondragover="dragOverHandler(event,'externa');"
+              >
+                <div class="img-titles flex">
+                  <h2 class="img-title">
+                    Parte <span class="red-text">externa</span> da semente
+                  </h2>
+                  <h3>Arraste e solte a imagem aqui</h3>
                 </div>
-                <div class="container-drag int">
-                    <div class="img-container" id="drag-drop-ext" ondrop="dropHandler(event,'interna');"
-                        ondragover="dragOverHandler(event,'interna');">
-                        <div class="img-titles flex">
-                            <h2 class="img-title">Parte <span class="red-text">interna</span> da semente</h2>
-                            <h3>Arraste e solte a imagem aqui</h3>
-                        </div>
-                        <button class="upload-button">
-                            <label class="label-button" for="imgButtonInt">Ou selecione o arquivo</label>
-
-                            <input class="input-button" type="file" name="imgButtonInt" id="imgButtonInt"
-                                style="display: none;" accept="image/png,image/jpeg,image/jpg,image/svg+xml" 
-                                onchange="uploadImgInput(event,'interna')">
-                        </button>
-
-                    </div>
-                    <div class="imgIntIconContainer">
-                        <img class="imgIntIconContainer" id="previews" src="" width="40%">
-                    </div>
+                <button class="upload-button">
+                  <label class="label-button" for="imgButtonExt">
+                    Ou selecione o arquivo
+                  </label>
+                  <input
+                    class="input-button"
+                    type="file"
+                    name="imgButtonExt"
+                    id="imgButtonExt"
+                    style="display: none"
+                    accept="image/png,image/jpeg,image/jpg,image/svg+xml"
+                    onchange="uploadImgInput(event,'externa')"
+                  />
+                </button>
+                <img
+                  src="{{ url_for('static', filename='Assets/img/sementes_externas.svg') }}"
+                  alt="sementes externas"
+                />
+                <div>
+                  <img src="" alt="" />
                 </div>
+              </div>
+              <div class="imgExtIconContainer">
+                <img
+                  class="imgExtIconContainer"
+                  id="preview"
+                  src=""
+                  width="40%"
+                />
+              </div>
             </div>
-            <label style="color: gray;" id="img-formats"></label>
-            <section class="menu-config">
-                <h3>Configurações gerais</h3>
-                <div class="config-row">
-                    <div class="config-itens">
-                        <h4>Geração de arquivos</h4>
-                        <div class="mainCheckbox" id="menu-file-seeds-classification">
-                            <input type="checkbox" name="InputName" id="InputClass">
-                            <label class="img-title tooltip-menu" for="InputClass">
-                                Classificar sementes
-                                <span class="tooltiptext-menu">
-                                    *Será gerada a classe da semente no csv
-                                </span>  
-                            </label>
-                        </div>
-                        <div class="mainCheckbox" id="menu-file-images-page">
-                            <input type="checkbox" name="InputName" id="InputPagaWithImages">
-                            <label class="img-title" for="InputPagaWithImages">Gerar relatório com imagens</label>
-                        </div>
-                    </div>
-                    <div class="config-itens">
-                        <h4>Processamento das imagens</h4>
-                        <div class="mainCheckbox" id="menu-processing-seeds-classification">
-                            <input type="checkbox" name="InputName" id="processing-seeds-classification">
-                            <label class="img-title tooltip-menu" for="processing-seeds-classification">
-                                Escolher limiar das sementes
-                                    <span class="tooltiptext-menu">
-                                        *Caso não selecionada, será usado o valor default de 190 para o limite superior do vermelho claro, e 168 para o limite inferior do vermelho escuro.
-                                    </span>                                
-                            </label>
-                        </div>
-                        <div class="mainCheckbox" id="menu-processing-sup-limit">
-                            <label class="img-title">Limite superior do vermelho claro</label>
-                            <div class="row">
-                                <div class="col-7">
-                                    <input type="range" id="processing-sup-limit" name="InputName" min="91" max="255" step="1" value ="190" onchange="changeLimiarVermelho('sup','range')">
-                                </div>
-                                <div class="col-2">
-                                    <input  style="width: 52px;" type="number" min="91" max="255" step="1" value ="190" id="numero-sup-limit" onchange="changeLimiarVermelho('sup','number')">
-                                </div>
-                                <div class="col-1 barra-cor" id="cor-sup-limit" style="margin-left: 24px;">
-                                </div>
-                            </div>
-                        </div>
-                        <div class="mainCheckbox" id="menu-processing-inf-limit">
-                            <label class="img-title">Limite inferior do vermelho escuro</label>
-                            <div class="row">
-                                <div class="col-7">
-                                    <input type="range" id="processing-inf-limit" name="InputName" min="91" max="255" step="1" value ="168" onchange="changeLimiarVermelho('inf','range')">
-                                </div>
-                                <div class="col-2">
-                                    <input style="width: 52px;" type="number" min="91" max="255" step="1" value ="168" id="numero-inf-limit" onchange="changeLimiarVermelho('inf','number')">
-                                </div>
-                                <div class="col-1 barra-cor" id="cor-inf-limit" style="margin-left: 24px;">
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="config-itens">
-                        <h4>Pre-processamento das imagens</h4>
-                        <div class="mainCheckbox" id="menu-pre-processing-seeds-division">
-                            <input type="checkbox" name="InputName" id="pre-processing-seeds-division">
-                            <label class="img-title tooltip-menu" for="pre-processing-seeds-division">
-                                Metade das imagens estão juntas
-                                <span class="tooltiptext-menu">
-                                    *Resolução mínima de 300dpi
-                                </span>  
-                            </label>
-                        </div>
-                    </div>
-                    <!-- <div class="config-itens">
-                        <h4>Classificação das imagens</h4>
-                        <div class="mainCheckbox" id="menu-classification-seeds-yolo">
-                            <input type="checkbox" name="InputName" id="classification-seeds-yolo">
-                            <label class="img-title" for="classification-seeds-yolo">Classificar o embrião</label>
-                        </div>
-                    </div> -->
+            <div class="container-drag int">
+              <div
+                class="img-container"
+                id="drag-drop-ext"
+                ondrop="dropHandler(event,'interna');"
+                ondragover="dragOverHandler(event,'interna');"
+              >
+                <div class="img-titles flex">
+                  <h2 class="img-title">
+                    Parte <span class="red-text">interna</span> da semente
+                  </h2>
+                  <h3>Arraste e solte a imagem aqui</h3>
                 </div>
-                
-            </section>
-
-            <div class="modelHolder img-titles">
-                <h3>Selecione o modelo a ser utilizado</h3>
-                <select name="model">
-                    {% for model in models %}
-                    <option value={{model.id}}> {{model.name}}</option>
-                    {% endfor %}
-                </select>
+                <button class="upload-button">
+                  <label class="label-button" for="imgButtonInt">
+                    Ou selecione o arquivo
+                  </label>
+                  <input
+                    class="input-button"
+                    type="file"
+                    name="imgButtonInt"
+                    id="imgButtonInt"
+                    style="display: none"
+                    accept="image/png,image/jpeg,image/jpg,image/svg+xml"
+                    onchange="uploadImgInput(event,'interna')"
+                  />
+                </button>
+                <img
+                  src="{{ url_for('static', filename='Assets/img/sementes_internas.svg') }}"
+                  style="margin-top: 20px"
+                  alt="sementes internas"
+                />
+                <div>
+                  <img src="" alt="" />
+                </div>
+              </div>
+              <div class="imgIntIconContainer">
+                <img
+                  class="imgIntIconContainer"
+                  id="previews"
+                  src=""
+                  width="40%"
+                />
+              </div>
             </div>
-
-            <modal-loading></modal-loading>
-            <modal-error></modal-error>
-            <modal-redirecting></modal-redirecting>
-
+          </div>
+        </div>
+        <div style="width: 100%; text-align: center">
+          <label style="color: gray" id="img-formats"></label>
+        </div>
+        <section class="menu-config">
+          <div
+            style="
+                  display: flex;
+                  justify-content: center;
+                  align-items: center;
+                  flex-direction: row;
+                  margin-bottom: 28px;
+            "
+          >
+            <h4>Caso deseje, selecione um ou mais filtros:</h4>
+          </div>
+          <div
+            style="display: flex; align-items: center; flex-direction: column"
+          >
+            <div class="config-row">
+              <div class="config-itens">
+                <div class="config-itens-div">
+                  <div
+                    style="
+                      background-color: #d92626;
+                      width: 7px;
+                      height: 16px;
+                      margin: 4px 5px 0px 0px;
+                    "
+                  ></div>
+                  <h4>Geração de arquivos</h4>
+                </div>
+                <div class="mainCheckbox" id="menu-file-seeds-classification">
+                  <input type="checkbox" name="InputName" id="InputClass" />
+                  <label class="img-title tooltip-menu" for="InputClass">
+                    Classificar sementes
+                    <span class="tooltiptext-menu">
+                      *Será gerada a classe da semente no csv
+                    </span>
+                  </label>
+                </div>
+                <div class="mainCheckbox" id="menu-file-images-page">
+                  <input
+                    type="checkbox"
+                    name="InputName"
+                    id="InputPagaWithImages"
+                  />
+                  <label
+                    class="img-title"
+                    style="color: #707070"
+                    for="InputPagaWithImages"
+                    >Gerar relatório com imagens</label
+                  >
+                </div>
+              </div>
+              <div class="config-itens">
+                <div class="config-itens-div">
+                  <div
+                    style="
+                      background-color: #d92626;
+                      width: 7px;
+                      height: 16px;
+                      margin: 4px 5px 0px 0px;
+                    "
+                  ></div>
+                  <h4>Processamento das imagens</h4>
+                </div>
+                <div
+                  class="mainCheckbox"
+                  id="menu-processing-seeds-classification"
+                >
+                  <input
+                    type="checkbox"
+                    name="InputName"
+                    id="processing-seeds-classification"
+                  />
+                  <label
+                    class="img-title tooltip-menu"
+                    for="processing-seeds-classification"
+                  >
+                    Escolher limiar das sementes
+                    <span class="tooltiptext-menu">
+                      *Caso não selecionada, será usado o valor default de 190
+                      para o limite superior do vermelho claro, e 168 para o
+                      limite inferior do vermelho escuro.
+                    </span>
+                  </label>
+                </div>
+                <div class="mainCheckbox" id="menu-processing-sup-limit">
+                  <label class="img-title"
+                    >Limite superior do vermelho claro</label
+                  >
+                  <div class="row">
+                    <div class="col-7">
+                      <input
+                        type="range"
+                        id="processing-sup-limit"
+                        name="InputName"
+                        min="91"
+                        max="255"
+                        step="1"
+                        value="190"
+                        onchange="changeLimiarVermelho('sup','range')"
+                      />
+                    </div>
+                    <div class="col-2">
+                      <input
+                        style="width: 52px"
+                        type="number"
+                        min="91"
+                        max="255"
+                        step="1"
+                        value="190"
+                        id="numero-sup-limit"
+                        onchange="changeLimiarVermelho('sup','number')"
+                      />
+                    </div>
+                    <div
+                      class="col-1 barra-cor"
+                      id="cor-sup-limit"
+                      style="margin-left: 24px"
+                    ></div>
+                  </div>
+                </div>
+                <div class="mainCheckbox" id="menu-processing-inf-limit">
+                  <label class="img-title"
+                    >Limite inferior do vermelho escuro</label
+                  >
+                  <div class="row">
+                    <div class="col-7">
+                      <input
+                        type="range"
+                        id="processing-inf-limit"
+                        name="InputName"
+                        min="91"
+                        max="255"
+                        step="1"
+                        value="168"
+                        onchange="changeLimiarVermelho('inf','range')"
+                      />
+                    </div>
+                    <div class="col-2">
+                      <input
+                        style="width: 52px"
+                        type="number"
+                        min="91"
+                        max="255"
+                        step="1"
+                        value="168"
+                        id="numero-inf-limit"
+                        onchange="changeLimiarVermelho('inf','number')"
+                      />
+                    </div>
+                    <div
+                      class="col-1 barra-cor"
+                      id="cor-inf-limit"
+                      style="margin-left: 24px"
+                    ></div>
+                  </div>
+                </div>
+              </div>
+              <div class="config-itens">
+                <div class="config-itens-div">
+                  <div
+                    style="
+                      background-color: #d92626;
+                      width: 7px;
+                      height: 16px;
+                      margin: 4px 5px 0px 0px;
+                    "
+                  ></div>
+                  <h4>Pré-processamento das imagens</h4>
+                </div>
+                <div
+                  class="mainCheckbox"
+                  id="menu-pre-processing-seeds-division"
+                >
+                  <input
+                    type="checkbox"
+                    name="InputName"
+                    id="pre-processing-seeds-division"
+                  />
+                  <label
+                    class="img-title tooltip-menu"
+                    for="pre-processing-seeds-division"
+                  >
+                    Enviar imagem sem grid
+                    <span class="tooltiptext-menu">
+                      *Ao marcar esse campo, a resolução mínima das imagens deve ser de 300dpi
+                    </span>
+                  </label>
+                </div>
+              </div>
+              <!-- <div class="config-itens">
+                            <h4>Classificação das imagens</h4>
+                            <div class="mainCheckbox" id="menu-classification-seeds-yolo">
+                                <input type="checkbox" name="InputName" id="classification-seeds-yolo">
+                                <label class="img-title" for="classification-seeds-yolo">Classificar o embrião</label>
+                            </div>
+                        </div> -->
+            </div>
+          </div>
         </section>
-        <div class="IndexButtonsSend">
-            <div id="botao" class="mt-5 defaultButton">
-                <button type="button" class="btn btn-danger btn-lg botaoEnviar" onclick="sendToBack()">Gerar
-                    Relatório</button>
-            </div>
+
+        <div class="modelHolder img-titles">
+          <h3>Selecione o modelo a ser utilizado</h3>
+          <select name="model">
+            {% for model in models %}
+            <option value="{{model.id}}">{{model.name}}</option>
+            {% endfor %}
+          </select>
         </div>
 
-        <section id="sobre" class="about">
-            <div class="about-text flex">
-                <h2><strong>Sobre a <span class="red-text">TetraSeed</span></strong></h2>
-                <p> O projeto surgiu com o intuito de automatizar e auxiliar a pesquisa feita pela docente do PROGRAMA DE PÓS-GRADUAÇÃO EM AGRONOMIA/FITOTECNIA, Lucimara Ribeiro Venial, no qual é realizado TESTE DE TRETAZÓLIO EM SEMENTES DE FEIJÃO CAUPI.</p>
-                <p>O projeto visa analizar as imagens de sementes dessa espécie e gerar os resultados de % de cor de vermelho carmim clara, % de cor de vermelho carmim escura, % de cor de branco, % de cor de branco leitoso, detecção de buracos nas sementes, e classificar elas de acordo com parâmetros estabelecidos.</p>
-            </div>
-            <div class="image-replace">
-                <img src="{{ url_for('static', filename='Assets/Logo/logo.svg') }}">
-            </div>
-        </section>
-        <section id="equipe" class="team flex">
-            <h2 class="red-text">Equipe</h2>
-            <p><span class="red-text"><strong>Tetra</strong>Seed </span>é um projeto supervisionado pelo Prof. Paulo Cesar Cortez feito em colaboração com a turma de 2022.2 da disciplina de Fundamentos de Processamento Digital de Imagens da Universidade Federal do Ceará.</p>
-            <div class="team-list"></div>
-            <div class="list-module list-section">
-            <div class="list-space">
-                <ul style="margin-bottom: 16px">
-                    <h3 class="list-title">Gerência:</h3>
-                    <li>
-                        <p>Atila Nobrega</p>
-                    </li>
-                    <li>
-                        <p>Lucas Martins</p>
-                    </li>
-                </ul>
-                <ul>
-                    <h3 class="list-title">Interface:</h3>
-                    <li>
-                        <p>Victor Ehrich (Lider)</p>
-                    </li>
-                    <li>
-                        <p>Mateus Melo</p>
-                    </li>
-                    <li>
-                        <p>Yago Costa</p>
-                    </li>
-                    <li>
-                        <p>Felipe Jonathan</p>
-                    </li>
-                    <li>
-                        <p>Rafael Bruno</p>
-                    </li>
-                    <li>
-                        <p>Breno de Souza</p>
-                    </li>
-                    <li>
-                        <p>Anderson Moura</p>
-                    </li>
-                    <li>
-                        <p>Igor Torquato</p>
-                    </li>
-                    <li>
-                        <p>Thyago Freitas</p>
-                    </li>
-                </ul>
-            </div>
-            <div class="list-space">
-                <ul style="margin-bottom: 16px">
-                    <h3 class="list-title">Pré-processamento:</h3>
-                    <li>
-                        <p>Renato Avelino (Lider)</p>
-                    </li>
-                    <li>
-                        <p>Anna Vithoria (Líder)</p>
-                    </li>
-                    <li>
-                        <p>Leonardo Monteiro</p>
-                    </li>
-                    <li>
-                        <p>Eduardo Monteiro</p>
-                    </li>
-                    <li>
-                        <p>Luann Lucas</p>
-                    </li>
-                    <li>
-                        <p>Paulo Davi</p>
-                    </li>
-                    <li>
-                        <p>Alan de Abreu</p>
-                    </li>
-                    <li>
-                        <p>Carla Mariana</p>
-                    </li>
-                    <li>
-                        <p>Leo Victor</p>
-                    </li>
-                </ul>
-                <ul>
-                    <h3 class="list-title">Documentação:</h3>
-                    <li>
-                        <p>Nelson Rodrigues (Líder)</p>
-                    </li>
-                    <li>
-                        <p>Antônio Fernandes</p>
-                    </li>
-                </ul>
-            </div>
-            <div class="list-space">
-                <ul style="margin-bottom: 16px">
-                    <h3 class="list-title">Processamento/Pós:</h3>
-                    <li>
-                        <p>Vitor Rosa (Lider)</p>
-                    </li>
-                    <li>
-                        <p>Lucas Noronha (Líder)</p>
-                    </li>
-                    <li>
-                        <p>Vandemberg Monteiro</p>
-                    </li>
-                    <li>
-                        <p>Davi Queiroz</p>
-                    </li>
-                    <li>
-                        <p>Marcos Augusto</p>
-                    </li>
-                    <li>
-                        <p>Danilo Palheta</p>
-                    </li>
-                    <li>
-                        <p>Catherine Bezerra</p>
-                    </li>
-                    <li>
-                        <p>Matheus Rocha</p>
-                    </li>
-                    <li>
-                        <p>Kayann Costa</p>
-                    </li>
-                    <li>
-                        <p>Francisco Thierry</p>
-                    </li>
-                    <li>
-                        <p>Brendon Wesley</p>
-                    </li>
-                    <li>
-                        <p>André Luiz</p>
-                    </li>
-                    <li>
-                        <p>João Marcelo</p>
-                    </li>
-                </ul>
-            </div>
-            <div class="list-space">
-                <ul style="margin-bottom: 16px">
-                    <h3 class="list-title">Classificação:</h3>
-                    <li>
-                        <p>Luan Ícaro (Líder)</p>
-                    </li>
-                    <li>
-                        <p>Cezario Luiz</p>
-                    </li>
-                    <li>
-                        <p>Ailson Alexandre</p>
-                    </li>
-                    <li>
-                        <p>Neander Danúbio</p>
-                    </li>
-                    <li>
-                        <p>Tácio Soares</p>
-                    </li>
-                    <li>
-                        <p>Mateus Melo</p>
-                    </li>
-                    <li>
-                        <p>Renan Martins</p>
-                    </li>
-                    <li>
-                        <p>Antonio Wellington</p>
-                    </li>
-                </ul>
-                <ul>
-                    <h3 class="list-title">Testes:</h3>
-                    <li>
-                        <p>Nicolas de Carvalho (Líder)</p>
-                    </li>
-                    <li>
-                        <p>Helano Fontenele</p>
-                    </li>
-                    <li>
-                        <p>Vitor Gabriel</p>
-                    </li>
-                    <li>
-                        <p>Athur Pinto</p>
-                    </li>
-                    <li>
-                        <p>Lucas Silva</p>
-                    </li>
-                    <li>
-                        <p>Ismael José</p>
-                    </li>
-                    <li>
-                        <p>Keven da Silva</p>
-                    </li>
-                    <li>
-                        <p>Luan Daniel</p>
-                    </li>
-                </ul>
-            </div>
+        <modal-loading></modal-loading>
+        <modal-error></modal-error>
+        <modal-redirecting></modal-redirecting>
+      </section>
+      <div class="IndexButtonsSend">
+        <div id="botao" class="mt-5 defaultButton">
+          <button
+            type="button"
+            class="btn btn-danger btn-lg botaoEnviar"
+            onclick="sendToBack()"
+          >
+            Gerar Relatório
+          </button>
         </div>
-    </section>
-        
+      </div>
+
+      <section id="sobre" class="about">
+        <div class="about-text flex">
+          <h2>
+            <strong>Sobre a <span class="red-text">TetraSeed</span></strong>
+          </h2>
+          <p>
+            O projeto surgiu com o intuito de automatizar e auxiliar a pesquisa
+            feita pela docente do PROGRAMA DE PÓS-GRADUAÇÃO EM
+            AGRONOMIA/FITOTECNIA, Lucimara Ribeiro Venial, no qual é realizado
+            TESTE DE TRETAZÓLIO EM SEMENTES DE FEIJÃO CAUPI.
+          </p>
+          <p>
+            O projeto visa analizar as imagens de sementes dessa espécie e gerar
+            os resultados de % de cor de vermelho carmim clara, % de cor de
+            vermelho carmim escura, % de cor de branco, % de cor de branco
+            leitoso, detecção de buracos nas sementes, e classificar elas de
+            acordo com parâmetros estabelecidos.
+          </p>
+        </div>
+        <div class="image-replace">
+          <img src="{{ url_for('static', filename='Assets/Logo/logo.svg') }}" />
+        </div>
+      </section>
+      <section id="equipe" class="team flex">
+        <h2 class="red-text">Equipe</h2>
+        <p>
+          <span class="red-text"><strong>Tetra</strong>Seed </span>é um projeto
+          supervisionado pelo Prof. Paulo Cesar Cortez feito em colaboração com
+          a turma de 2022.2 da disciplina de Fundamentos de Processamento
+          Digital de Imagens da Universidade Federal do Ceará.
+        </p>
+        <div class="team-list"></div>
+        <div class="list-module list-section">
+          <div class="list-space">
+            <ul style="margin-bottom: 16px">
+              <h3 class="list-title">Gerência:</h3>
+              <li>
+                <p>Atila Nobrega</p>
+              </li>
+              <li>
+                <p>Lucas Martins</p>
+              </li>
+            </ul>
+            <ul>
+              <h3 class="list-title">Interface:</h3>
+              <li>
+                <p>Victor Ehrich (Lider)</p>
+              </li>
+              <li>
+                <p>Mateus Melo</p>
+              </li>
+              <li>
+                <p>Yago Costa</p>
+              </li>
+              <li>
+                <p>Felipe Jonathan</p>
+              </li>
+              <li>
+                <p>Rafael Bruno</p>
+              </li>
+              <li>
+                <p>Breno de Souza</p>
+              </li>
+              <li>
+                <p>Anderson Moura</p>
+              </li>
+              <li>
+                <p>Igor Torquato</p>
+              </li>
+              <li>
+                <p>Thyago Freitas</p>
+              </li>
+            </ul>
+          </div>
+          <div class="list-space">
+            <ul style="margin-bottom: 16px">
+              <h3 class="list-title">Pré-processamento:</h3>
+              <li>
+                <p>Renato Avelino (Lider)</p>
+              </li>
+              <li>
+                <p>Anna Vithoria (Líder)</p>
+              </li>
+              <li>
+                <p>Leonardo Monteiro</p>
+              </li>
+              <li>
+                <p>Eduardo Monteiro</p>
+              </li>
+              <li>
+                <p>Luann Lucas</p>
+              </li>
+              <li>
+                <p>Paulo Davi</p>
+              </li>
+              <li>
+                <p>Alan de Abreu</p>
+              </li>
+              <li>
+                <p>Carla Mariana</p>
+              </li>
+              <li>
+                <p>Leo Victor</p>
+              </li>
+            </ul>
+            <ul>
+              <h3 class="list-title">Documentação:</h3>
+              <li>
+                <p>Nelson Rodrigues (Líder)</p>
+              </li>
+              <li>
+                <p>Antônio Fernandes</p>
+              </li>
+            </ul>
+          </div>
+          <div class="list-space">
+            <ul style="margin-bottom: 16px">
+              <h3 class="list-title">Processamento/Pós:</h3>
+              <li>
+                <p>Vitor Rosa (Lider)</p>
+              </li>
+              <li>
+                <p>Lucas Noronha (Líder)</p>
+              </li>
+              <li>
+                <p>Vandemberg Monteiro</p>
+              </li>
+              <li>
+                <p>Davi Queiroz</p>
+              </li>
+              <li>
+                <p>Marcos Augusto</p>
+              </li>
+              <li>
+                <p>Danilo Palheta</p>
+              </li>
+              <li>
+                <p>Catherine Bezerra</p>
+              </li>
+              <li>
+                <p>Matheus Rocha</p>
+              </li>
+              <li>
+                <p>Kayann Costa</p>
+              </li>
+              <li>
+                <p>Francisco Thierry</p>
+              </li>
+              <li>
+                <p>Brendon Wesley</p>
+              </li>
+              <li>
+                <p>André Luiz</p>
+              </li>
+              <li>
+                <p>João Marcelo</p>
+              </li>
+            </ul>
+          </div>
+          <div class="list-space">
+            <ul style="margin-bottom: 16px">
+              <h3 class="list-title">Classificação:</h3>
+              <li>
+                <p>Luan Ícaro (Líder)</p>
+              </li>
+              <li>
+                <p>Cezario Luiz</p>
+              </li>
+              <li>
+                <p>Ailson Alexandre</p>
+              </li>
+              <li>
+                <p>Neander Danúbio</p>
+              </li>
+              <li>
+                <p>Tácio Soares</p>
+              </li>
+              <li>
+                <p>Mateus Melo</p>
+              </li>
+              <li>
+                <p>Renan Martins</p>
+              </li>
+              <li>
+                <p>Antonio Wellington</p>
+              </li>
+            </ul>
+            <ul>
+              <h3 class="list-title">Testes:</h3>
+              <li>
+                <p>Nicolas de Carvalho (Líder)</p>
+              </li>
+              <li>
+                <p>Helano Fontenele</p>
+              </li>
+              <li>
+                <p>Vitor Gabriel</p>
+              </li>
+              <li>
+                <p>Athur Pinto</p>
+              </li>
+              <li>
+                <p>Lucas Silva</p>
+              </li>
+              <li>
+                <p>Ismael José</p>
+              </li>
+              <li>
+                <p>Keven da Silva</p>
+              </li>
+              <li>
+                <p>Luan Daniel</p>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </section>
     </main>
-    <footer class="flex-row" style="display: flex;align-items: center;bottom: 0;">
-        <a href="/">
-            <span class="logo flex-row">
-                <img src="{{ url_for('static', filename='Assets/Logo/logo.svg') }}" alt="logo">
-                <strong>Tetra</strong>
-                <div>Seed</div>
-            </span>
+    <footer
+      class="flex-row"
+      style="display: flex; align-items: center; bottom: 0"
+    >
+      <a href="/">
+        <span class="logo flex-row">
+          <img
+            src="{{ url_for('static', filename='Assets/Logo/logo.svg') }}"
+            alt="logo"
+          />
+          <strong>Tetra</strong>
+          <div>Seed</div>
+        </span>
+      </a>
+      <nav>
+        <a href="https://github.com/PDI-2022" target="_blank">
+          <img
+            src="{{ url_for('static', filename='Assets/Icons/githubIcon.svg') }}"
+            alt=""
+          />
         </a>
-        <nav>
-            <a href="https://github.com/PDI-2022" target="_blank">
-                <img src="{{ url_for('static', filename='Assets/Icons/githubIcon.svg') }}" alt="">
-            </a>
-        </nav>
+      </nav>
     </footer>
-</body>
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/css/bootstrap.min.css">
-<script src="{{ url_for('static', filename='js/menu-buttons.js') }}"></script>
+  </body>
+  <link
+    rel="stylesheet"
+    href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/css/bootstrap.min.css"
+  />
+  <script src="{{ url_for('static', filename='js/menu-buttons.js') }}"></script>
 
-<script src="{{ url_for('static', filename='js/drag-n-drop.js') }}"></script>
-<script src="{{ url_for('static', filename='js/index.js') }}"></script>
-<script src="{{ url_for('static', filename='js/auth.js') }}"></script>
-<script src="{{ url_for('static', filename='js/components/index.js') }}"></script>
+  <script src="{{ url_for('static', filename='js/drag-n-drop.js') }}"></script>
+  <script src="{{ url_for('static', filename='js/index.js') }}"></script>
+  <script src="{{ url_for('static', filename='js/auth.js') }}"></script>
+  <script src="{{ url_for('static', filename='js/components/index.js') }}"></script>
 
-<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
+  <script
+    src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
     integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
-    crossorigin="anonymous"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
+    crossorigin="anonymous"
+  ></script>
+  <script
+    src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
     integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
-    crossorigin="anonymous"></script>
-<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
+    crossorigin="anonymous"
+  ></script>
+  <script
+    src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
     integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
-    crossorigin="anonymous"></script>
-
+    crossorigin="anonymous"
+  ></script>
 </html>

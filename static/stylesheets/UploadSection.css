@@ -107,4 +107,7 @@
     .img-titles .label-button{
         width: 150px;
     }
+    .img-container img{
+        width: 60%;
+    }
 }

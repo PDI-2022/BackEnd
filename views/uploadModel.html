@@ -62,7 +62,7 @@
                 ondragover="dragOverHandler(event);">
                 <div class="img-titles flex">
                     <h2 class="img-title">Upload do <span class="red-text">modelo</span></h2>
-                    <h3>Arraste e solte o modelo aqui</h3>
+                    <h4 style="font-weight: 300;">Arraste e solte o modelo aqui</h4>
                 </div>
                 <button class="upload-button">
                     <label class="label-button" for="fileButton">Ou selecione o arquivo</label>
@@ -71,12 +71,16 @@
                         accept=".zip" onchange="uploadFileInput(event)">
                 </button>
 
+                <div class="image-icons">
+                    <img src="{{ url_for('static', filename='Assets/Icons/parteExterna.png') }}" alt="">
+                </div>
+
             </div>
             <div class="fileContainer">
             </div>
             <div style="display: flex;align-items:center;flex-direction: column;">
                 <h3 class="img-title">Nome do modelo a ser salvo</h3>
-                <input type="text" name="InputName" id="InputName">
+                <input type="text" name="InputName" id="InputName" class="inputUpload">
             </div>
             <div id="botao" class="mt-5 defaultButton" style="margin-bottom: 180px;">
                 <button type="button" id="sendModelBtn" class="btn btn-danger btn-lg botaoEnviar"

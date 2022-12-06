@@ -5,6 +5,34 @@
     flex-wrap: wrap;
 }
 
+input[type=text] {
+    border-radius: 4px;
+    -moz-border-radius: 4px;
+    -webkit-border-radius: 4px;
+    box-shadow: 1px 1px 2px #ffffff;
+    -moz-box-shadow: 1px 1px 2px #ffffff;
+    -webkit-box-shadow: 1px 1px 2px #ffffff;
+    background: #ffffff;
+    border: 1px solid #f4bebe;
+    width: 150px
+}
+
+input[type=text]:hover,
+textarea:hover {
+    background: #d8d8d8;
+    border: 1px solid black;
+}
+
+.image-icons{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.image-icons img {
+    width: 400px;
+    height: 150px;
+}
+
 .images {
     align-items: center;
 }

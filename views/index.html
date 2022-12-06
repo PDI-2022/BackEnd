@@ -75,7 +75,7 @@
                         ondragover="dragOverHandler(event,'externa');">
                         <div class="img-titles flex">
                             <h2 class="img-title">Parte <span class="red-text">externa</span> da semente</h2>
-                            <h4 style="font-weight: 300;">Arraste e solte a imagem aqui</h4>
+                            <h3>Arraste e solte a imagem aqui</h3>
                         </div>
                         <button class="upload-button">
                             <label class="label-button" for="imgButtonExt">Ou selecione o arquivo</label>
@@ -84,10 +84,6 @@
                                 style="display: none;" accept="image/png,image/jpeg,image/jpg,image/svg+xml" 
                                 onchange="uploadImgInput(event,'externa')">
                         </button>
-
-                        <div class="image-icons">
-                            <img src="{{ url_for('static', filename='Assets/Icons/parteExterna.png') }}" alt="">
-                        </div>
 
                     </div>
                     <div class="imgExtIconContainer">
@@ -99,7 +95,7 @@
                         ondragover="dragOverHandler(event,'interna');">
                         <div class="img-titles flex">
                             <h2 class="img-title">Parte <span class="red-text">interna</span> da semente</h2>
-                            <h4 style="font-weight: 300;">Arraste e solte a imagem aqui</h4>
+                            <h3>Arraste e solte a imagem aqui</h3>
                         </div>
                         <button class="upload-button">
                             <label class="label-button" for="imgButtonInt">Ou selecione o arquivo</label>
@@ -108,10 +104,6 @@
                                 style="display: none;" accept="image/png,image/jpeg,image/jpg,image/svg+xml" 
                                 onchange="uploadImgInput(event,'interna')">
                         </button>
-
-                        <div class="image-icons">
-                            <img src="{{ url_for('static', filename='Assets/Icons/parteInterna.png') }}" alt="">
-                        </div>
 
                     </div>
                     <div class="imgIntIconContainer">

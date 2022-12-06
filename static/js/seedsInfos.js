@@ -245,6 +245,10 @@ function makeVigorTable(){
     let tableWrapper = document.createElement("div")
     tableWrapper.setAttribute("class","table-responsive")
 
+    let h3 = document.createElement("h3")
+    h3.innerHTML = "Resumo das Classes"
+    tableWrapper.appendChild(h3)
+    
     let table = document.createElement("table")
     table.setAttribute("class","f1-table")
 

@@ -385,3 +385,62 @@ def csv_to_json(csvFilePath):
             jsonArray.append(row)
   
     return jsonArray
+
+def extract_embriao_information(embriao, lim_inf_red, lim_sup_red, seed_id = 0 ):
+    white_percentage = extract_white_percentage(embriao, f'embriao{seed_id}')
+    milky_white_percentage = extract_milky_white_percentage(embriao, f'embriao{seed_id}')
+    light_red_percentage = extract_light_red_percentage(embriao, lim_sup_red, f'embriao{seed_id}')
+    dark_red_percentage = extract_dark_red_percentage(embriao, lim_inf_red, f'embriao{seed_id}')
+
+    return [
+        seed_id,
+        f'{white_percentage*100:.2f}%',
+        f'{milky_white_percentage*100:.2f}%', 
+        f'{light_red_percentage*100:.2f}%',
+        f'{dark_red_percentage*100:.2f}%'
+    ]
+
+def process_embriao(embrioes, limInfRed=168, limSupRed=190):
+
+    header = [
+        'Semente', 
+        'Porcentagem de branco', 
+        'Porcentagem de branco leitoso',
+        'Porcentagem de vermelho claro',
+        'Porcentagem de vermelho escuro'
+    ]
+
+    rows = []
+
+    start = time.perf_counter()
+    with concurrent.futures.ProcessPoolExecutor() as executor:
+        futures = []
+        print(f'Número de processos: {executor._max_workers}')
+        for i, seed in embrioes:
+            if not is_empty(seed):
+                futures.append(
+                    executor.submit(
+                        extract_embriao_information, 
+                        embriao=seed, 
+                        lim_inf_red=limInfRed, 
+                        lim_sup_red=limSupRed, 
+                        seed_id=i
+                    )
+                )
+
+        for future in concurrent.futures.as_completed(futures):
+            rows.append(future.result())
+
+    end = time.perf_counter()
+
+    print(f'Tempo de processamento dos embriões: {end - start}')
+
+    rows.sort(key=lambda value : int(value[0]))
+
+    with open('relatorio_embriao.csv', 'w', encoding='UTF8', newline='') as f:
+        writer = csv.writer(f)
+        writer.writerow(header)
+        for row in rows:
+            writer.writerow(row)
+
+    return 'relatorio_embriao.csv'

@@ -135,4 +135,9 @@ textarea:hover {
     .img-titles .label-button{
         width: 150px;
     }
+    .img-container .image-icons,
+    .img-container .image-icons img {
+        width: 60%;
+        height: 60%;
+    }
 }

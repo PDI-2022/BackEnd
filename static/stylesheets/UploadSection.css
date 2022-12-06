@@ -140,4 +140,7 @@ textarea:hover {
         width: 60%;
         height: 60%;
     }
+    .img-container img{
+        width: 60%;
+    }
 }

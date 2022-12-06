@@ -85,7 +85,7 @@ async function sendToBack() {
     let limInf = chooseLimiar ? document.querySelector("#processing-inf-limit").value : 168
 
     // let classificationYolo = document.querySelector("#classification-seeds-yolo").checked
-    let classificationYolo = true
+    let classificationYolo = false
     if(limSup < 91 || limSup > 255){
         window.alert(`O valor do limite superior deve ser maior que 91 e menor que 255. Valor atual ${limSup} `)
         return

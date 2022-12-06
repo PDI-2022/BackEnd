@@ -23,6 +23,7 @@ def model():
     x = Dropout(0.2)(x)
     predictions = Dense(7, activation='softmax')(x)
     model = Model(inputs=base_model.input, outputs=predictions)
+    return model
 
 def classificate(model ,model_path : str, classes):
 

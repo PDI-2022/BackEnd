@@ -53,13 +53,14 @@ def process():
 
     displayClassificationInfos = data['displayClassificationInfos']
     generatePageWithImages = data['generatePageWithImages']
-
+    classificationYolo = data['classificationYolo']
     model_path = ''
     if displayClassificationInfos:
         model_id = data['modelId']
         model = db.session.query(Model).filter_by(id = model_id).first()
         model_path = model.path
-    
+    else :
+        model = ""
     csv_file = process_data(
         internal_img, 
         external_img, 
@@ -70,7 +71,8 @@ def process():
         int(limSup),
         seedTogether,
         model,
-        embriao_model
+        embriao_model,
+        classificationYolo
     )
     return send_file(csv_file, 'text/csv'), status.HTTP_200_OK     
 

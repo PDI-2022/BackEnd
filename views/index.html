@@ -84,7 +84,11 @@
                                 style="display: none;" accept="image/png,image/jpeg,image/jpg,image/svg+xml" 
                                 onchange="uploadImgInput(event,'externa')">
                         </button>
-
+                        <img src="{{ url_for('static', filename='Assets/img/sementes_externas.svg') }}"
+                        alt="sementes externas">
+                        <div>
+                            <img src="" alt="">
+                        </div>
                     </div>
                     <div class="imgExtIconContainer">
                         <img class="imgExtIconContainer" id="preview" src="" width="40%">
@@ -97,13 +101,17 @@
                             <h2 class="img-title">Parte <span class="red-text">interna</span> da semente</h2>
                             <h3>Arraste e solte a imagem aqui</h3>
                         </div>
-                        <button class="upload-button">
+                        <button class="upload-button" style="margin-top: 20px;">
                             <label class="label-button" for="imgButtonInt">Ou selecione o arquivo</label>
 
                             <input class="input-button" type="file" name="imgButtonInt" id="imgButtonInt"
                                 style="display: none;" accept="image/png,image/jpeg,image/jpg,image/svg+xml" 
                                 onchange="uploadImgInput(event,'interna')">
                         </button>
+                        
+                        <img src="{{ url_for('static', filename='Assets/img/sementes_internas.svg') }}"  style="margin-top: 20px;"
+                        alt="sementes internas">
+                        <div>
 
                     </div>
                     <div class="imgIntIconContainer">
@@ -113,81 +121,98 @@
             </div>
             <label style="color: gray;" id="img-formats"></label>
             <section class="menu-config">
-                <h3>Configurações gerais</h3>
-                <div class="config-row">
-                    <div class="config-itens">
-                        <h4>Geração de arquivos</h4>
-                        <div class="mainCheckbox" id="menu-file-seeds-classification">
-                            <input type="checkbox" name="InputName" id="InputClass">
-                            <label class="img-title tooltip-menu" for="InputClass">
-                                Classificar sementes
-                                <span class="tooltiptext-menu">
-                                    *Será gerada a classe da semente no csv
-                                </span>  
-                            </label>
-                        </div>
-                        <div class="mainCheckbox" id="menu-file-images-page">
-                            <input type="checkbox" name="InputName" id="InputPagaWithImages">
-                            <label class="img-title" for="InputPagaWithImages">Gerar relatório com imagens</label>
-                        </div>
-                    </div>
-                    <div class="config-itens">
-                        <h4>Processamento das imagens</h4>
-                        <div class="mainCheckbox" id="menu-processing-seeds-classification">
-                            <input type="checkbox" name="InputName" id="processing-seeds-classification">
-                            <label class="img-title tooltip-menu" for="processing-seeds-classification">
-                                Escolher limiar das sementes
+                <div style="display: flex; justify-content: start; align-items: stretch; margin-left: 140px;">
+                    <h4>Caso deseje, selecione um ou mais filtros:</h4>
+                </div>
+                <div style="display: flex; align-items: center; flex-direction: column; ">
+                
+                    <div class="config-row">
+                        <div class="config-itens">
+                            <div class="config-itens-div">
+    
+                                <div style="background-color: #D92626; width: 7px; height: 16px; margin: 4px 5px 0px 0px;"></div>
+                                <h4>Geração de arquivos</h4>
+                            </div>
+                            <div class="mainCheckbox" id="menu-file-seeds-classification">
+                                <input type="checkbox" name="InputName" id="InputClass">
+                                <label class="img-title tooltip-menu" for="InputClass">
+                                    Classificar sementes
                                     <span class="tooltiptext-menu">
-                                        *Caso não selecionada, será usado o valor default de 190 para o limite superior do vermelho claro, e 168 para o limite inferior do vermelho escuro.
-                                    </span>                                
-                            </label>
+                                        *Será gerada a classe da semente no csv
+                                    </span>  
+                                </label>
+                            </div>
+                            <div class="mainCheckbox" id="menu-file-images-page">
+                                <input type="checkbox" name="InputName" id="InputPagaWithImages">
+                                <label class="img-title" style="color: #707070;" for="InputPagaWithImages">Gerar relatório com imagens</label>
+                            </div>
                         </div>
-                        <div class="mainCheckbox" id="menu-processing-sup-limit">
-                            <label class="img-title">Limite superior do vermelho claro</label>
-                            <div class="row">
-                                <div class="col-7">
-                                    <input type="range" id="processing-sup-limit" name="InputName" min="91" max="255" step="1" value ="190" onchange="changeLimiarVermelho('sup','range')">
+                        <div class="config-itens">
+                            <div class="config-itens-div">
+    
+                                <div style="background-color: #D92626; width: 7px; height: 16px; margin: 4px 5px 0px 0px;"></div>
+                                <h4>Processamento das imagens</h4>
+                            </div>
+                            <div class="mainCheckbox" id="menu-processing-seeds-classification">
+                                <input type="checkbox" name="InputName" id="processing-seeds-classification">
+                                <label class="img-title tooltip-menu" for="processing-seeds-classification">
+                                    Escolher limiar das sementes
+                                        <span class="tooltiptext-menu">
+                                            *Caso não selecionada, será usado o valor default de 190 para o limite superior do vermelho claro, e 168 para o limite inferior do vermelho escuro.
+                                        </span>                                
+                                </label>
+                            </div>
+                            <div class="mainCheckbox" id="menu-processing-sup-limit">
+                               
+                                <label class="img-title">Limite superior do vermelho claro</label>
+                                <div class="row">
+                                    <div class="col-7">
+                                        <input type="range" id="processing-sup-limit" name="InputName" min="91" max="255" step="1" value ="190" onchange="changeLimiarVermelho('sup','range')">
+                                    </div>
+                                    <div class="col-2">
+                                        <input  style="width: 52px;" type="number" min="91" max="255" step="1" value ="190" id="numero-sup-limit" onchange="changeLimiarVermelho('sup','number')">
+                                    </div>
+                                    <div class="col-1 barra-cor" id="cor-sup-limit" style="margin-left: 24px;">
+                                    </div>
                                 </div>
-                                <div class="col-2">
-                                    <input  style="width: 52px;" type="number" min="91" max="255" step="1" value ="190" id="numero-sup-limit" onchange="changeLimiarVermelho('sup','number')">
-                                </div>
-                                <div class="col-1 barra-cor" id="cor-sup-limit" style="margin-left: 24px;">
+                            </div>
+                            <div class="mainCheckbox" id="menu-processing-inf-limit">
+                                <label class="img-title">Limite inferior do vermelho escuro</label>
+                                <div class="row">
+                                    <div class="col-7">
+                                        <input type="range" id="processing-inf-limit" name="InputName" min="91" max="255" step="1" value ="168" onchange="changeLimiarVermelho('inf','range')">
+                                    </div>
+                                    <div class="col-2">
+                                        <input style="width: 52px;" type="number" min="91" max="255" step="1" value ="168" id="numero-inf-limit" onchange="changeLimiarVermelho('inf','number')">
+                                    </div>
+                                    <div class="col-1 barra-cor" id="cor-inf-limit" style="margin-left: 24px;">
+                                    </div>
                                 </div>
                             </div>
                         </div>
-                        <div class="mainCheckbox" id="menu-processing-inf-limit">
-                            <label class="img-title">Limite inferior do vermelho escuro</label>
-                            <div class="row">
-                                <div class="col-7">
-                                    <input type="range" id="processing-inf-limit" name="InputName" min="91" max="255" step="1" value ="168" onchange="changeLimiarVermelho('inf','range')">
-                                </div>
-                                <div class="col-2">
-                                    <input style="width: 52px;" type="number" min="91" max="255" step="1" value ="168" id="numero-inf-limit" onchange="changeLimiarVermelho('inf','number')">
-                                </div>
-                                <div class="col-1 barra-cor" id="cor-inf-limit" style="margin-left: 24px;">
-                                </div>
+                        <div class="config-itens">
+                            <div class="config-itens-div">
+                                <div style="background-color: #D92626; width: 7px; height: 16px; margin: 4px 5px 0px 0px;"></div>
+                                <h4>Pre-processamento das imagens</h4>
+                            </div>
+                            <div class="mainCheckbox" id="menu-pre-processing-seeds-division">
+                                <input type="checkbox" name="InputName" id="pre-processing-seeds-division">
+                                <label class="img-title tooltip-menu" for="pre-processing-seeds-division">
+                                    Metade das imagens estão juntas
+                                    <span class="tooltiptext-menu">
+                                        *Resolução mínima de 300dpi
+                                    </span>  
+                                </label>
                             </div>
                         </div>
+                        <!-- <div class="config-itens">
+                            <h4>Classificação das imagens</h4>
+                            <div class="mainCheckbox" id="menu-classification-seeds-yolo">
+                                <input type="checkbox" name="InputName" id="classification-seeds-yolo">
+                                <label class="img-title" for="classification-seeds-yolo">Classificar o embrião</label>
+                            </div>
+                        </div> -->
                     </div>
-                    <div class="config-itens">
-                        <h4>Pre-processamento das imagens</h4>
-                        <div class="mainCheckbox" id="menu-pre-processing-seeds-division">
-                            <input type="checkbox" name="InputName" id="pre-processing-seeds-division">
-                            <label class="img-title tooltip-menu" for="pre-processing-seeds-division">
-                                Metade das imagens estão juntas
-                                <span class="tooltiptext-menu">
-                                    *Resolução mínima de 300dpi
-                                </span>  
-                            </label>
-                        </div>
-                    </div>
-                    <!-- <div class="config-itens">
-                        <h4>Classificação das imagens</h4>
-                        <div class="mainCheckbox" id="menu-classification-seeds-yolo">
-                            <input type="checkbox" name="InputName" id="classification-seeds-yolo">
-                            <label class="img-title" for="classification-seeds-yolo">Classificar o embrião</label>
-                        </div>
-                    </div> -->
                 </div>
                 
             </section>

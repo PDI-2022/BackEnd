@@ -3,7 +3,9 @@ td,
 th {
   border: 1px solid black;
 }
-
+#vigorTable{
+  padding: 24px 96px;
+}
 table {
   border-collapse: collapse;
   width: 100%;
@@ -96,5 +98,8 @@ td {
   .imgs-container img {
     margin-bottom: 12px;
     width: 80%;
+  }
+  #vigorTable{
+    padding: 24px 24px;
   }
 }

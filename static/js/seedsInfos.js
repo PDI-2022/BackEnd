@@ -54,8 +54,13 @@ function generateTable(externSeeds,internSeeds) {
     for(let i = 0; i < array.length; i++){
         arrayCsv.push(array[i].split(",")) 
     }
-    
-    clearScreenElement(body,mainFooter)
+    let hasVigorTable = document.querySelector("#vigorTable")
+    clearScreenElement(body,mainFooter,hasVigorTable)
+  
+    if(localStorage.getItem("hasClass") == "true"){
+        let vigorTable = makeVigorTable()
+        body.appendChild(vigorTable)
+    }
     let imgsContainer = fillTable(externSeeds,internSeeds,arrayCsv)
 
     for(let i = 0; i < imgsContainer.length; i++){
@@ -77,8 +82,10 @@ function generateTable(externSeeds,internSeeds) {
 }
 
 async function changePage(action){
-    let maxItem = arrayCsv.length - 2
+    let hasClass = (localStorage.getItem("hasClass") == "true")
+    let maxItem = hasClass ? arrayCsv.length - 5 : arrayCsv.length - 2
     state.totalPages = Math.ceil(maxItem / (2*state.perPage))
+    console.log(state.totalPages)
 
     switch (action){
         case 'inc':
@@ -111,8 +118,11 @@ async function changePage(action){
 }
 
 
-function clearScreenElement(body,mainFooter){
+function clearScreenElement(body,mainFooter, hasVigorTable){
     const mainNav = document.getElementsByTagName("header")[0]
+    if(!!hasVigorTable){
+        body.removeChild(hasVigorTable)
+    }
     let imgContainer = document.querySelectorAll(".imgs-container")
     if(imgContainer.length > 0){
         imgContainer.forEach(img=>{
@@ -228,4 +238,42 @@ function makeTable(image, item, maxNumberOffColumns){
     tableWrapper.appendChild(table)
     imgsContainer.appendChild(tableWrapper)
     return imgsContainer
+}
+
+function makeVigorTable(){
+
+    let tableWrapper = document.createElement("div")
+    tableWrapper.setAttribute("class","table-responsive")
+
+    let h3 = document.createElement("h3")
+    h3.innerHTML = "Resumo das Classes"
+    tableWrapper.appendChild(h3)
+    
+    let table = document.createElement("table")
+    table.setAttribute("class","f1-table")
+
+    let thead = document.createElement("thead")
+
+    let tr = document.createElement("tr")
+    for(let i = 0; i < 9; i++){
+        let th = document.createElement("th")
+        th.innerHTML= arrayCsv[arrayCsv.length-3][i]
+        tr.appendChild(th)
+    }
+    thead.appendChild(tr)
+    table.appendChild(thead)
+
+    let tbody = document.createElement("tbody")
+    tr = document.createElement("tr")
+
+    for(let i = 0; i < 9; i++){
+        let td = document.createElement("td")
+        td.innerHTML = arrayCsv[arrayCsv.length-2][i]
+        tr.appendChild(td)
+    }
+    tbody.appendChild(tr)
+    table.appendChild(tbody)
+    tableWrapper.appendChild(table)
+    tableWrapper.setAttribute("id","vigorTable")
+    return tableWrapper
 }

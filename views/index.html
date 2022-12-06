@@ -33,7 +33,7 @@
     <link href="./static/stylesheets/Configuration.css" rel="stylesheet" />
   </head>
 
-  <body style="background-color: #fafafa">
+  <body style="background-color: #ffffff">
     <header>
       <nav class="navbar fixed-top navbar-expand-lg navbar-light logo">
         <a href="/" class="navbar-brand">
@@ -148,7 +148,7 @@
                   </h2>
                   <h3>Arraste e solte a imagem aqui</h3>
                 </div>
-                <button class="upload-button" style="margin-top: 20px">
+                <button class="upload-button">
                   <label class="label-button" for="imgButtonInt">
                     Ou selecione o arquivo
                   </label>
@@ -188,10 +188,11 @@
         <section class="menu-config">
           <div
             style="
-              display: flex;
-              justify-content: start;
-              align-items: stretch;
-              margin-left: 140px;
+                  display: flex;
+                  justify-content: center;
+                  align-items: center;
+                  flex-direction: row;
+                  margin-bottom: 28px;
             "
           >
             <h4>Caso deseje, selecione um ou mais filtros:</h4>
@@ -351,7 +352,7 @@
                       margin: 4px 5px 0px 0px;
                     "
                   ></div>
-                  <h4>Pre-processamento das imagens</h4>
+                  <h4>Pré-processamento das imagens</h4>
                 </div>
                 <div
                   class="mainCheckbox"
@@ -366,9 +367,9 @@
                     class="img-title tooltip-menu"
                     for="pre-processing-seeds-division"
                   >
-                    Metade das imagens estão juntas
+                    Enviar imagem sem grid
                     <span class="tooltiptext-menu">
-                      *Resolução mínima de 300dpi
+                      *Ao marcar esse campo, a resolução mínima das imagens deve ser de 300dpi
                     </span>
                   </label>
                 </div>

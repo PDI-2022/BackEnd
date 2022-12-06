@@ -59,5 +59,5 @@ const saveUser = async () => {
 //evento ao clicar em salvar
 document.getElementById('salvar').addEventListener('click', saveUser)
 document.getElementById('cancelar').addEventListener('click', ()=>{
-    window.location.href = "/"
+    window.location.href = document.referrer
 })

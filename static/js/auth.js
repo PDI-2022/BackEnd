@@ -19,3 +19,7 @@ async function auth(){
         window.location.href = "login"
     }
 }
+function logout(){
+    sessionStorage.clear()
+    window.location.href = "login"
+}

@@ -45,6 +45,14 @@
                         <li class="nav-item">
                             <a class="nav-link itensNavLink" href="/uploadModel">Upload de modelo</a>
                         </li>
+                        <li class="nav-item">
+                            <a class="nav-link itensNavLink" href="/new-user"
+                              >Novo Usuário</a
+                            >
+                          </li>
+                          <li class="nav-item">
+                            <img onclick="logout()" src="{{ url_for('static', filename='Assets/Icons/logout.svg') }}" style="cursor: pointer;">
+                          </li>
                     </ul>
                 </div>
             </div>
@@ -72,6 +80,8 @@
 <script src="{{ url_for('static', filename='js/seedsInfos.js') }}"></script>
 <script src="{{ url_for('static', filename='js/auth.js') }}"></script>
 <script src="{{ url_for('static', filename='js/components/index.js') }}"></script>
+<script src="{{ url_for('static', filename='js/auth.js') }}"></script>
+
 
 <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
     integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"

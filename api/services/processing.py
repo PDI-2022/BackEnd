@@ -302,6 +302,32 @@ def process_data(
             if(((i+1) % 2) == 0):
                 index = index + 1
 
+        class_counters = [0, 0, 0, 0, 0, 0, 0]
+        total = len(classification)
+        for clazz in classification:
+            class_counters[clazz - 1] += 1
+        
+        class_percentage = [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0]
+        for i in range(7):
+            class_percentage[i] = (class_counters[i] / total)
+
+        vigor = (class_counters[0] + class_counters[1] + class_counters[2]) / total
+        viability = (class_counters[0] + class_counters[1] + class_counters[2] + class_counters[3] + class_counters[4]) / total
+
+        rows.append([])
+        rows.append(['Vigor', 'Viabilidade', '% Classe 1', '% Classe 2', '% Classe 3', '% Classe 4', '% Classe 5', '% Classe 6', '% Classe 7'])
+        rows.append([
+            f'{vigor*100:.2f}%', 
+            f'{viability*100:.2f}%', 
+            f'{class_percentage[0]*100:.2f}%',
+            f'{class_percentage[1]*100:.2f}%',
+            f'{class_percentage[2]*100:.2f}%',
+            f'{class_percentage[3]*100:.2f}%',
+            f'{class_percentage[4]*100:.2f}%',
+            f'{class_percentage[5]*100:.2f}%',
+            f'{class_percentage[6]*100:.2f}%',
+            ])
+
     with open('relatorio.csv', 'w', encoding='UTF8', newline='') as f:
         writer = csv.writer(f)
         writer.writerow(header)

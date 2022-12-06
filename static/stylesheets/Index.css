@@ -42,3 +42,13 @@ html {
     justify-content: center;
     align-items: center;
 }
+
+.image-icons{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.image-icons img {
+    width: 400px;
+    height: 150px;
+}

@@ -4,6 +4,7 @@ import cv2
 import numpy as np
 import base64
 import csv
+from api.services.detect import deteccao
 from api.services.grid_cut import cortar_malha as cut
 from api.services.classification import classificate
 from skimage import measure
@@ -213,7 +214,10 @@ def process_data(
     modelPath : str, 
     limInfRed : int, 
     limSupRed: int,
-    imgJoined: bool    
+    imgJoined: bool,
+    model,
+    embriao_model,
+    classificationYolo:bool    
 ):
     buffer_intern = base64.b64decode(intern)
     nparr = np.frombuffer(buffer_intern, np.uint8)
@@ -287,15 +291,20 @@ def process_data(
     end = time.perf_counter()
 
     print(f'Imagens processadas em {end-start} segundos')
-
+    if classificationYolo:
+        for i in range(len(extern_seeds)):
+            path=f"./images/imagens_cortadas/images/semente-{i+1}.jpg"
+            img = cv2.imread(path)
+            deteccao(embriao_model, img,i)
 
     rows.sort(key=lambda value : (0 if value[1] == 'Interno' else 1, value[0]))
+    classes = 7
     if showClassification:
         for i in range(len(extern_seeds)):
             print(i)
             createCutImgsFold(i)
 
-        classification = classificate(modelPath)
+        classification = classificate(model, modelPath, classes)
         index = 0
         for i, row in enumerate(rows):
             row.append(classification[index])
@@ -305,7 +314,7 @@ def process_data(
         class_counters = [0, 0, 0, 0, 0, 0, 0]
         total = len(classification)
         for clazz in classification:
-            class_counters[clazz - 1] += 1
+            class_counters[int(clazz) - 1] += 1
         
         class_percentage = [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0]
         for i in range(7):

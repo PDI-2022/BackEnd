@@ -5,11 +5,18 @@ from api.constants.folders import images_folder, red_extract_folder, background_
 from api.services.processing import process_data
 from config import db
 from db.models import Model
+from api.services.classification import model
+
 import os
 import base64
 import cv2
+import torch
 
 process_bp = Blueprint('process', __name__, url_prefix="/api/v1/process")
+embriao_model = torch.hub.load('ultralytics/yolov5', 'custom', path="models_embriao/V5/bestM.pt")
+
+device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+model = model()
 
 def extract_data_and_save(data : any, identifier : str) -> str:
     payload = data[identifier]
@@ -46,13 +53,14 @@ def process():
 
     displayClassificationInfos = data['displayClassificationInfos']
     generatePageWithImages = data['generatePageWithImages']
-
+    classificationYolo = data['classificationYolo']
     model_path = ''
     if displayClassificationInfos:
         model_id = data['modelId']
         model = db.session.query(Model).filter_by(id = model_id).first()
         model_path = model.path
-    
+    else :
+        model = ""
     csv_file = process_data(
         internal_img, 
         external_img, 
@@ -61,7 +69,10 @@ def process():
         model_path,
         int(limInf),
         int(limSup),
-        seedTogether
+        seedTogether,
+        model,
+        embriao_model,
+        classificationYolo
     )
     return send_file(csv_file, 'text/csv'), status.HTTP_200_OK     
 

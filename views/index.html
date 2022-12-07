@@ -35,7 +35,7 @@
 
   <body style="background-color: #ffffff">
     <header>
-      <nav class="navbar fixed-top navbar-expand-lg navbar-light logo">
+      <nav class="navbar fixed-top navbar-expand-lg navbar-light logo" style="box-shadow:none!important;">
         <a href="/" class="navbar-brand">
           <div style="display: flex">
             <img
@@ -91,6 +91,18 @@
       </nav>
     </header>
     <main>
+      <section id="sobre" class="about">
+        <div class="about-text flex">
+            <h1><strong>Análise de imagens de sementes de Feijão Caupi<span>.</span></strong></h1>
+            <p>O projeto <strong>TetraSeed</strong> surgiu com o intuito de automatizar e auxiliar a pesquisa feita pela docente do PROGRAMA DE PÓS-GRADUAÇÃO EM AGRONOMIA/FITOTECNIA, Lucimara Ribeiro Venial, no qual é realizado TESTE DE TETAZÓLIO EM SEMENTES DE FEIJÃO DE CAUPI</p>
+            <br/>
+            <p>O projeto visa analisar as imagens de sementes dessa espécie e gerar os resultados de % de cor de vermelho carmim clara, % de cor de vermelho carmim escura, % de cor de branco, % de cor de branco leitoso, detecção de buracos nas sementes, e classificar elas de acordo com os parâmetros estabelecidos.</p>
+            <button onclick="sendToInicio()"><strong>ANALISAR</strong></button>
+        </div>
+        <div class="image-replace">
+            <img src="{{ url_for('static', filename='Assets/img/about-image.jpg') }}">
+        </div>
+    </section>
       <section id="inicio" class="flex images">
         <div>
           <div class="container-section upload-section">
@@ -412,30 +424,6 @@
           </button>
         </div>
       </div>
-
-      <section id="sobre" class="about">
-        <div class="about-text flex">
-          <h2>
-            <strong>Sobre a <span class="red-text">TetraSeed</span></strong>
-          </h2>
-          <p>
-            O projeto surgiu com o intuito de automatizar e auxiliar a pesquisa
-            feita pela docente do PROGRAMA DE PÓS-GRADUAÇÃO EM
-            AGRONOMIA/FITOTECNIA, Lucimara Ribeiro Venial, no qual é realizado
-            TESTE DE TRETAZÓLIO EM SEMENTES DE FEIJÃO CAUPI.
-          </p>
-          <p>
-            O projeto visa analizar as imagens de sementes dessa espécie e gerar
-            os resultados de % de cor de vermelho carmim clara, % de cor de
-            vermelho carmim escura, % de cor de branco, % de cor de branco
-            leitoso, detecção de buracos nas sementes, e classificar elas de
-            acordo com parâmetros estabelecidos.
-          </p>
-        </div>
-        <div class="image-replace">
-          <img src="{{ url_for('static', filename='Assets/Logo/logo.svg') }}" />
-        </div>
-      </section>
       <section id="equipe" class="team flex">
         <h2 class="red-text">Equipe</h2>
         <p>

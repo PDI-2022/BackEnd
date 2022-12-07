@@ -18,6 +18,11 @@ async function paginacao () {
         "page": state.page,
         "itensPerPage": state.perPage
     }
+    $('#modal-comp').modal({
+        show:true,
+        backdrop: 'static',
+        keyboard: false
+    });  
     const url = new String("http://127.0.0.1:5000/api/v1/process/pagination");
     const Img = await fetch(url, {
         method:"POST", 
@@ -26,28 +31,36 @@ async function paginacao () {
     }).catch(err=>{
         console.error(err)
     })
-
+    
     const response = await Img.json()
     response["externSeeds"]
+    $('#modal-comp').modal('hide');
+
     generateTable(response["externSeeds"],response["internSeeds"])
 }
 
 window.onload = async function () {
-    if(localStorage.getItem("classificationYolo") == "true"){
-        let respEmbriao = await fetch("http://localhost:5000/api/v1/process/embriao", {
-            method:"GET", 
-        }).catch(err=>{
-            console.error(err)
-        })
-        let csvembriao = await respEmbriao.text()
-        localStorage.setItem("embriaoCsv",csvembriao)
-
-    }
     await auth()
     if(localStorage.getItem("csv") == '' || !localStorage.getItem("csv"))
         window.location.href="/"
     
     else{
+        if(localStorage.getItem("classificationYolo") == "true"){
+            $('#modal-comp').modal({
+                show:true,
+                backdrop: 'static',
+                keyboard: false
+            });  
+            let respEmbriao = await fetch("http://localhost:5000/api/v1/process/embriao", {
+                method:"GET", 
+            }).catch(err=>{
+                console.error(err)
+            })
+            let csvembriao = await respEmbriao.text()
+            localStorage.setItem("embriaoCsv",csvembriao)
+            $('#modal-comp').modal('hide');
+    
+        }
         await paginacao ()
     }
 }

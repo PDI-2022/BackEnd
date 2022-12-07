@@ -13,5 +13,15 @@ function clickHandleModel(){
     inputClass.addEventListener("change",()=>{
         let modelHolder = document.querySelector(".modelHolder")
         modelHolder.style.display = inputClass.checked ? "flex" : "none" 
+        let menuClassificationSeedsClassNumber = document.querySelector("#menu-classification-seeds-class-number")
+        menuClassificationSeedsClassNumber.style.display = InputClass.checked ? "block" : "none"
     })
 }
+// function hideClassificationInputClass(){
+//     let InputClass = document.querySelector("#InputClass")
+//     // let classificationSeedsClass = document.querySelector("#classification-seeds-class")
+//     InputClass.addEventListener("change",()=>{
+//         let menuClassificationSeedsClassNumber = document.querySelector("#menu-classification-seeds-class-number")
+//         menuClassificationSeedsClassNumber.style.display = InputClass.checked ? "block" : "none"
+//     })
+// }

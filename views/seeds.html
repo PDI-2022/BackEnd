@@ -21,6 +21,9 @@
 </head>
 
 <body class="downloadScreen"  style="background-color: #FAFAFA">
+    <modal-loading></modal-loading>
+    <modal-error></modal-error>
+    <modal-redirecting></modal-redirecting>
     <header>
         <nav class="navbar fixed-top navbar-expand-lg navbar-light logo">
             <a href="/" class="navbar-brand">
@@ -45,13 +48,21 @@
                         <li class="nav-item">
                             <a class="nav-link itensNavLink" href="/uploadModel">Upload de modelo</a>
                         </li>
+                        <li class="nav-item">
+                            <a class="nav-link itensNavLink" href="/new-user"
+                              >Novo Usuário</a
+                            >
+                          </li>
+                          <li class="nav-item">
+                            <img onclick="logout()" src="{{ url_for('static', filename='Assets/Icons/logout.svg') }}" style="cursor: pointer;">
+                          </li>
                     </ul>
                 </div>
             </div>
         </nav>
     </header>
 
-    <footer class="flex-row" style="display: flex;align-items: center">
+    <footer class="flex-row" style="display: flex; align-items: center; bottom: 0;margin: 0!important;width: 100%;">
         <a href="/">
             <span class="logo flex-row">
                 <img src="{{ url_for('static', filename='Assets/Logo/logo.svg') }}" alt="logo">
@@ -72,6 +83,8 @@
 <script src="{{ url_for('static', filename='js/seedsInfos.js') }}"></script>
 <script src="{{ url_for('static', filename='js/auth.js') }}"></script>
 <script src="{{ url_for('static', filename='js/components/index.js') }}"></script>
+<script src="{{ url_for('static', filename='js/auth.js') }}"></script>
+
 
 <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
     integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"

@@ -217,7 +217,8 @@ def process_data(
     imgJoined: bool,
     model,
     embriao_model,
-    classificationYolo:bool    
+    classificationYolo:bool,
+    seedsClassNumberInput:int    
 ):
     buffer_intern = base64.b64decode(intern)
     nparr = np.frombuffer(buffer_intern, np.uint8)
@@ -298,7 +299,8 @@ def process_data(
             deteccao(embriao_model, img,i)
 
     rows.sort(key=lambda value : (0 if value[1] == 'Interno' else 1, value[0]))
-    classes = 7
+    classes = int(seedsClassNumberInput)
+    print(classes)
     if showClassification:
         for i in range(len(extern_seeds)):
             print(i)

@@ -51,7 +51,7 @@ def process():
     limInf = data["limInf"]
 
     seedTogether = data["seedTogether"]
-
+    seedsClassNumberInput = data["seedsClassNumberInput"]
     displayClassificationInfos = data['displayClassificationInfos']
     generatePageWithImages = data['generatePageWithImages']
     classificationYolo = data['classificationYolo']
@@ -73,7 +73,8 @@ def process():
         seedTogether,
         model,
         embriao_model,
-        classificationYolo
+        classificationYolo,
+        seedsClassNumberInput
     )
     return send_file(csv_file, 'text/csv'), status.HTTP_200_OK     
 

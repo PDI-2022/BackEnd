@@ -225,6 +225,23 @@
                     </span>
                   </label>
                 </div>
+
+                <div class="mainCheckbox" id="menu-classification-seeds-class-number" style="margin:12px 0">
+                  <label class="img-title tooltip-menu"
+                    >Número de classes
+                    <span class="tooltiptext-menu">
+                      *Por default, o número de classes é 7. Valor mínimo 1, valor máximo 7
+                    </span></label
+                  >
+                  <input 
+                    type="number" 
+                    step="1" 
+                    min="1" 
+                    max="7" 
+                    value="7" 
+                    id="menu-classification-seeds-class-number-input">
+                </div>
+
                 <div class="mainCheckbox" id="menu-file-images-page">
                   <input
                     type="checkbox"
@@ -378,12 +395,23 @@
                 </div>
               </div>
               <!-- <div class="config-itens">
-                            <h4>Classificação das imagens</h4>
-                            <div class="mainCheckbox" id="menu-classification-seeds-yolo">
-                                <input type="checkbox" name="InputName" id="classification-seeds-yolo">
-                                <label class="img-title" for="classification-seeds-yolo">Classificar o embrião</label>
-                            </div>
-                        </div> -->
+                <div class="config-itens-div">
+                  <div
+                  style="
+                    background-color: #d92626;
+                    width: 7px;
+                    height: 16px;
+                    margin: 4px 5px 0px 0px;
+                  "
+                ></div>
+                <h4>Classificação das imagens</h4>
+                </div>
+
+                <div class="mainCheckbox" id="menu-classification-seeds-yolo">
+                  <input type="checkbox" name="InputName" id="classification-seeds-yolo">
+                  <label class="img-title" for="classification-seeds-yolo">Classificar o embrião</label>
+                </div>
+              </div> -->
             </div>
           </div>
         </section>

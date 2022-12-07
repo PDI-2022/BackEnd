@@ -1,29 +1,56 @@
 .about {
     max-width: 100%;
-    justify-content: center;
+    justify-content: space-around;
     display: flex;
     flex-direction: row;
+    background-color: #d63e41;
+    padding-bottom: 90px;
+    margin-bottom: 100px;
 }
+
 .image-replace{
     display: flex;
     justify-content: center;
     align-items: center;
-}
-.image-replace img {
-    width: 200px;
-    height: 200px;
-}
-.about-text {
-    max-width: 634px;
-    align-items: center;
+    min-width: 50%;
 }
 
-.about-text h2 {
+.image-replace img{
+    position: absolute;
+}
+
+.about-text {
+    max-width: 40%;
+    color: #ffffff;
+}
+
+.about-text h1 {
     margin-bottom: 32px;
+    font-size: 3.5rem;
+}
+
+.about-text h1 span {
+    color: #53ed7f;
 }
 
 .about-text p {
-    text-indent: 32px;
+    font-weight: 500;
+}
+
+.about-text button {
+    margin-top: 32px;
+    width: 150px;
+    height: 60px;
+    color: #ffffff;
+    border-radius: 8px;
+    border: none;
+    background: rgb(18,140,54);
+    background: linear-gradient(180deg, rgba(18,140,54,1) 0%, rgba(70,218,112,1) 100%);
+    transition: 0.5s;
+}
+
+.about-text button:hover {
+    filter: brightness(80%)
 }
 
 @media (max-width:991px) {
@@ -33,5 +60,10 @@
     }
     .about-text{
         padding: 20px;
+        max-width: 100%;
+    }
+    .image-replace img{
+        position: relative;
+        width: 50%;
     }
 }

@@ -63,6 +63,11 @@ window.onload = async function () {
 function returnHome(){
     window.location.href = '/'
 }
+
+function sendToInicio() {
+    window.location.href = '/#inicio'
+}
+
 function dragOverHandler(event, input) {
     event.preventDefault();
 }

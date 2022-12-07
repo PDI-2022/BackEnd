@@ -82,8 +82,8 @@ async function sendToBack() {
     
     let seedsClassNumberInput = displayClassificationInfos ? document.querySelector("#menu-classification-seeds-class-number-input").value : 7
 
-    // let classificationYolo = document.querySelector("#classification-seeds-yolo").checked
-    let classificationYolo = false
+    let classificationYolo = document.querySelector("#classification-seeds-yolo").checked
+    localStorage.setItem("classificationYolo",classificationYolo)
 
     if(seedsClassNumberInput > 7 || seedsClassNumberInput < 1){
         window.alert(`O valor do número de classes deve ser maior que 1 e menor que 7. Valor atual ${seedsClassNumberInput} `)
@@ -146,16 +146,16 @@ async function sendToBack() {
             }
             else if(this.readyState === 4 && req.status == 200){
                 localStorage.setItem("csv",req.response)
-                $('#modal-comp').modal('hide'); 
 
                 var showIconAndName = false
                 if (!localStorage.getItem('csv')) {
                     showIconAndName = true;
                 }
                 if(localStorage.getItem('csv') != '' && tableAux == 0){
-                    $('#modal-comp').modal('hide');
 
                     if(generatePageWithImages){
+                        $('#modal-comp').modal('hide');
+
                         $('#modal-redirecting').modal({
                             show:true,
                             backdrop: 'static',
@@ -166,6 +166,7 @@ async function sendToBack() {
                     }
                     else{
                         generateDownloadScreen()
+
                     }
                     tableAux = 1
                 }
@@ -187,7 +188,21 @@ async function sendToBack() {
     }
 }
 
-function generateDownloadScreen(){
+async function generateDownloadScreen(){
+    if(localStorage.getItem("classificationYolo") == "true"){
+        let respEmbriao = await fetch("http://localhost:5000/api/v1/process/embriao", {
+            method:"GET", 
+        }).catch(err=>{
+            console.error(err)
+        })
+        let csvembriao = await respEmbriao.text()
+        localStorage.setItem("embriaoCsv",csvembriao)
+        $('#modal-comp').modal('hide');
+    }
+    else{
+        $('#modal-comp').modal('hide');
+    }
+
     let selectBody = document.querySelector("body")
     selectBody.setAttribute("class","downloadScreen")
     selectBody.removeChild(body.main)
@@ -206,12 +221,25 @@ function downloadCsv() {
     if (link.download !== undefined) {
         var url = URL.createObjectURL(blob);
         link.setAttribute("href", url);
-        link.setAttribute("download", "Arquivo.csv");
+        link.setAttribute("download", "Sementes.csv");
         link.style.visibility = 'hidden';
         document.body.appendChild(link);
         link.click();
         document.body.removeChild(link);
-        window.location.href ="/"
+    }
+    if(!!localStorage.getItem("embriaoCsv")){
+        const csvString = localStorage.getItem("embriaoCsv");
+        var blob = new Blob([csvString], { type: 'text/plain;charset=utf-8;' });
+        var link = document.createElement("a");
+        if (link.download !== undefined) {
+            var url = URL.createObjectURL(blob);
+            link.setAttribute("href", url);
+            link.setAttribute("download", "Embriao.csv");
+            link.style.visibility = 'hidden';
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+        }  
     }
 }
 

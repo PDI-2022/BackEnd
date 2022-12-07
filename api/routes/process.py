@@ -1,11 +1,12 @@
 from flask import jsonify, request, send_file, Blueprint
 from flask_api import status
 from api.services.storage import save_base64_image, create_folder
-from api.constants.folders import images_folder, red_extract_folder, background_removed_folder, white_extract_folder, pagination_folder, imagens_cortadas_folder
-from api.services.processing import process_data
+from api.constants.folders import images_folder, red_extract_folder, background_removed_folder, white_extract_folder, pagination_folder, imagens_cortadas_folder, embriao_folder
+from api.services.processing import process_data, process_embriao
 from config import db
 from db.models import Model
 from api.services.classification import model
+import re
 
 import os
 import base64
@@ -99,3 +100,22 @@ def pagination():
             seeds_array_externo.append(str(base64.b64encode(externo)))
 
     return jsonify({"internSeeds":seeds_array_interno,"externSeeds":seeds_array_externo}), status.HTTP_200_OK
+
+
+@process_bp.route("/embriao", methods=['GET'])
+def embriao():
+    embrioes_names = os.listdir(embriao_folder)
+    total_embrioes = len(embrioes_names)
+    
+    embrioes = []
+    for image in embrioes_names:
+        number = image[8]
+        number  = number + image[9] if image[9] != '.' else number + ''
+        number  = number + image[10] if image[10] != '.' and image[10] != 'j' else number + ''
+        number = int(number)
+        embriao_atual = cv2.imread(embriao_folder + f'/semente-{number}.jpg')
+        embrioes.append((number, embriao_atual))
+
+    csv_file = process_embriao(embrioes)
+
+    return send_file(csv_file, 'text/csv'), status.HTTP_200_OK 

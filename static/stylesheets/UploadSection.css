@@ -49,6 +49,12 @@ textarea:hover {
     border: 1px solid #D92626;
     border-radius: 30px;
 }
+.white button:hover{
+    background-color: white;
+    color: #821717;
+    border: 1px solid #D92626;
+    border-radius: 30px;
+}
 
 #cor-sup-limit{
     background: rgb(190, 0,0);

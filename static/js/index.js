@@ -49,9 +49,15 @@ window.onload = async function () {
     let processingInfLimit = document.querySelector("#menu-processing-inf-limit")
     processingSupLimit.style.display = "none" 
     processingInfLimit.style.display = "none"
+
+    let menuClassificationSeedsClassNumber = document.querySelector("#menu-classification-seeds-class-number")
+    // hideClassificationInputClass()
+    menuClassificationSeedsClassNumber.style.display = "none"
     
+
     clickHandleModel()
     clickHandleProcessing()
+
 }
 
 function returnHome(){
@@ -73,9 +79,17 @@ async function sendToBack() {
     let chooseLimiar = document.querySelector("#processing-seeds-classification").checked
     let limSup = chooseLimiar ? document.querySelector("#processing-sup-limit").value : 190
     let limInf = chooseLimiar ? document.querySelector("#processing-inf-limit").value : 168
+    
+    let seedsClassNumberInput = displayClassificationInfos ? document.querySelector("#menu-classification-seeds-class-number-input").value : 7
 
     // let classificationYolo = document.querySelector("#classification-seeds-yolo").checked
     let classificationYolo = false
+
+    if(seedsClassNumberInput > 7 || seedsClassNumberInput < 1){
+        window.alert(`O valor do número de classes deve ser maior que 1 e menor que 7. Valor atual ${seedsClassNumberInput} `)
+        return
+    }
+
     if(limSup < 91 || limSup > 255){
         window.alert(`O valor do limite superior deve ser maior que 91 e menor que 255. Valor atual ${limSup} `)
         return
@@ -117,7 +131,8 @@ async function sendToBack() {
             "seedTogether":seedTogether,
             "classificationYolo":classificationYolo,
             "internalImg":json["interna"],
-            "externalImg":json["externa"]
+            "externalImg":json["externa"],
+            "seedsClassNumberInput":seedsClassNumberInput
         }
 
         req.addEventListener("readystatechange", function () {

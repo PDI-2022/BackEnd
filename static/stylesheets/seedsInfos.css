@@ -33,6 +33,12 @@ td {
 .f1-table thead tr th:nth-child(2n+1){
   background-color: #4FC3A1;
 }
+.defaultButton #botaoDownload{
+  width: 200px;
+  /* border-radius: 30px; */
+  background: linear-gradient(180deg, #159038 0%, #2DC457 100%)!important;
+  border-image: linear-gradient(180deg, #159038 0%, #2DC457 100%)!important;;
+}
 .imgs-container {
   display: grid;
   grid-template-columns: 33% 66%;
@@ -52,9 +58,15 @@ td {
   border-radius: 30px;
 }
 .white button{
-  background-color: white;
+  background-color: white!important;
   color: #821717;
-  border: 1px solid #D92626;
+  border-image: linear-gradient(180deg, #159038 0%, #2DC457 100%)!important;;
+  border-radius: 30px;
+}
+.white button:hover{
+  background-color: white!important;
+  color: #821717;
+  border-image: linear-gradient(180deg, #159038 0%, #2DC457 100%)!important;;
   border-radius: 30px;
 }
 .downloadScreen{

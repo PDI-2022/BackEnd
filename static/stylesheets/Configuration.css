@@ -34,7 +34,7 @@
     font-size: 18px;
 }
 .config-row{
-    width: 70%;
+    width: 100%;
     display: grid;
     grid-template-columns: 30% 30% 30%;
     align-items: start;

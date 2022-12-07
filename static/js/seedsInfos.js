@@ -33,6 +33,16 @@ async function paginacao () {
 }
 
 window.onload = async function () {
+    if(localStorage.getItem("classificationYolo") == "true"){
+        let respEmbriao = await fetch("http://localhost:5000/api/v1/process/embriao", {
+            method:"GET", 
+        }).catch(err=>{
+            console.error(err)
+        })
+        let csvembriao = await respEmbriao.text()
+        localStorage.setItem("embriaoCsv",csvembriao)
+
+    }
     await auth()
     if(localStorage.getItem("csv") == '' || !localStorage.getItem("csv"))
         window.location.href="/"
@@ -171,12 +181,25 @@ function downloadCsv() {
     if (link.download !== undefined) {
         var url = URL.createObjectURL(blob);
         link.setAttribute("href", url);
-        link.setAttribute("download", "Arquivo.csv");
+        link.setAttribute("download", "Sementes.csv");
         link.style.visibility = 'hidden';
         document.body.appendChild(link);
         link.click();
         document.body.removeChild(link);
-        goBack();
+    }
+    if(!!localStorage.getItem("embriaoCsv")){
+        const csvString = localStorage.getItem("embriaoCsv");
+        var blob = new Blob([csvString], { type: 'text/plain;charset=utf-8;' });
+        var link = document.createElement("a");
+        if (link.download !== undefined) {
+            var url = URL.createObjectURL(blob);
+            link.setAttribute("href", url);
+            link.setAttribute("download", "Embriao.csv");
+            link.style.visibility = 'hidden';
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+        }  
     }
 }
 

@@ -101,7 +101,7 @@ def pagination():
     return jsonify({"internSeeds":seeds_array_interno,"externSeeds":seeds_array_externo}), status.HTTP_200_OK
 
 
-@process_bp.route("/embriao", methods=['POST'])
+@process_bp.route("/embriao", methods=['GET'])
 def embriao():
     embrioes_names = os.listdir(embriao_folder)
     total_embrioes = len(embrioes_names)

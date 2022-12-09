@@ -72,7 +72,19 @@ section,main{
     display: flex;
     align-items: center;
     justify-content: center;
+    flex-direction: row;
 }
 .buttonRow button{
     min-width: 200px;
+}
+#salvar{
+    margin-right: 24px;
+}
+@media (max-width:480px) {
+    .buttonRow{
+        flex-direction: column;
+    }
+    #salvar{
+        margin-right: 0;
+    }
 }

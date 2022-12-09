@@ -43,4 +43,5 @@ def login():
     token = generate(user_with_email.email, user_with_email.id)
 
     response = {"token": token}
+
     return jsonify(response), status.HTTP_200_OK

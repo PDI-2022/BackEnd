@@ -1,0 +1,14 @@
+.table-container{
+    padding: 48px;
+    width: 100%;
+}
+.deleteIcon{
+    width: 32px;
+    padding: 4px;
+    border-radius: 5px;
+    background-color: red;;
+    cursor: pointer;
+}
+.deleteIcon:hover{
+    background-color: #D64029;
+}

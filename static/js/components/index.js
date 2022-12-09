@@ -1,41 +1,28 @@
-class Header extends HTMLElement {
-    connectedCallback() {
-        this.innerHTML = `
-        <nav class="navbar navbar-light  d-flex justify-content-center" style="background-color: #712F26;">
-            <a class="navbar-brand" onclick="returnHome()" style="display: flex; cursor: pointer;">
-                <img src="/static/Assets/Logo/logo.svg" width="30" height="30" class="d-inline-block align-top" alt="">
-                <div style="color: white; padding-left: 12px;">TetraSeed </div>
-            </a>
-        </nav>
-        <div style="background-color: #fff; padding: 6px 0;"></div>
-          `
-    }
-}
 class Footer extends HTMLElement {
     connectedCallback() {
         this.innerHTML = ` 
-        <footer class="page-footer font-small blue pt-4">
-          <div class="container-fluid text-center text-md-left">
-                <hr class="line"/>
-                <div>
-                    <h6>Projeto desenvolvido pela equipe de Interface na disciplina de PDI 2022 - UFC</h6>
-                </div>
-                <div class="row"> 
-                    <div class="col-4">
-                    </div>
-                    <div class="col-2">
-                        <h6>Contato</h6>
-                    </div>
-                    <div class="col-2">
-                        <h6>Suporte</h6>
-                    </div>
-                    <div class="col-4"></div>
-                </div>
-            </div>
-        </footer>
+        <a href="/">
+        <span class="logo flex-row">
+          <img
+            src="/static/Assets/Logo/logo.svg"
+            alt="logo"
+          />
+          <strong>Tetra</strong>
+          <div>Seed</div>
+        </span>
+      </a>
+      <nav>
+        <a href="https://github.com/PDI-2022" target="_blank">
+          <img
+            src="/static/Assets/Icons/githubIcon.svg"
+            alt=""
+          />
+        </a>
+      </nav>
       `
     }
 }
+customElements.define('main-footer', Footer);
 class ModalLoading extends HTMLElement {
     connectedCallback() {
         this.innerHTML = ` 
@@ -72,6 +59,7 @@ class ModalLoading extends HTMLElement {
       `
     }
 }
+customElements.define('modal-loading', ModalLoading);
 
 class ModalRedirecting extends HTMLElement {
     connectedCallback() {
@@ -109,6 +97,7 @@ class ModalRedirecting extends HTMLElement {
       `
     }
 }
+customElements.define('modal-redirecting',ModalRedirecting);
 
 class DownloadPage extends HTMLElement {
     connectedCallback() {
@@ -122,6 +111,7 @@ class DownloadPage extends HTMLElement {
       `
     }
 }
+customElements.define('download-page', DownloadPage);
 
 class DownloadSection extends HTMLElement {
     connectedCallback() {
@@ -149,6 +139,7 @@ class DownloadSection extends HTMLElement {
       `
     }
 }
+customElements.define('download-section', DownloadSection);
 
 class ModalError extends HTMLElement {
     connectedCallback() {
@@ -181,6 +172,7 @@ class ModalError extends HTMLElement {
       `
     }
 }
+customElements.define('modal-error', ModalError);
 
 class PaginationComponent extends HTMLElement {
     connectedCallback() {
@@ -202,15 +194,148 @@ class PaginationComponent extends HTMLElement {
       `
     }
 }
-
 customElements.define('custom-pagination',PaginationComponent);
-customElements.define('main-header', Header);
-customElements.define('main-footer', Footer);
-customElements.define('modal-loading', ModalLoading);
-customElements.define('modal-redirecting',ModalRedirecting);
-customElements.define('modal-error', ModalError);
-customElements.define('download-section', DownloadSection);
-customElements.define('download-page', DownloadPage);
 
+class NavbarUser extends HTMLElement {
+    connectedCallback() {
+        const page = window.location.pathname
+        this.innerHTML = `<nav class="navbar fixed-top navbar-expand-lg navbar-light logo" style="box-shadow:none!important;width: 100vw!important;">
+        <a href="/" class="navbar-brand">
+          <div style="display: flex">
+            <img
+              src="/static/Assets/Logo/logo.svg"
+              style="width: 50px; height: 50px"
+              alt="logo"
+            />
+            <div class="brandName"><strong>Tetra</strong>Seed</div>
+          </div>
+        </a>
+        <button
+          class="navbar-toggler"
+          type="button"
+          data-toggle="collapse"
+          data-target="#navbarNav"
+          aria-controls="navbarNav"
+          aria-expanded="false"
+          aria-label="Toggle navigation"
+        >
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="container-fluid">
+          <div class="collapse navbar-collapse" id="navbarNav">
+            <ul
+              class="navbar-nav ml-auto float-right"
+              style="margin-left: 10px"
+            >
+            ${page == "/" ? `
+            <li class="nav-item">
+                <a class="nav-link itensNavLink" href="#inicio">Inicio</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link itensNavLink" href="#sobre">Sobre</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link itensNavLink" href="#equipe">Equipe</a>
+            </li>`: ``}
 
+          ${page != "/" ? `
+            <li class="nav-item">
+                <a class="nav-link itensNavLink" href="/">Home</a>
+            </li>`: ``}
+
+              <li class="nav-item">
+                <a class="nav-link itensNavLink" href="/uploadModel"
+                  >Upload de modelo</a
+                >
+              </li>
+              <li class="nav-item">
+                <img onclick="logout()" src="/static/Assets/Icons/logout.svg" style="cursor: pointer;">
+              </li>
+            </ul>
+          </div>
+        </div>
+      </nav>`
+    }
+}
+customElements.define('navbar-user', NavbarUser);
+
+class NavbarAdmin extends HTMLElement {
+    connectedCallback() {
+        const page = window.location.pathname
+        this.innerHTML = `<nav class="navbar fixed-top navbar-expand-lg navbar-light logo" style="box-shadow:none!important;width: 100vw!important;">
+        <a href="/" class="navbar-brand">
+          <div style="display: flex">
+            <img
+              src="/static/Assets/Logo/logo.svg"
+              style="width: 50px; height: 50px"
+              alt="logo"
+            />
+            <div class="brandName"><strong>Tetra</strong>Seed</div>
+          </div>
+        </a>
+        <button
+          class="navbar-toggler"
+          type="button"
+          data-toggle="collapse"
+          data-target="#navbarNav"
+          aria-controls="navbarNav"
+          aria-expanded="false"
+          aria-label="Toggle navigation"
+        >
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="container-fluid">
+          <div class="collapse navbar-collapse" id="navbarNav">
+            <ul
+              class="navbar-nav ml-auto float-right"
+              style="margin-left: 10px"
+            >
+
+              ${page == "/" ? `
+                <li class="nav-item">
+                    <a class="nav-link itensNavLink" href="#inicio">Inicio</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link itensNavLink" href="#sobre">Sobre</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link itensNavLink" href="#equipe">Equipe</a>
+                </li>`: ``}
+
+              ${page != "/" ? `
+                <li class="nav-item">
+                    <a class="nav-link itensNavLink" href="/">Home</a>
+                </li>`: ``}
+              
+              <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle nav-link itensNavLink" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    Menu dos Modelos
+                </a>
+                <div class="dropdown-menu" aria-labelledby="navbarDropdown" style="background-color:#D64040;color:white">
+                    <a class="dropdown-item" href="/uploadModel" style="color:white">Upload de modelo</a>
+                    <div class="dropdown-divider"></div>
+                    <a class="dropdown-item" href="/modelList" style="color:white">Listagem de modelos</a>
+                </div>
+              </li>
+              <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle nav-link itensNavLink" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    Menu dos Usuários
+                </a>
+                <div class="dropdown-menu" aria-labelledby="navbarDropdown" style="background-color:#D64040;color:white">
+                    <a class="dropdown-item" href="/new-user" style="color:white">Novo Usuário</a>
+                    <div class="dropdown-divider"></div>
+                    <a class="dropdown-item" href="/userList" style="color:white">Listagem de usuários</a>
+                </div>
+              </li>
+              <li class="nav-item">
+                <img onclick="logout()" src="/static/Assets/Icons/logout.svg" style="cursor: pointer;">
+              </li>
+
+            </ul>
+          </div>
+        </div>
+      </nav>`
+    }
+}
+customElements.define('navbar-admin', NavbarAdmin);
 

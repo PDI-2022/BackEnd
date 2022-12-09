@@ -35,60 +35,7 @@
 
   <body style="background-color: #ffffff">
     <header>
-      <nav class="navbar fixed-top navbar-expand-lg navbar-light logo" style="box-shadow:none!important;">
-        <a href="/" class="navbar-brand">
-          <div style="display: flex">
-            <img
-              src="{{ url_for('static', filename='Assets/Logo/logo.svg') }}"
-              style="width: 50px; height: 50px"
-              alt="logo"
-            />
-            <div class="brandName"><strong>Tetra</strong>Seed</div>
-          </div>
-        </a>
-        <button
-          class="navbar-toggler"
-          type="button"
-          data-toggle="collapse"
-          data-target="#navbarNav"
-          aria-controls="navbarNav"
-          aria-expanded="false"
-          aria-label="Toggle navigation"
-        >
-          <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="container-fluid">
-          <div class="collapse navbar-collapse" id="navbarNav">
-            <ul
-              class="navbar-nav ml-auto float-right"
-              style="margin-left: 10px"
-            >
-              <li class="nav-item">
-                <a class="nav-link itensNavLink" href="#inicio">Inicio</a>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link itensNavLink" href="#sobre">Sobre</a>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link itensNavLink" href="#equipe">Equipe</a>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link itensNavLink" href="/uploadModel"
-                  >Upload de modelo</a
-                >
-              </li>
-              <li class="nav-item">
-                <a class="nav-link itensNavLink" href="/new-user"
-                  >Novo Usuário</a
-                >
-              </li>
-              <li class="nav-item">
-                <img onclick="logout()" src="{{ url_for('static', filename='Assets/Icons/logout.svg') }}" style="cursor: pointer;">
-              </li>
-            </ul>
-          </div>
-        </div>
-      </nav>
+      <navbar-admin></navbar-admin>
     </header>
     <main>
       <section id="sobre" class="about">
@@ -435,7 +382,7 @@
           <h3>Selecione o modelo a ser utilizado</h3>
           <select name="model">
             {% for model in models %}
-            <option value="{{model.id}}">{{model.name}}</option>
+            <option value="{{model.id}}" title="{{model.name}}">{{model.name}}</option>
             {% endfor %}
           </select>
         </div>
@@ -712,36 +659,13 @@
                   <p>Luan Daniel</p>
                 </li>
               </ul>
-            
-              
-            
           </div>
         </div>
         
       </section>
     </main>
-    <footer
-      class="flex-row"
-      style="display: flex; align-items: center; bottom: 0;margin: 0!important;width: 100%;"
-    >
-      <a href="/">
-        <span class="logo flex-row">
-          <img
-            src="{{ url_for('static', filename='Assets/Logo/logo.svg') }}"
-            alt="logo"
-          />
-          <strong>Tetra</strong>
-          <div>Seed</div>
-        </span>
-      </a>
-      <nav>
-        <a href="https://github.com/PDI-2022" target="_blank">
-          <img
-            src="{{ url_for('static', filename='Assets/Icons/githubIcon.svg') }}"
-            alt=""
-          />
-        </a>
-      </nav>
+    <footer>
+      <main-footer></main-footer>
     </footer>
   </body>
   <link

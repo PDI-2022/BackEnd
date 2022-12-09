@@ -2,6 +2,7 @@ var applicationBody
 
 window.onload = function(){
     applicationBody = animationLoadFunction(applicationBody)
+    document.cookie= "token="
 }
 
 async function login(){
@@ -21,9 +22,9 @@ async function login(){
         window.alert("Usuário e/ou senha inválidos")
     else{
         let json = await response.json()
-        console.log(json)
         if(!!json){
             sessionStorage.setItem("token",json.token)
+            document.cookie = "token="+json.token
             window.location.href = "/"
         }
         else{

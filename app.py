@@ -17,6 +17,5 @@ app.register_blueprint(register_bp)
 app.register_blueprint(login_bp)
 app.register_blueprint(auth_bp)
 app.register_blueprint(forgot_password_bp)
-
 if __name__ == "main":
     app.run(debug=True)

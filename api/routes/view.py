@@ -22,6 +22,15 @@ def seeds():
 def model():
     return render_template("uploadModel.html")
 
+@app.route("/modelList", methods=['GET'])
+def modelList():
+    try:
+        models = requests.get("http://localhost:5000/api/v1/models")
+        modelJson = models.json()
+    except:
+        modelJson = [{"name":"","id":""}]
+    return render_template("modelList.html",models=modelJson)
+
 @app.route("/login", methods=['GET'])
 def login():
     return render_template("login.html")

@@ -249,7 +249,7 @@ function makeSeedCard(internSeedImage, internSeedDataIndex, externSeedImage, ext
 
     //left
     let leftTitle = document.createElement("h5")
-    leftTitle.innerHTML = "Parte Externa"
+    leftTitle.innerHTML = "Parte Interna"
 
     let leftInnerRow = document.createElement("div")
     leftInnerRow.setAttribute("class","row")

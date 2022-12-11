@@ -1,10 +1,11 @@
 import jwt
 from api.constants.secret import secret
 from datetime import datetime, timezone, timedelta
+from db.models import User
 
 
-def generate(email: str, id: int):
-    user_data = {"id": id, "email": email}
+def generate(usr: User):
+    user_data = {"id": usr.id, "email": usr.email, "role": usr.role}
     return jwt.encode(
         {
             "user_data": user_data,

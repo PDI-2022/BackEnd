@@ -39,7 +39,7 @@ def seed_default_user():
     user_email = "usuario_admin@alu.ufc.br"
     default_user = db.session.query(User).filter_by(email=user_email).first()
     if default_user is None:
-        default_user = User(user_email, "12345678")
+        default_user = User(user_email, "12345678", "ADMIN")
         db.session.add(default_user)
         db.session.commit()
 

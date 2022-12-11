@@ -21,15 +21,18 @@
 
 </head>
 
-<body style="background-color: #FAFAFA">
+<body style="background: linear-gradient(45deg, rgba(247,200,200,1) 20%, rgba(233,125,125,0.4) 50%, rgba(217,38,38,0.8) 80%);">
     
     <section id="animation">
         <div class="animationHolder">
-            <div class="main-text-animation">
-                <h1>TetraSeed</h1>
+            <div class="main-text-animation" style="display: flex;justify-content: center;">
+                <img src="{{ url_for('static', filename='Assets/Logo/logo-brown.svg') }}" style="max-width: 50px; max-height: 50px; margin-right: 12px;">
+                <h1><strong>Tetra</strong>Seed</h1>
             </div>
-            <div class="secondary-text-animation">
+            <div class="secondary-text-animation" style="display: flex;align-items: center;">
+                <img src="{{ url_for('static', filename='Assets/Img/Semente Externa1.png') }}" style="max-width: 120px; margin-right: 20px;">
                 <h2>Ferramenta de Classificação de Sementes</h2>
+                <img src="{{ url_for('static', filename='Assets/Img/Semente Interna1.png') }}" style="max-width: 120px; margin-left: 20px;">
             </div>
             <div class="button-text-animation">
                 <div id="botao" class="mt-5 defaultButton">

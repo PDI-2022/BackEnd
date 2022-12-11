@@ -35,7 +35,7 @@ section,main{
 }
 .loginSubText{
     margin-top: 12px;
-    margin-bottom: 48px;
+    margin-bottom: 32px;
 }
 .LoginInfosContainer{
     height: 100%;
@@ -47,6 +47,7 @@ section,main{
     display: flex;
     flex-direction: column;
     margin: 12px;
+    padding: 12px 0px;
 }
 .LoginInfosContainer h3{
     text-align: center;
@@ -78,4 +79,12 @@ section,main{
 }
 .buttonRow button{
     min-width: 200px;
+    background: linear-gradient(180deg, #159038 0%, #2DC457 100%)!important;
+    border: none;
+}
+@media (max-width:1000px){
+    html { 
+        font-size: 12px; 
+    
+    } 
 }

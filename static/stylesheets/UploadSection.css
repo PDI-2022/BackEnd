@@ -42,7 +42,7 @@ textarea:hover {
     /* border-radius: 30px; */
     border-radius: 0;
     background: linear-gradient(180deg, #159038 0%, #2DC457 100%)!important;
-    border-image: linear-gradient(180deg, #159038 0%, #2DC457 100%)!important;;
+    border-image: linear-gradient(180deg, #159038 0%, #2DC457 100%)!important;
 }
 .white .botaoVoltar{
     border-radius: 0;

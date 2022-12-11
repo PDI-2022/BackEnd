@@ -1,6 +1,8 @@
 var applicationBody
 
 window.onload = function(){
+    let main = document.querySelector("main")
+    main.style.display = "none"
     applicationBody = animationLoadFunction(applicationBody)
     document.cookie= "token="
 }

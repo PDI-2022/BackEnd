@@ -1,7 +1,7 @@
 from flask import Blueprint, jsonify, request
 from flask_api import status
 from api.constants.folders import models_folder
-from api.services.storage import decompress_and_save
+from api.services.storage import decompress_and_save, delete_folder
 from api.response.pagination import Pagination
 from api.response.error import Error
 from config import db
@@ -24,11 +24,22 @@ def create():
         )
 
     model_name = request.form.get("name")
-    if model_name == "":
+    if model_name == "" or model_name is None:
         return (
             jsonify(
                 Error(
                     "Nome do modelo é obrigatório", status.HTTP_400_BAD_REQUEST
+                ).__dict__
+            ),
+            status.HTTP_400_BAD_REQUEST,
+        )
+
+    model_description = request.form.get("description")
+    if model_description == "" or model_description is None:
+        return (
+            jsonify(
+                Error(
+                    "Descrição do modelo é obrigatória", status.HTTP_400_BAD_REQUEST
                 ).__dict__
             ),
             status.HTTP_400_BAD_REQUEST,
@@ -47,12 +58,12 @@ def create():
             status.HTTP_400_BAD_REQUEST,
         )
 
-    path_to_model = decompress_and_save(
+    model_path = decompress_and_save(
         models_folder,
         model_compressed_file.stream._file,
         model_compressed_file.filename,
     )
-    new_model = Model(name=model_name, path=path_to_model)
+    new_model = Model(model_name, model_path, model_description)
     db.session.add(new_model)
     db.session.commit()
 
@@ -81,6 +92,7 @@ def list_paginate():
 def delete(id: int):
     model = Model.query.filter_by(id=id).first()
     if model:
+        delete_folder(model.path)
         db.session.delete(model)
         db.session.commit()
         return "", status.HTTP_200_OK

@@ -9,6 +9,11 @@ class Model(db.Model):
     path = db.Column(db.Text())
     description = db.Column(db.Text())
 
+    def __init__(self, name, path, description):
+        self.name = name
+        self.path = path
+        self.description = description
+
     def serialize(self) -> dict:
         return {"id": self.id, "name": self.name, "description": self.description}
 

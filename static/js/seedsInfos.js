@@ -1,5 +1,15 @@
 var csv
 var arrayCsv = []
+var bulletMap = [
+    '- ID',
+    '- Lado',
+    '- % de Branco',
+    '- % de Branco Leitoso',
+    '- % de Vermelho Carmim Claro',
+    '- % de Vermelho Carmim Escuro',
+    '- Qtd. de Buracos',
+    '- Área dos Buracos/Área da Semente'
+]
 
 const state = {
     page: 1,
@@ -86,8 +96,18 @@ function generateTable(externSeeds,internSeeds) {
     }
     let imgsContainer = fillTable(externSeeds,internSeeds,arrayCsv)
 
+    let container = document.createElement("div")
+    container.setAttribute("class","container")
+
+    let pageTitle = document.createElement("h2")
+    pageTitle.innerHTML = "Análise Individual por Semente"
+
+    container.appendChild(pageTitle)
+
+    body.appendChild(container)
+
     for(let i = 0; i < imgsContainer.length; i++){
-        body.appendChild(imgsContainer[i])
+        container.appendChild(imgsContainer[i])
     }
 
     if(!document.getElementsByTagName("download-section")[0]){
@@ -146,11 +166,16 @@ function clearScreenElement(body,mainFooter, hasVigorTable){
     if(!!hasVigorTable){
         body.removeChild(hasVigorTable)
     }
-    let imgContainer = document.querySelectorAll(".imgs-container")
+    let imgContainer = document.querySelectorAll(".seed-card")
+    let container = document.querySelector(".container")
+
+
     if(imgContainer.length > 0){
         imgContainer.forEach(img=>{
-            body.removeChild(img)
+            container.removeChild(img)
+            // body.removeChild(img)
         })
+        body.removeChild(container)
         let downloadSection = document.querySelector("download-section")
         body.removeChild(downloadSection)
         let pag = document.querySelector("custom-pagination")
@@ -166,17 +191,204 @@ function fillTable(externSeeds,internSeeds,arrayCsv){
     const finalValue = ((state.perPage*state.page)+1)
 
     let hasClass = localStorage.getItem("hasClass")
-    let maxNumberOffColumns = hasClass == "true" ? 9 : 8
+    let maxNumberOfColumns = hasClass == "true" ? 9 : 8
     
 
     let imgsContainer = []
 
     for(let i=1;i<=internSeeds.length;i++){
-        imgsContainer.push(makeTable(internSeeds[i-1], (initialValue+(2*i)-2), maxNumberOffColumns))
-        imgsContainer.push(makeTable(externSeeds[i-1], (initialValue+(2*i)-1), maxNumberOffColumns))
+        imgsContainer.push(
+            makeSeedCard(internSeeds[i-1], (initialValue+(2*i)-2), externSeeds[i-1], (initialValue+(2*i)-1), maxNumberOfColumns, hasClass == "true" ? true : false)
+        )
+
+        // imgsContainer.push(makeTable(internSeeds[i-1], (initialValue+(2*i)-2), maxNumberOffColumns))
+        // imgsContainer.push(makeTable(externSeeds[i-1], (initialValue+(2*i)-1), maxNumberOffColumns))
     }
 
     return imgsContainer
+}
+
+function makeSeedCard(internSeedImage, internSeedDataIndex, externSeedImage, externSeedDataIndex, maxNumberOfColumns, hasClassification){
+    let card = document.createElement("div")
+    card.setAttribute("class","card mt-4 seed-card")
+
+    let cardTitle = document.createElement("h4")
+
+    cardTitle.setAttribute("class", "card-title m-3")
+    cardTitle.innerHTML = "Semente " + arrayCsv[internSeedDataIndex][0]
+
+    card.appendChild(cardTitle)
+
+    if (hasClassification){
+        let cardSubtitle = document.createElement("h6")
+        cardSubtitle.setAttribute("class", "card-subtitle m-3")
+        cardSubtitle.innerHTML = "Classe "+ arrayCsv[internSeedDataIndex][maxNumberOfColumns-1]
+
+        card.appendChild(cardSubtitle)
+    }
+
+    let cardBody = document.createElement("div")
+    cardBody.setAttribute("class","card-body")
+
+    card.appendChild(cardBody)
+
+    let outterRow = document.createElement("div")
+    outterRow.setAttribute("class","row")
+
+    cardBody.appendChild(outterRow)
+
+    let leftColumn = document.createElement("div")
+    leftColumn.setAttribute("class", "col-md-6")
+
+
+    let rightColumn = document.createElement("div")
+    rightColumn.setAttribute("class", "col-md-6")
+
+    outterRow.appendChild(leftColumn)
+    outterRow.appendChild(rightColumn)
+
+    //left
+    let leftTitle = document.createElement("h5")
+    leftTitle.innerHTML = "Parte Externa"
+
+    let leftInnerRow = document.createElement("div")
+    leftInnerRow.setAttribute("class","row")
+
+    leftColumn.appendChild(leftTitle)
+    leftColumn.appendChild(leftInnerRow)
+
+    let leftImgCol = document.createElement("div")
+    leftImgCol.setAttribute("class","col-md-6")
+
+    leftInnerRow.appendChild(leftImgCol)
+
+    let leftImgData = externSeedImage.slice(2,externSeedImage.lastIndexOf("'"))
+    let leftBase64 = "data:image/jpg;base64,"+ leftImgData
+    let leftImg = document.createElement("img")
+
+    leftImg.setAttribute("src",leftBase64)
+    leftImg.setAttribute("style","width:100%")
+
+    leftImgCol.appendChild(leftImg)
+
+    let leftDataCol = document.createElement("div")
+    leftDataCol.setAttribute("class","col-md-6")
+
+    leftInnerRow.appendChild(leftDataCol)
+
+    let leftList = document.createElement("ul")
+    leftList.setAttribute("class", "list-group list-group-flush seed-details")
+
+    for(let i = 2; i < maxNumberOfColumns; i++){
+        let li = document.createElement("li")
+        li.setAttribute("class","list-group-item")
+        li.setAttribute("style","padding:4px")
+        li.innerHTML = "<b>"+bulletMap[i]+": </b>" + arrayCsv[externSeedDataIndex][i]
+
+        leftList.appendChild(li)
+
+        // arrayCsv[externSeedDataIndex][i]
+    }
+
+    leftDataCol.appendChild(leftList)
+    
+    
+    //right
+    let rightTitle = document.createElement("h5")
+    rightTitle.innerHTML = "Parte Interna"
+
+    let rightInnerRow = document.createElement("div")
+    rightInnerRow.setAttribute("class","row")
+
+    rightColumn.appendChild(rightTitle)
+    rightColumn.appendChild(rightInnerRow)
+
+    let rightImgCol = document.createElement("div")
+    rightImgCol.setAttribute("class","col-md-6")
+
+    rightInnerRow.appendChild(rightImgCol)
+
+    let rightImgData = internSeedImage.slice(2,internSeedImage.lastIndexOf("'"))
+    let rightBase64 = "data:image/jpg;base64,"+ rightImgData
+    let rightImg = document.createElement("img")
+
+    rightImg.setAttribute("src",rightBase64)
+    rightImg.setAttribute("style","width:100%")
+
+    rightImgCol.appendChild(rightImg)
+
+    let rightDataCol = document.createElement("div")
+    rightDataCol.setAttribute("class","col-md-6")
+
+    rightInnerRow.appendChild(rightDataCol)
+
+    let rightList = document.createElement("ul")
+    rightList.setAttribute("class", "list-group list-group-flush seed-details")
+
+    for(let i = 2; i < maxNumberOfColumns; i++){
+        let li = document.createElement("li")
+        li.setAttribute("class","list-group-item")
+        li.setAttribute("style","padding:4px")
+        li.innerHTML = "<b>"+bulletMap[i]+": </b>" + arrayCsv[internSeedDataIndex][i]
+
+        rightList.appendChild(li)
+
+        // arrayCsv[externSeedDataIndex][i]
+    }
+
+    rightDataCol.appendChild(rightList)
+
+
+    return card
+
+    //terminar
+
+
+
+
+
+
+    // let imgsContainer
+   
+    // let a = image.slice(2,image.lastIndexOf("'"))
+    // let base64 = "data:image/jpg;base64,"+ a
+    // imgsContainer = document.createElement("div")
+
+    // imgsContainer.setAttribute("class","imgs-container")
+
+    // let img = document.createElement("img")
+    // img.setAttribute("src",base64)
+    // imgsContainer.appendChild(img)
+
+    // let tableWrapper = document.createElement("div")
+    // tableWrapper.setAttribute("class","table-responsive")
+
+    // let table = document.createElement("table")
+    // table.setAttribute("class","f1-table")
+
+    // let thead = document.createElement("thead")
+
+    // let tr = document.createElement("tr")
+    // for(let i = 0; i < maxNumberOffColumns; i++){
+    //     let th = document.createElement("th")
+    //     th.innerHTML= arrayCsv[0][i]
+    //     tr.appendChild(th)
+    // }
+    // thead.appendChild(tr)
+    // table.appendChild(thead)
+
+    // let tbody = document.createElement("tbody")
+    // tr = document.createElement("tr")
+    // for(let i = 0; i < maxNumberOffColumns; i++){
+    //     let td = document.createElement("td")
+    //     td.innerHTML = arrayCsv[item][i]
+    //     tr.appendChild(td)
+    // }
+    // tbody.appendChild(tr)
+    // table.appendChild(tbody)
+    // tableWrapper.appendChild(table)
+    // imgsContainer.appendChild(tableWrapper)
+    // return imgsContainer
 }
 
 function goBack(){

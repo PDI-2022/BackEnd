@@ -77,7 +77,7 @@ def register():
             status.HTTP_400_BAD_REQUEST,
         )
 
-    user_with_email = db.session.query(User).filter_by(email=email).first()
+    user_with_email = db.session.query(User).filter_by(email=email, role="USER").first()
     if user_with_email is None:
         return (
             jsonify(

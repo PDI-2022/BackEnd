@@ -25,8 +25,8 @@ def seed_default_model():
     model_name = "inception13"
     default_model = db.session.query(Model).filter_by(name=model_name).first()
     if default_model is None:
-        path_to_model = "{0}/{1}".format(models_folder, model_name)
-        default_model = Model(name=model_name, path=path_to_model)
+        model_path = "{0}/{1}".format(models_folder, model_name)
+        default_model = Model(model_name, model_path, "Modelo default")
         db.session.add(default_model)
         db.session.commit()
 
@@ -39,7 +39,7 @@ def seed_default_user():
     user_email = "usuario_admin@alu.ufc.br"
     default_user = db.session.query(User).filter_by(email=user_email).first()
     if default_user is None:
-        default_user = User(user_email, "12345678")
+        default_user = User(user_email, "12345678", "ADMIN")
         db.session.add(default_user)
         db.session.commit()
 

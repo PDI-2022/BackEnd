@@ -35,7 +35,13 @@
 
   <body style="background-color: #ffffff">
     <header>
+     
+      {% if role == "ADMIN"  %}
       <navbar-admin></navbar-admin>
+      {% else %}
+      <navbar-user></navbar-user>
+      {% endif %}
+
     </header>
     <main>
       <section id="sobre" class="about">

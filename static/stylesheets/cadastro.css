@@ -10,6 +10,10 @@ body{
 section,main{
     height: 100%;
 }
+#salvar button{
+    background: linear-gradient(180deg, #159038 0%, #2DC457 100%);
+    border: none;
+}
 .cadastroContainer{
     display: flex;
     flex-direction: column;

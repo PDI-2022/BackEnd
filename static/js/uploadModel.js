@@ -11,21 +11,26 @@ window.onload = async function () {
     handleSendButton()
 }
 
-function stateHandle(button) {
+function stateHandle(button,input) {
     let name = document.querySelector("#InputName").value
-    formData.delete("name")
-    formData.append("name",name)
-    let validator = !!formData.get("name") && !!formData.get("model")
+    formData.delete(input)
+    formData.append(input,name)
+    let validator = !!formData.get("name") && !!formData.get("model") && !!formData.get("description")
 
     button.disabled = !validator
 }
 
 function handleSendButton(){
     let button = document.querySelector("#sendModelBtn");
-    let nameInput = document.querySelector("#InputName")
+    let nameInput = document.querySelector("#InputName");
+    let description = document.querySelector("#InputDescription");
+
     button.disabled = true;
     nameInput.addEventListener("keyup",()=>{
-        stateHandle(button)
+        stateHandle(button,"name")
+    }); 
+    description.addEventListener("keyup",()=>{
+        stateHandle(button,"description")
     }); 
 }
 
@@ -61,7 +66,7 @@ function validateFile(itemAsFile,name) {
     formData.delete("model")
     const format = name.substring(name.lastIndexOf("."))
     if (validateFormat(format)) {
-
+        console.log(itemAsFile)
         formData.append("model",itemAsFile)
         let fileContainer = document.querySelector('#file-label')
         !fileContainer ? showTextAndIcon(name) : updateTextAndIcon(name)
@@ -92,13 +97,17 @@ async function sendModel(){
           body: formData
     }).then(response=>{
         $('#modal-comp').modal('hide');
-        $('#modal-redirecting').modal({
-            show:true,
-            backdrop: 'static',
-            keyboard: false
-        })
-        window.location.href = "/"
-
+        if(response.status == 201){
+            $('#modal-redirecting').modal({
+                show:true,
+                backdrop: 'static',
+                keyboard: false
+            })
+            window.location.href = "/"
+        }
+        else{
+            window.alert("Ocorreu um erro")
+        }
     }).catch(err=>{
         button.disabled = false
         $('#modal-comp').modal('hide');

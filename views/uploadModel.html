@@ -19,19 +19,23 @@
 
 </head>
 
-<body style="background-color: #FAFAFA">
+<body class="modelBody">
     <modal-loading></modal-loading>
     <modal-error></modal-error>
     <modal-redirecting></modal-redirecting>
     <header>
+        {% if role == "ADMIN"  %}
         <navbar-admin></navbar-admin>
+        {% else %}
+        <navbar-user></navbar-user>
+        {% endif %}
     </header>
 
     <div style="width: 100%;display:flex;align-items:center;justify-content: center; flex-direction: column;">
         <section style="margin-bottom: 24px;">
             <h2>Modelo utilizado para a Classificação das sementes. Espera-se um arquivo .zip</h2>
         </section>
-        <div class="container-drag ext">
+        <div class="container-drag ext model-container-drag" style="max-width: none;">
             <div class="img-container" id="drag-drop-ext" ondrop="dropHandler(event);"
                 ondragover="dragOverHandler(event);">
                 <div class="img-titles flex">
@@ -52,14 +56,24 @@
             </div>
             <div class="fileContainer">
             </div>
-            <div style="display: flex;align-items:center;flex-direction: column;">
-                <h4 class="img-title">Nome do modelo a ser salvo</h4>
-                <input type="text" name="InputName" id="InputName" class="inputUpload">
+            <div style="display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin-left: 24px;">
+                <div style="display: flex;align-items:center;flex-direction: column;">
+                    <h4 class="img-title">Nome do modelo a ser salvo</h4>
+                    <input type="text" name="InputName" id="InputName" class="inputUpload">
+                </div>
+                <div style="display: flex;align-items:center;flex-direction: column;">
+                    <h4 class="img-title">Descrição do modelo a ser salvo</h4>
+                    <textarea name="InputDescription" id="InputDescription" class="inputUpload"></textarea>
+                </div>
+                <div id="botao" class="mt-5 defaultButton" style="margin-bottom: 180px;">
+                    <button type="button" id="sendModelBtn" class="btn btn-danger btn-lg botaoEnviar"
+                        onclick="sendModel()">Enviar Modelo</button>
+                </div>
             </div>
-            <div id="botao" class="mt-5 defaultButton" style="margin-bottom: 180px;">
-                <button type="button" id="sendModelBtn" class="btn btn-danger btn-lg botaoEnviar"
-                    onclick="sendModel()">Enviar Modelo</button>
-            </div>
+            
         </div>
 
     </div>

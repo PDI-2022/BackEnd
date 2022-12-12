@@ -1,5 +1,5 @@
 .table-container{
-    padding: 48px;
+    padding: 12px;
     width: 100%;
 }
 .deleteIcon{
@@ -11,4 +11,18 @@
 }
 .deleteIcon:hover{
     background-color: #D64029;
+}
+.content-holder{
+    width: 100%;
+    display:flex;
+    align-items:center;
+    justify-content: center;
+    flex-direction: column;
+}
+td{
+    max-width: 160px;
+    white-space: nowrap;
+    overflow: e;
+    text-overflow: ellipsis;
+    overflow: hidden;
 }

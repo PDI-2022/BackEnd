@@ -2,15 +2,14 @@ from flask import Blueprint, request, jsonify
 from flask_api import status
 from api.services.email_validator import check
 from api.response.error import Error
+from api.response.pagination import Pagination
 from config import db
 from db.models import User
 
-forgot_password_bp = Blueprint(
-    "forgot_password", __name__, url_prefix="/api/v1/forgot-password"
-)
+user_bp = Blueprint("user", __name__, url_prefix="/api/v1/users")
 
 
-@forgot_password_bp.route("", methods=["POST"])
+@user_bp.route("", methods=["POST"])
 def register():
     content_type = request.headers.get("Content-Type")
     if "application/json" not in content_type:
@@ -77,16 +76,51 @@ def register():
             status.HTTP_400_BAD_REQUEST,
         )
 
-    user_with_email = db.session.query(User).filter_by(email=email, role="USER").first()
-    if user_with_email is None:
+    user_with_email = db.session.query(User).filter_by(email=email).first()
+    if user_with_email is not None:
         return (
             jsonify(
-                Error("Usuário não encontrado", status.HTTP_401_UNAUTHORIZED).__dict__
+                Error(
+                    "O email submetido já está registrado", status.HTTP_400_BAD_REQUEST
+                ).__dict__
             ),
-            status.HTTP_401_UNAUTHORIZED,
+            status.HTTP_400_BAD_REQUEST,
         )
 
-    user_with_email.change_password(password)
+    new_user = User(email, password)
+    db.session.add(new_user)
     db.session.commit()
+    return new_user.serialize(), status.HTTP_201_CREATED
 
-    return "", status.HTTP_200_OK
+
+@user_bp.route("", methods=["GET"])
+def list_paginate():
+    offset = request.args.get("offset", type=int)
+    limit = request.args.get("limit", type=int)
+
+    if not limit and not offset:
+        users = User.query.all()
+        response = list()
+        for user in users:
+            response.append(user.serialize())
+        return jsonify(response), status.HTTP_200_OK
+
+    results = User.query.filter_by(role="USER").paginate(
+        page=offset, per_page=limit, error_out=False
+    )
+    total = User.query.count()
+    response = Pagination(results, offset, limit, total).__dict__
+    return jsonify(response), status.HTTP_200_OK
+
+
+@user_bp.route("/<int:id>", methods=["DELETE"])
+def delete(id: int):
+    user = User.query.filter_by(id=id, role="USER").first()
+    if user:
+        db.session.delete(user)
+        db.session.commit()
+        return "", status.HTTP_200_OK
+    return (
+        jsonify(Error("Usuário não encontrado", status.HTTP_404_NOT_FOUND).__dict__),
+        status.HTTP_404_NOT_FOUND,
+    )

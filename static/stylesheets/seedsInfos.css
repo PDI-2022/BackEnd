@@ -35,7 +35,6 @@ td {
 }
 .defaultButton #botaoDownload{
   width: 200px;
-  /* border-radius: 30px; */
   background: linear-gradient(180deg, #159038 0%, #2DC457 100%)!important;
   border-image: linear-gradient(180deg, #159038 0%, #2DC457 100%)!important;;
 }
@@ -66,6 +65,12 @@ td {
 .white button:hover{
   background-color: white!important;
   color: #821717;
+  border-image: linear-gradient(180deg, #159038 0%, #2DC457 100%)!important;;
+  border-radius: 30px;
+}
+.white button:active{
+  background-color: white!important;
+  color: #821717!important;
   border-image: linear-gradient(180deg, #159038 0%, #2DC457 100%)!important;;
   border-radius: 30px;
 }

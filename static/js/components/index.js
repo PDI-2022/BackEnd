@@ -12,12 +12,21 @@ class Footer extends HTMLElement {
         </span>
       </a>
       <nav>
+      <div style="display: flex;
+      align-items: center;
+      flex-direction: row;">
+        <p style="margin: 0">Deseja enviar seu modelo para processar suas imagens? entre em contato
+          <a href="http://site.lesc.freeddns.org/contact/" target="_blank" style="text-decoration: underline;font-size:1rem;margin:0">
+            LESC
+          </a>
+        </p>
         <a href="https://github.com/PDI-2022" target="_blank">
           <img
             src="/static/Assets/Icons/githubIcon.svg"
-            alt=""
-          />
+            alt=""/>
         </a>
+      </div>
+
       </nav>
       `
     }
@@ -242,12 +251,6 @@ class NavbarUser extends HTMLElement {
             <li class="nav-item">
                 <a class="nav-link itensNavLink" href="/">Home</a>
             </li>`: ``}
-
-              <li class="nav-item">
-                <a class="nav-link itensNavLink" href="/uploadModel"
-                  >Upload de modelo</a
-                >
-              </li>
               <li class="nav-item">
                 <img onclick="logout()" src="/static/Assets/Icons/logout.svg" style="cursor: pointer;">
               </li>

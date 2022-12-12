@@ -191,6 +191,9 @@ function fillTable(externSeeds,internSeeds,arrayCsv){
     const finalValue = ((state.perPage*state.page)+1)
 
     let hasClass = localStorage.getItem("hasClass")
+    if(hasClass){
+        bulletMap.push("Classe")
+    }
     let maxNumberOfColumns = hasClass == "true" ? 9 : 8
     
 

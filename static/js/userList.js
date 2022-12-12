@@ -1,17 +1,16 @@
 let page = 1;
 let itensPerPage = 10;
 window.onload = async function(){
-    await auth()
-    await getModels()
+    await getUsers()
 }
 
-async function getModels(){
+async function getUsers(){
     $('#modal-comp').modal({
         show:true,
         backdrop: 'static',
         keyboard: false
     });  
-    let url = `http://localhost:5000/api/v1/models?offset=${page}&limit=${itensPerPage}`
+    let url = `http://localhost:5000/api/v1/users?offset=${page}&limit=${itensPerPage}`
     let res = await fetch(url,{
         method: "GET"
     })
@@ -25,8 +24,8 @@ async function getModels(){
     }
 }
 
-function makeTable(models){
-    const tbody = document.querySelectorAll(".modelTbody")
+function makeTable(users){
+    const tbody = document.querySelectorAll(".userTbody")
     tbody.forEach(t=>{
         t.remove()
     })
@@ -37,24 +36,23 @@ function makeTable(models){
 
     let table = document.querySelector("table")
     
-    models.forEach(model => {
+    users.forEach(user => {
         let tbodyNew = document.createElement("tbody")
-        tbodyNew.setAttribute("class","modelTbody")
+        tbodyNew.setAttribute("class","userTbody")
         
-        tbodyNew.innerHTML = `<td scope="row">${model.id}</td>
-        <td title="${model.name}">${model.name}
-        <td title="${model.description}">${model.description}
+        tbodyNew.innerHTML = `<td scope="row">${user.id}</td>
+        <td title="${user.email}">${user.email}
         </td>
-        ${model.id != 1 ? 
-            `<td>
-                <img onclick="deleteModel('${model.id}')" 
-                    class="deleteIcon"
-                    src="./static/Assets/Icons/delete.svg">
-            </td>`
-            :   
-            `<td>
-            </td>`}
-        `
+        <td title="${user.role}">${user.role}
+        </td>
+        <td style=" width: 128px;">
+        <img onclick="updateUser('${user.id}')" 
+            class="deleteIcon"
+            src="./static/Assets/Icons/edit.svg" style="margin-right:12px;background:#007de3">
+        <img onclick="deleteUser('${user.id}')" 
+            class="deleteIcon"
+            src="./static/Assets/Icons/delete.svg">
+        </td>`
 
         table.appendChild(tbodyNew)
     });
@@ -87,41 +85,42 @@ function createPagination(){
 
 }
 function updateUser(userId) {
-
+   
 }
-async function deleteModel(modelId) {
-    result = window.confirm("Tem certeza que deseja deletar esse modelo? essa ação não poderá ser desfeita")
+async function deleteUser(userId) {
+    result = window.confirm("Tem certeza que deseja deletar esse usuário? essa ação não poderá ser desfeita")
     if(result){
         $('#modal-comp').modal({
             show:true,
             backdrop: 'static',
             keyboard: false
         });  
-        let url = `http://localhost:5000/api/v1/models/${modelId}`
+        let url = `http://localhost:5000/api/v1/users/${userId}`
         let res = await fetch(url,{
             method: "DELETE"
         }).catch(err=>{
-            window.alert("Modelo não encontrado")
+            window.alert("Usuário não encontrado")
             $('#modal-comp').modal('hide');
         })
         if(res.status != 200){
-            window.alert("Modelo não encontrado")
+            window.alert("Usuário não encontrado")
         }
         else{
-            await getModels()
+            await getUsers()
         }
         $('#modal-comp').modal('hide');
     }
-
+    
 }
 
 async function changePage(mode){
     if(page != 1 && mode == "dec") {
         page --
-        await getModels() 
+        await getUsers() 
     }
     else if(mode == "inc") {
         page ++
-        await getModels() 
+        await getUsers() 
     }
+
 } 

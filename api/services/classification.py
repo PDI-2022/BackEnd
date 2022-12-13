@@ -41,7 +41,6 @@ def classificate(model ,model_path : str, classes):
         files = test_generator.filenames
         for img_path in files:
                 label = img_path.split("-")
-                print(label)
                 label = label[-1].split(".jpg")
                 dados = int(label[0])
                 image_list.append(dados)
@@ -69,6 +68,5 @@ def classificate(model ,model_path : str, classes):
         df = pd.DataFrame(list_csv, columns=['SEMENTE', 'CLASSE'])
         df = df.sort_values(by=['SEMENTE'])
         predicao = df['CLASSE'].to_numpy()
-        print(predicao)
 
         return predicao

@@ -25,7 +25,7 @@ class User(db.Model):
     password = db.Column(db.Text(), nullable=False)
     role = db.Column(db.String(10), nullable=False)
 
-    def __init__(self, email, password, role="USER"):
+    def __init__(self, email="", password="", role="USER"):
         self.password = generate_password_hash(password)
         self.email = email
         self.role = role

@@ -1,7 +1,7 @@
 from flask import Blueprint, request, jsonify
 from flask_api import status
 from api.services.email_validator import check
-from api.response.error import Error
+from api.response.error import error_response
 from api.response.pagination import Pagination
 from config import db
 from db.models import User
@@ -9,82 +9,57 @@ from db.models import User
 user_bp = Blueprint("user", __name__, url_prefix="/api/v1/users")
 
 
-@user_bp.route("", methods=["POST"])
-def register():
+def validate_content_type(request):
     content_type = request.headers.get("Content-Type")
     if "application/json" not in content_type:
         return (
-            jsonify(
-                Error(
-                    "Media-type não suportado", status.HTTP_415_UNSUPPORTED_MEDIA_TYPE
-                ).__dict__
+            False,
+            error_response(
+                "Media-type não suportado", status.HTTP_415_UNSUPPORTED_MEDIA_TYPE
             ),
-            status.HTTP_415_UNSUPPORTED_MEDIA_TYPE,
         )
+    return True, {}, 0
+
+
+@user_bp.route("", methods=["POST"])
+def register():
+    valid, response, errorStatus = validate_content_type(request)
+    if not valid:
+        return response, errorStatus
 
     data = request.json
 
     if "user" not in data:
-        return (
-            jsonify(
-                Error(
-                    "O campo usuário é obrigatório", status.HTTP_400_BAD_REQUEST
-                ).__dict__
-            ),
-            status.HTTP_400_BAD_REQUEST,
+        return error_response(
+            "O campo usuário é obrigatório", status.HTTP_400_BAD_REQUEST
         )
 
     email = data["user"]
     if email is None or email == "":
-        return (
-            jsonify(
-                Error(
-                    "O campo usuário é obrigatório", status.HTTP_400_BAD_REQUEST
-                ).__dict__
-            ),
-            status.HTTP_400_BAD_REQUEST,
+        return error_response(
+            "O campo usuário é obrigatório", status.HTTP_400_BAD_REQUEST
         )
 
     if not check(email):
-        return (
-            jsonify(
-                Error(
-                    "O email submetido não é válido", status.HTTP_400_BAD_REQUEST
-                ).__dict__
-            ),
-            status.HTTP_400_BAD_REQUEST,
+        return error_response(
+            "O email submetido não é válido", status.HTTP_400_BAD_REQUEST
         )
 
     if "password" not in data:
-        return (
-            jsonify(
-                Error(
-                    "O campo senha é obrigatório", status.HTTP_400_BAD_REQUEST
-                ).__dict__
-            ),
-            status.HTTP_400_BAD_REQUEST,
+        return error_response(
+            "O campo senha é obrigatório", status.HTTP_400_BAD_REQUEST
         )
 
     password = data["password"]
     if password is None or password == "":
-        return (
-            jsonify(
-                Error(
-                    "O campo senha é obrigatório", status.HTTP_400_BAD_REQUEST
-                ).__dict__
-            ),
-            status.HTTP_400_BAD_REQUEST,
+        return error_response(
+            "O campo senha é obrigatório", status.HTTP_400_BAD_REQUEST
         )
 
     user_with_email = db.session.query(User).filter_by(email=email).first()
     if user_with_email is not None:
-        return (
-            jsonify(
-                Error(
-                    "O email submetido já está registrado", status.HTTP_400_BAD_REQUEST
-                ).__dict__
-            ),
-            status.HTTP_400_BAD_REQUEST,
+        return error_response(
+            "O email submetido já está registrado", status.HTTP_400_BAD_REQUEST
         )
 
     new_user = User(email, password)
@@ -99,7 +74,7 @@ def list_paginate():
     limit = request.args.get("limit", type=int)
 
     if not limit and not offset:
-        users = User.query.all()
+        users = User.query.filter_by(role="USER").all()
         response = list()
         for user in users:
             response.append(user.serialize())
@@ -120,7 +95,31 @@ def delete(id: int):
         db.session.delete(user)
         db.session.commit()
         return "", status.HTTP_200_OK
-    return (
-        jsonify(Error("Usuário não encontrado", status.HTTP_404_NOT_FOUND).__dict__),
-        status.HTTP_404_NOT_FOUND,
-    )
+    return error_response("Usuário não encontrado", status.HTTP_404_NOT_FOUND)
+
+
+@user_bp.route("/<int:id>", methods=["PATCH"])
+def update(id: int):
+    valid, response, errorStatus = validate_content_type(request)
+    if not valid:
+        return response, errorStatus
+
+    data = request.json
+    user = User.query.filter_by(id=id, role="USER").first()
+    if not user:
+        return error_response("Usuário não encontrado", status.HTTP_404_NOT_FOUND)
+
+    email = data["user"]
+    if email is not None or email != "":
+        if not check(email):
+            return error_response(
+                "O email submetido não é válido", status.HTTP_400_BAD_REQUEST
+            )
+        user.email = email
+
+    password = data["password"]
+    if password is not None or password != "":
+        user.change_password(password)
+
+    db.session.commit()
+    return "", status.HTTP_200_OK

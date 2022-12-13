@@ -24,7 +24,7 @@
     <modal-error></modal-error>
     <modal-redirecting></modal-redirecting>
     <header>
-        {% if role == "ADMIN"  %}
+        {% if role == "ADMIN" %}
         <navbar-admin></navbar-admin>
         {% else %}
         <navbar-user></navbar-user>
@@ -35,27 +35,30 @@
         <section style="margin-bottom: 24px;">
             <h2>Modelo utilizado para a Classificação das sementes. Espera-se um arquivo .zip</h2>
         </section>
-        <div class="container-drag ext model-container-drag" style="max-width: none;">
-            <div class="img-container" id="drag-drop-ext" ondrop="dropHandler(event);"
-                ondragover="dragOverHandler(event);">
-                <div class="img-titles flex">
-                    <h2 class="img-title">Upload do <span class="red-text">modelo</span></h2>
-                    <h4 style="font-weight: 300;">Arraste e solte o modelo aqui</h4>
+        <div class="model-container-drag">
+            <div class="container-drag ext" style="max-width: none;">
+                <div class="img-container" id="drag-drop-ext" ondrop="dropHandler(event);"
+                    ondragover="dragOverHandler(event);">
+                    <div class="img-titles flex">
+                        <h2 class="img-title">Upload do <span class="red-text">modelo</span></h2>
+                        <h4 style="font-weight: 300;">Arraste e solte o modelo aqui</h4>
+                    </div>
+                    <button class="upload-button">
+                        <label class="label-button" for="fileButton">Ou selecione o arquivo</label>
+
+                        <input class="input-button" type="file" name="fileButton" id="fileButton" style="display: none;"
+                            accept=".zip" onchange="uploadFileInput(event)">
+                    </button>
+
+                    <div class="image-icons">
+                        <img src="{{ url_for('static', filename='Assets/Icons/zipIcon.svg') }}" alt="">
+                    </div>
+
                 </div>
-                <button class="upload-button">
-                    <label class="label-button" for="fileButton">Ou selecione o arquivo</label>
-
-                    <input class="input-button" type="file" name="fileButton" id="fileButton" style="display: none;"
-                        accept=".zip" onchange="uploadFileInput(event)">
-                </button>
-
-                <div class="image-icons">
-                    <img src="{{ url_for('static', filename='Assets/Icons/zipIcon.svg') }}" alt="">
+                <div class="fileContainer">
                 </div>
+            </div>
 
-            </div>
-            <div class="fileContainer">
-            </div>
             <div style="display: flex;
             flex-direction: column;
             align-items: center;
@@ -73,7 +76,7 @@
                         onclick="sendModel()">Enviar Modelo</button>
                 </div>
             </div>
-            
+
         </div>
 
     </div>

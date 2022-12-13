@@ -16,6 +16,11 @@ def generate(usr: User):
     )
 
 
+def extract_role(token) -> str:
+    decoded = jwt.decode(token, secret, algorithms=["HS256"])
+    return decoded["user_date"]["role"]
+
+
 def validate(token):
     try:
         decode = jwt.decode(token, secret, algorithms=["HS256"])

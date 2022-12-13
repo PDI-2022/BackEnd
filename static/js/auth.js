@@ -2,7 +2,7 @@ async function auth(){
     let url = "http://localhost:5000/api/v1/authenticate"
     let token = sessionStorage.getItem("token")
     if(!!token){
-        let response = await fetch(url,{
+        await fetch(url,{
             method: "POST",
             headers: {
                 'Content-Type': 'application/json'

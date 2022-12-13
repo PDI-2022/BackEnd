@@ -1,13 +1,15 @@
 from flask import Blueprint, render_template, request,jsonify
 from config import app
+from api.services.token import extract_role
 import requests
 from flask_api import status
 from api.services.token import validate
 from api.response.error import Error
 
-view_bp = Blueprint('view', __name__)
+view_bp = Blueprint("view", __name__)
 
-@app.route("/", methods=['GET'])
+
+@app.route("/", methods=["GET"])
 def index():
     data,_,role = auth()
     if(data != ""):
@@ -19,14 +21,16 @@ def index():
         modelJson = [{"name":"","id":""}]
     return render_template("index.html",models=modelJson,role=role)
 
-@app.route("/seeds", methods=['GET'])
+
+@app.route("/seeds", methods=["GET"])
 def seeds():
     data,_,role = auth()
     if(data != ""):
         return render_template("login.html")
     return render_template("seeds.html",role=role)
 
-@app.route("/uploadModel", methods=['GET'])
+
+@app.route("/uploadModel", methods=["GET"])
 def model():
     data,_,role = auth()
     if(data != "" or role != "ADMIN"):
@@ -40,16 +44,25 @@ def modelList():
         return render_template("login.html")
     return render_template("modelList.html",role=role)
 
-@app.route("/login", methods=['GET'])
+
+@app.route("/login", methods=["GET"])
 def login():
     return render_template("login.html")
 
-@app.route("/new-user", methods=['GET'])
+
+@app.route("/new-user", methods=["GET"])
 def novoUsuario():
     data,_,role = auth()
     if(data != "" or role != "ADMIN"):
         return render_template("login.html")
     return render_template("novoUsuario.html")
+
+@app.route("/update-user", methods=["GET"])
+def atualizarUsuario():
+    data,_,role = auth()
+    if(data != "" or role != "ADMIN"):
+        return render_template("login.html")
+    return render_template("atualizarUsuário.html")
 
 @app.route("/userList", methods=['GET'])
 def userList():

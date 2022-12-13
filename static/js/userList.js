@@ -2,6 +2,7 @@ let page = 1;
 let itensPerPage = 10;
 window.onload = async function(){
     await getUsers()
+    localStorage.removeItem("emailToUpdate")
 }
 
 async function getUsers(){
@@ -41,9 +42,9 @@ function makeTable(users){
         tbodyNew.setAttribute("class","userTbody")
         
         tbodyNew.innerHTML = `<td scope="row">${user.id}</td>
-        <td title="${user.email}">${user.email}
+        <td title="${user.email}" id="email-${user.id}">${user.email}
         </td>
-        <td title="${user.role}">${user.role}
+        <td title="${user.role}" id="role-${user.id}">${user.role}
         </td>
         <td style=" width: 128px;">
         <img onclick="updateUser('${user.id}')" 
@@ -85,7 +86,15 @@ function createPagination(){
 
 }
 function updateUser(userId) {
-   
+   const email = document.querySelector(`#email-${userId}`).innerHTML
+   localStorage.setItem("userToUpdate",JSON.stringify({email:email,id:userId}))
+   $('#modal-redirecting').modal({
+        show:true,
+        backdrop: 'static',
+        keyboard: false
+    });  
+   window.location.href = `/update-user`
+   $('#modal-redirecting').modal('hide');
 }
 async function deleteUser(userId) {
     result = window.confirm("Tem certeza que deseja deletar esse usuário? essa ação não poderá ser desfeita")

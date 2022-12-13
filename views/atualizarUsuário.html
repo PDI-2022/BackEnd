@@ -13,49 +13,49 @@
 
     <title>TetraSeed - Ferramenta de Classificação de sementes</title>
     <link rel="icon" type="image/x-icon" href="./static/Assets/Logo/logo.svg">
-    <link href="./static/stylesheets/login.css" rel="stylesheet">
+    <link href="./static/stylesheets/Index.css" rel="stylesheet">
+    <link href="./static/stylesheets/cadastro.css" rel="stylesheet">
 
 </head>
 
 <body style="background: linear-gradient(45deg, rgba(247,200,200,1) 20%, rgba(233,125,125,0.4) 50%, rgba(217,38,38,0.8) 80%);">
-    
+
     <main>
         <section>
-            <div class="loginContainer">
-                <div class="loginLogoName">
-                    <img src="{{ url_for('static', filename='Assets/Logo/logo-brown.svg') }}">
-                    <strong>Tetra</strong><span class="red-text">Seed</span>            
-                </div>
-                <div class="loginSubText">
-                    <h3>Ferramenta de Classificação de Sementes</h3>
-                </div>
-                <div class="LoginInfosContainer">
-                    <h3>Nova Senha</h3>
-                    <div class="LoginInfosRow">
-                        <label for="loginUserInput">Usuário</label>
-                        <input type="email" name="loginUserInput" id="loginUserInput">
-                        <label for="loginNewPasswordInput">Nova Senha</label>
-                        <input type="text" name="loginNewPasswordInput" id="loginNewPasswordInput">
-                        <label for="loginNewPasswordConfirmInput">Confirmar Senha</label>
-                        <input type="text" name="loginNewPasswordConfirmInput" id="loginNewPasswordConfirmInput">
+            <div class="cadastroContainer">
+
+                <div class="cadastroInfosContainer">
+                    <div class="cadastroSubText">
+                        <h3>Atualizar Usuario</h3>
                     </div>
-                    <div class="buttonRow" style="flex-direction: row;gap: 12px;">
-                        <div id="NewPassword" class="defaultButton">
-                            <button id="botaoNewPassword" type="button" class="btn btn-danger btn-lg botaoEnviar" onclick="sendData()">Enviar</button>
+                    <form id="form" class="cadastroInfosRow">
+                        <label for="email">Email</label>
+                        <input type="email" name="email"id="email" placeholder="Digite o email" required>
+                        <label for="senha">Senha</label>
+                        <input type="password" name="senha" id="senha" placeholder="********" required>
+                    </form>
+                    <div class="buttonRow">
+                        <div id="update" class="mt-5 defaultButton">
+                            <button type="button" class="btn btn-danger btn-lg botaoEnviar">Atualizar</button>
                         </div>
-                        <div id="cancel" class="defaultButton">
-                            <button id="botaoNewPassword" type="button" class="btn btn-danger btn-lg botaoEnviar" onclick="cancel()">Cancelar</button>
+                        <div id="cancelar" class="mt-5 defaultButton">
+                            <button type="button" class="btn btn-danger btn-lg botaoEnviar">Cancelar</button>
                         </div>
                     </div>
                 </div>
             </div>
-
         </section>
     </main>
-       
+           
+    <modal-loading></modal-loading>
+    <modal-error></modal-error>
+    <modal-redirecting></modal-redirecting>
 </body>
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/css/bootstrap.min.css">
-<script src="{{ url_for('static', filename='js/newPassword.js') }}"></script>
+<script src="{{ url_for('static', filename='js/updateUser.js') }}"></script>
+<script src="{{ url_for('static', filename='js/auth.js') }}"></script>
+<script src="{{ url_for('static', filename='js/components/index.js') }}"></script>
+
 
 <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
     integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"

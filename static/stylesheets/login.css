@@ -79,8 +79,13 @@ section,main{
 }
 .buttonRow button{
     min-width: 200px;
-    background: linear-gradient(180deg, #159038 0%, #2DC457 100%)!important;
+    background: linear-gradient(180deg, #159038 0%, #2DC457 100%);
     border: none;
+}
+#cancel button{
+    color: #fff;
+    background: #dc3545;
+    border-color: #dc3545;
 }
 @media (max-width:1000px){
     html { 

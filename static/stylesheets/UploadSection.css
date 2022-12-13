@@ -141,6 +141,7 @@ textarea:hover {
     justify-content: space-between;
 }
 .model-container-drag{
+    display: flex;
     flex-direction: row;
 }
 @media (max-width:766px) {

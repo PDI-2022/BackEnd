@@ -25,7 +25,6 @@ const deleteUser = (index) => {
     localSet(dadosUsuario)
 }
 
-//validacao de cadastro
 const validFields = () => {
     return document.getElementById('form').reportValidity()
 }
@@ -72,7 +71,6 @@ const saveUser = async () => {
     }
 }
 
-//evento ao clicar em salvar
 document.getElementById('salvar').addEventListener('click', saveUser)
 document.getElementById('cancelar').addEventListener('click', ()=>{
     window.location.href = document.referrer

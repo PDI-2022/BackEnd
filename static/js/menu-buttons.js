@@ -17,11 +17,3 @@ function clickHandleModel(){
         menuClassificationSeedsClassNumber.style.display = InputClass.checked ? "block" : "none"
     })
 }
-// function hideClassificationInputClass(){
-//     let InputClass = document.querySelector("#InputClass")
-//     // let classificationSeedsClass = document.querySelector("#classification-seeds-class")
-//     InputClass.addEventListener("change",()=>{
-//         let menuClassificationSeedsClassNumber = document.querySelector("#menu-classification-seeds-class-number")
-//         menuClassificationSeedsClassNumber.style.display = InputClass.checked ? "block" : "none"
-//     })
-// }

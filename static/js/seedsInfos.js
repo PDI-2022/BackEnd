@@ -128,7 +128,6 @@ async function changePage(action){
     let hasClass = (localStorage.getItem("hasClass") == "true")
     let maxItem = hasClass ? arrayCsv.length - 5 : arrayCsv.length - 2
     state.totalPages = Math.ceil(maxItem / (2*state.perPage))
-    console.log(state.totalPages)
 
     switch (action){
         case 'inc':
@@ -173,7 +172,6 @@ function clearScreenElement(body,mainFooter, hasVigorTable){
     if(imgContainer.length > 0){
         imgContainer.forEach(img=>{
             container.removeChild(img)
-            // body.removeChild(img)
         })
         body.removeChild(container)
         let downloadSection = document.querySelector("download-section")
@@ -203,9 +201,6 @@ function fillTable(externSeeds,internSeeds,arrayCsv){
         imgsContainer.push(
             makeSeedCard(internSeeds[i-1], (initialValue+(2*i)-2), externSeeds[i-1], (initialValue+(2*i)-1), maxNumberOfColumns, hasClass == "true" ? true : false)
         )
-
-        // imgsContainer.push(makeTable(internSeeds[i-1], (initialValue+(2*i)-2), maxNumberOffColumns))
-        // imgsContainer.push(makeTable(externSeeds[i-1], (initialValue+(2*i)-1), maxNumberOffColumns))
     }
 
     return imgsContainer
@@ -290,7 +285,6 @@ function makeSeedCard(internSeedImage, internSeedDataIndex, externSeedImage, ext
 
         leftList.appendChild(li)
 
-        // arrayCsv[externSeedDataIndex][i]
     }
 
     leftDataCol.appendChild(leftList)
@@ -336,7 +330,6 @@ function makeSeedCard(internSeedImage, internSeedDataIndex, externSeedImage, ext
 
         rightList.appendChild(li)
 
-        // arrayCsv[externSeedDataIndex][i]
     }
 
     rightDataCol.appendChild(rightList)
@@ -344,54 +337,6 @@ function makeSeedCard(internSeedImage, internSeedDataIndex, externSeedImage, ext
 
     return card
 
-    //terminar
-
-
-
-
-
-
-    // let imgsContainer
-   
-    // let a = image.slice(2,image.lastIndexOf("'"))
-    // let base64 = "data:image/jpg;base64,"+ a
-    // imgsContainer = document.createElement("div")
-
-    // imgsContainer.setAttribute("class","imgs-container")
-
-    // let img = document.createElement("img")
-    // img.setAttribute("src",base64)
-    // imgsContainer.appendChild(img)
-
-    // let tableWrapper = document.createElement("div")
-    // tableWrapper.setAttribute("class","table-responsive")
-
-    // let table = document.createElement("table")
-    // table.setAttribute("class","f1-table")
-
-    // let thead = document.createElement("thead")
-
-    // let tr = document.createElement("tr")
-    // for(let i = 0; i < maxNumberOffColumns; i++){
-    //     let th = document.createElement("th")
-    //     th.innerHTML= arrayCsv[0][i]
-    //     tr.appendChild(th)
-    // }
-    // thead.appendChild(tr)
-    // table.appendChild(thead)
-
-    // let tbody = document.createElement("tbody")
-    // tr = document.createElement("tr")
-    // for(let i = 0; i < maxNumberOffColumns; i++){
-    //     let td = document.createElement("td")
-    //     td.innerHTML = arrayCsv[item][i]
-    //     tr.appendChild(td)
-    // }
-    // tbody.appendChild(tr)
-    // table.appendChild(tbody)
-    // tableWrapper.appendChild(table)
-    // imgsContainer.appendChild(tableWrapper)
-    // return imgsContainer
 }
 
 function goBack(){

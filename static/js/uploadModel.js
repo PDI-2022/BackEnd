@@ -12,9 +12,13 @@ window.onload = async function () {
 }
 
 function stateHandle(button,input) {
-    let name = document.querySelector("#InputName").value
+    let field
+    if(input == "name")
+        field = document.querySelector("#InputName").value
+    else if(input == "description")
+        field = document.querySelector("#InputDescription").value
     formData.delete(input)
-    formData.append(input,name)
+    formData.append(input,field)
     let validator = !!formData.get("name") && !!formData.get("model") && !!formData.get("description")
 
     button.disabled = !validator
@@ -66,7 +70,6 @@ function validateFile(itemAsFile,name) {
     formData.delete("model")
     const format = name.substring(name.lastIndexOf("."))
     if (validateFormat(format)) {
-        console.log(itemAsFile)
         formData.append("model",itemAsFile)
         let fileContainer = document.querySelector('#file-label')
         !fileContainer ? showTextAndIcon(name) : updateTextAndIcon(name)

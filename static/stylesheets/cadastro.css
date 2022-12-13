@@ -10,7 +10,8 @@ body{
 section,main{
     height: 100%;
 }
-#salvar button{
+#salvar button,
+#update button{
     background: linear-gradient(180deg, #159038 0%, #2DC457 100%);
     border: none;
 }
@@ -81,14 +82,16 @@ section,main{
 .buttonRow button{
     min-width: 200px;
 }
-#salvar{
+#salvar,
+#update{
     margin-right: 24px;
 }
 @media (max-width:480px) {
     .buttonRow{
         flex-direction: column;
     }
-    #salvar{
+    #salvar,
+    #update{
         margin-right: 0;
     }
 }

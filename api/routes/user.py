@@ -118,7 +118,7 @@ def update(id: int):
         user.email = email
 
     password = data["password"]
-    if password is not None or password != "":
+    if password != "":
         user.change_password(password)
 
     db.session.commit()

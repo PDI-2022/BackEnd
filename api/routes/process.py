@@ -1,6 +1,6 @@
 from flask import jsonify, request, send_file, Blueprint
 from flask_api import status
-from api.services.storage import save_base64_image, create_folder
+from api.services.storage import create_folder
 from api.constants.folders import images_folder, red_extract_folder, background_removed_folder, white_extract_folder, pagination_folder, imagens_cortadas_folder, embriao_folder
 from api.services.processing import process_data, process_embriao
 from config import db
@@ -19,13 +19,12 @@ embriao_model = torch.hub.load('ultralytics/yolov5', 'custom', path="models_embr
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 model = model()
 
-def extract_data_and_save(data : any, identifier : str) -> str:
+def extract_data(data : any, identifier : str) -> str:
     payload = data[identifier]
 
     filename = payload['filename']
     extension = payload['extension']
     img = payload['image']
-    save_base64_image(img, images_folder, filename , extension)
 
     return img
 
@@ -37,24 +36,43 @@ def process():
 
     data = request.json
 
-    internal_img = extract_data_and_save(data, 'internalImg')
-    external_img = extract_data_and_save(data, 'externalImg')
+    # base64 das duas imagens enviadas.
+    internal_img = extract_data(data, 'internalImg')
+    external_img = extract_data(data, 'externalImg')
 
+    #cria as pastas a serem usadas pela aplicação.
     create_folder(red_extract_folder)
     create_folder(background_removed_folder)
     create_folder(white_extract_folder)
     create_folder(pagination_folder)
     create_folder(imagens_cortadas_folder)
 
+    #variáveis referentes ao limiar superior e inferior.
+    #
+    #Booleano para saber se foi selecionado o valor default, ou customizado.
     chooseLimiar = data["chooseLimiar"]
+    #  
+    #Limiar superior.
     limSup = data["limSup"]
+    #
+    #Limiar inferior.
     limInf = data["limInf"]
 
+    #Booleano para saber se a imagem é com o sem grid (com grid = False, sem grid = True).
     seedTogether = data["seedTogether"]
+
+    #Número de classes que as sementes podem ter (default = 7, limite = 7).
     seedsClassNumberInput = data["seedsClassNumberInput"]
+
+    #Booleano responsável por definir se será necessário classificar as sementes ou nâo.
     displayClassificationInfos = data['displayClassificationInfos']
+
+    #Booleano responsável por verificar se será renderizada a página com as imagens das sementes cortadas.
     generatePageWithImages = data['generatePageWithImages']
+
+    #Booleano responsável por saber se o embrião também será analisado.
     classificationYolo = data['classificationYolo']
+
     model_path = ''
     if displayClassificationInfos:
         model_id = data['modelId']
@@ -62,10 +80,11 @@ def process():
         model_path = model.path
     else :
         model = ""
+
     csv_file = process_data(
         internal_img, 
         external_img, 
-        False, 
+        generatePageWithImages, 
         displayClassificationInfos, 
         model_path,
         int(limInf),

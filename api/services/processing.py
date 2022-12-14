@@ -204,7 +204,11 @@ def extract_seed_information(seed, side, lim_inf_red, lim_sup_red, seed_id = 0 )
         holes,
         f'{holes_percentage*100:.2f}%'
     ]
-
+def decodeImg(img):
+    buffer = base64.b64decode(img)
+    nparr = np.frombuffer(buffer, np.uint8)
+    imgDecoded = cv2.imdecode(nparr, flags=1)
+    return imgDecoded
 
 def process_data(
     intern : str, 
@@ -220,26 +224,27 @@ def process_data(
     classificationYolo:bool,
     seedsClassNumberInput:int    
 ):
-    buffer_intern = base64.b64decode(intern)
-    nparr = np.frombuffer(buffer_intern, np.uint8)
-    input_intern_image = cv2.imdecode(nparr, flags=1)
 
-    buffer_extern = base64.b64decode(extern)
-    nparr = np.frombuffer(buffer_extern, np.uint8)
-    input_extern_image = cv2.imdecode(nparr, flags=1)
+    #Transforma as imagens de base64 para buffer
+    input_intern_image = decodeImg(intern)
+    input_extern_image = decodeImg(extern)
 
+    #Corta as imagens
     intern_seeds = cut(input_intern_image,imgJoined)
     extern_seeds = cut(input_extern_image,imgJoined)
-    
-    if os.path.exists(pagination_folder):
-        shutil.rmtree(pagination_folder)
-    os.makedirs(pagination_folder)
-    for id, int_seed in enumerate(intern_seeds):
-        cv2.imwrite(f'{pagination_folder}/Internal_seed_{id}.jpg', int_seed)
 
-    for id, ext_seed in enumerate(extern_seeds):
-        cv2.imwrite(f'{pagination_folder}/External_seed_{id}.jpg', ext_seed)
+    #Gera a pasta com as imagens para a paginação da tela de imagens.
+    if showImgs:
+        if os.path.exists(pagination_folder):
+            shutil.rmtree(pagination_folder)
+        os.makedirs(pagination_folder)
+        for id, int_seed in enumerate(intern_seeds):
+            cv2.imwrite(f'{pagination_folder}/Internal_seed_{id}.jpg', int_seed)
 
+        for id, ext_seed in enumerate(extern_seeds):
+            cv2.imwrite(f'{pagination_folder}/External_seed_{id}.jpg', ext_seed)
+
+    #Gera o header do csv
     header = [
         'Semente', 
         'Lado', 
@@ -256,6 +261,7 @@ def process_data(
 
     rows = []
 
+    #Extrai as informações da parte externa e interna das sementes
     start = time.perf_counter()
     with concurrent.futures.ProcessPoolExecutor() as executor:
         futures = []
@@ -292,6 +298,12 @@ def process_data(
     end = time.perf_counter()
 
     print(f'Imagens processadas em {end-start} segundos')
+
+    if showClassification or classificationYolo:
+        for i in range(len(extern_seeds)):
+            createCutImgsFold(i)
+
+    #Faz a detecção do embrião
     if classificationYolo:
         for i in range(len(extern_seeds)):
             path=f"./images/imagens_cortadas/images/semente-{i+1}.jpg"
@@ -299,11 +311,10 @@ def process_data(
             deteccao(embriao_model, img,i)
 
     rows.sort(key=lambda value : (0 if value[1] == 'Interno' else 1, value[0]))
+
+    #Classifica as sementes e gera a parte correspondente no csv
     classes = int(seedsClassNumberInput)
     if showClassification:
-        for i in range(len(extern_seeds)):
-            createCutImgsFold(i)
-
         classification = classificate(model, modelPath, classes)
         index = 0
         for i, row in enumerate(rows):
@@ -343,10 +354,6 @@ def process_data(
         for row in rows:
             writer.writerow(row)
 
-
-    if showImgs:
-        return GenImg(intern_seeds,extern_seeds)
-
     return 'relatorio.csv'
 
 
@@ -355,36 +362,6 @@ def is_empty(block):
     percentage = np.count_nonzero(removed_background) / (block.shape[0]*block.shape[1])
 
     return True if percentage < 0.05 else False
-
-def GenImg(intern_seeds,extern_seeds):
-    intSeed = []
-    extSeed = []
-    for i,intt in enumerate(intern_seeds):
-        if not is_empty(intt):
-            intSeed.append({"id":i,"blob":str(base64.b64encode(cv2.imencode(".jpg",intt)[1]))})
-
-    for i,extt in enumerate(extern_seeds):
-        if not is_empty(extt):
-            extSeed.append({"id":i,"blob":str(base64.b64encode(cv2.imencode(".jpg",extt)[1]))})
-
-    csvJson = csv_to_json('relatorio.csv')
-
-    return csvJson,intSeed,extSeed
-
-def csv_to_json(csvFilePath):
-    jsonArray = []
-      
-    #read csv file
-    with open(csvFilePath, encoding='utf-8') as csvf: 
-        #load csv file data using csv library's dictionary reader
-        csvReader = csv.DictReader(csvf) 
-
-        #convert each csv row into python dict
-        for row in csvReader: 
-            #add this python dict to json array
-            jsonArray.append(row)
-  
-    return jsonArray
 
 def extract_embriao_information(embriao, lim_inf_red, lim_sup_red, seed_id = 0 ):
     white_percentage = extract_white_percentage(embriao, f'embriao{seed_id}')

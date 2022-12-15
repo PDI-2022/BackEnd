@@ -6,16 +6,20 @@
     0%   {opacity: 0; }
     100% {opacity: 1; }
 }
-@keyframes fade-img {
-    0%   {opacity: 0; }
-    100% {opacity: 1; }
+@keyframes fade-img-right {
+    0%   {opacity: 0;transform: rotate(0deg); }
+    100% {opacity: 1;transform: rotate(390deg); }
+}
+@keyframes fade-img-left {
+    0%   {opacity: 0;transform: rotate(0deg); }
+    100% {opacity: 1;transform: rotate(330deg); }
 }
 
 .animationHolder{
     overflow: hidden;
     width: 100vw;
     height: 100vh;
-    background: linear-gradient(45deg, rgba(247,200,200,1) 20%, rgba(233,125,125,0.4) 50%, rgba(217,38,38,0.8) 80%);
+    background: radial-gradient(circle, rgba(247,200,200,1) 20%, rgba(217,38,38,1) 90%);    
     display: flex;
     position: absolute;
     z-index: 1999;
@@ -31,6 +35,13 @@
     animation-fill-mode: forwards;
     
 }
+.animationHolder img{
+    animation-name: fade-text;
+    animation-duration: 2s;
+    animation-delay: 1.5s;
+    animation-fill-mode: forwards;
+    opacity: 0;
+}
 .secondary-text-animation{
     animation-name: fade-text;
     animation-duration: 2s;
@@ -40,9 +51,18 @@
     text-align: center;
     padding: 0 24px;
 }
-.secondary-text-animation img{
+.secondary-text-animation .img-right{
     display: block;
-    animation-name: fade-img;
+    animation-name: fade-img-right;
+    animation-duration: 2s;
+    animation-delay: 1.5s;
+    opacity: 0;
+    animation-fill-mode: forwards;
+
+}
+.secondary-text-animation .img-left{
+    display: block;
+    animation-name: fade-img-left;
     animation-duration: 2s;
     animation-delay: 1.5s;
     opacity: 0;

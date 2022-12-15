@@ -13,7 +13,7 @@ from shapely.geometry import Polygon
 import concurrent.futures
 import time
 
-from api.services.storage import create_folder
+from api.services.storage import create_folder,delete_folder
 from api.constants.folders import (
     red_extract_folder,
     background_removed_folder,
@@ -335,6 +335,8 @@ def process_data(
     cutted_extract_folder_per_id = "users_folders_imgs/{}{}".format(
         user_id, imagens_cortadas_folder
     )
+    #deleta as pastas
+    delete_folder(f"./users_folders_imgs/{user_id}")
 
     # cria as pastas a serem usadas pela aplicação.
     create_folder(red_extract_folder_per_id)

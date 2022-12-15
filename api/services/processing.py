@@ -490,7 +490,9 @@ def process_data(
             ]
         )
 
-    csv_report_file_name = "./relatorios/{}/{}_{}.csv".format(
+    folder = "./relatorios/{}".format(user_id)
+    create_folder(folder)
+    csv_report_file_name = "{}/{}_{}.csv".format(
         user_id, "relatorio", str(uuid.uuid4())
     )
     with open(csv_report_file_name, "w+", encoding="UTF8", newline="") as f:
@@ -574,9 +576,12 @@ def process_embriao(
     print(f"Tempo de processamento dos embriões: {end - start}")
     rows.sort(key=lambda value: int(value[0]))
 
-    csv_report_file_name = "./relatorios/{}/{}_{}.csv".format(
-        user_id, "relatorio_embriao", str(uuid.uuid4())
+    folder = "./relatorios/{}".format(user_id)
+    create_folder(folder)
+    csv_report_file_name = "{}/{}_{}.csv".format(
+        folder, "relatorio_embriao", str(uuid.uuid4())
     )
+
     with open(csv_report_file_name, "w+", encoding="UTF8", newline="") as f:
         writer = csv.writer(f)
         writer.writerow(header)

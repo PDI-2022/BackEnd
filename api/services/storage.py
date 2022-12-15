@@ -1,7 +1,6 @@
 from datetime import datetime
 from zipfile import ZipFile
 import shutil
-import base64
 import os
 
 
@@ -11,7 +10,8 @@ def create_folder(folder: str):
 
 
 def delete_folder(folder: str):
-    shutil.rmtree(folder)
+    if os.path.exists(folder):
+        shutil.rmtree(folder)
 
 
 def extract_extension(filename: str) -> list:

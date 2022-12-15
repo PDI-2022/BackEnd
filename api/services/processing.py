@@ -94,8 +94,14 @@ def extract_white_percentage(white_extract_folder_per_id, input_image, id=0):
 
 
 def remove_background(folder_per_id, input_image, id=0):
-    used_threshold, thresholded_bgr_image = cv2.threshold( input_image, 110, 255, cv2.THRESH_BINARY )
-    thresholded_blue_component,thresholded_green_component, thresholded_red_component= cv2.split(thresholded_bgr_image)
+    used_threshold, thresholded_bgr_image = cv2.threshold(
+        input_image, 110, 255, cv2.THRESH_BINARY
+    )
+    (
+        thresholded_blue_component,
+        thresholded_green_component,
+        thresholded_red_component,
+    ) = cv2.split(thresholded_bgr_image)
 
     mask_filtered = cv2.medianBlur(thresholded_red_component, 5)
 
@@ -103,9 +109,7 @@ def remove_background(folder_per_id, input_image, id=0):
 
     if id != -1:
         cv2.imwrite(
-            "{0}/remove_background_{1}.jpg".format(
-                folder_per_id, id
-            ),
+            "{0}/remove_background_{1}.jpg".format(folder_per_id, id),
             result_image,
         )
 
@@ -260,10 +264,10 @@ def extract_seed_information(
         white_extract_folder_per_id, seed, f"{side}{seed_id}"
     )
     light_red_percentage = extract_light_red_percentage(
-        red_extract_folder_per_id,seed, lim_sup_red, f"{side}{seed_id}"
+        red_extract_folder_per_id, seed, lim_sup_red, f"{side}{seed_id}"
     )
     dark_red_percentage = extract_dark_red_percentage(
-        red_extract_folder_per_id,seed, lim_inf_red, f"{side}{seed_id}"
+        red_extract_folder_per_id, seed, lim_inf_red, f"{side}{seed_id}"
     )
 
     thresholded_red_component = remove_background_and_get_mask(seed)
@@ -389,7 +393,7 @@ def process_data(
                 )
 
         for i, seed in enumerate(extern_seeds):
-            if not is_empty(background_removed_folder_per_id,seed):
+            if not is_empty(background_removed_folder_per_id, seed):
                 futures.append(
                     executor.submit(
                         extract_seed_information,
@@ -486,7 +490,9 @@ def process_data(
             ]
         )
 
-    csv_report_file_name = "{}_{}.csv".format("relatorio", str(uuid.uuid4()))
+    csv_report_file_name = "./relatorios/{}/{}_{}.csv".format(
+        user_id, "relatorio", str(uuid.uuid4())
+    )
     with open(csv_report_file_name, "w+", encoding="UTF8", newline="") as f:
         writer = csv.writer(f)
         writer.writerow(header)
@@ -505,16 +511,20 @@ def is_empty(folder_per_id, block):
     return True if percentage < 0.05 else False
 
 
-def extract_embriao_information(folder_per_id,embriao, lim_inf_red, lim_sup_red, seed_id=0):
-    white_percentage = extract_white_percentage(folder_per_id,embriao, f"embriao{seed_id}")
-    milky_white_percentage = extract_milky_white_percentage(folder_per_id,
-        embriao, f"embriao{seed_id}"
+def extract_embriao_information(
+    folder_per_id, embriao, lim_inf_red, lim_sup_red, seed_id=0
+):
+    white_percentage = extract_white_percentage(
+        folder_per_id, embriao, f"embriao{seed_id}"
     )
-    light_red_percentage = extract_light_red_percentage(folder_per_id,
-        embriao, lim_sup_red, f"embriao{seed_id}"
+    milky_white_percentage = extract_milky_white_percentage(
+        folder_per_id, embriao, f"embriao{seed_id}"
     )
-    dark_red_percentage = extract_dark_red_percentage(folder_per_id,
-        embriao, lim_inf_red, f"embriao{seed_id}"
+    light_red_percentage = extract_light_red_percentage(
+        folder_per_id, embriao, lim_sup_red, f"embriao{seed_id}"
+    )
+    dark_red_percentage = extract_dark_red_percentage(
+        folder_per_id, embriao, lim_inf_red, f"embriao{seed_id}"
     )
 
     return [
@@ -526,7 +536,9 @@ def extract_embriao_information(folder_per_id,embriao, lim_inf_red, lim_sup_red,
     ]
 
 
-def process_embriao(embriao_folder_per_id, embrioes, limInfRed=168, limSupRed=190):
+def process_embriao(
+    embriao_folder_per_id, user_id, embrioes, limInfRed=168, limSupRed=190
+):
 
     header = [
         "Semente",
@@ -562,7 +574,9 @@ def process_embriao(embriao_folder_per_id, embrioes, limInfRed=168, limSupRed=19
     print(f"Tempo de processamento dos embriões: {end - start}")
     rows.sort(key=lambda value: int(value[0]))
 
-    csv_report_file_name = "{}_{}.csv".format("relatorio_embriao", str(uuid.uuid4()))
+    csv_report_file_name = "./relatorios/{}/{}_{}.csv".format(
+        user_id, "relatorio_embriao", str(uuid.uuid4())
+    )
     with open(csv_report_file_name, "w+", encoding="UTF8", newline="") as f:
         writer = csv.writer(f)
         writer.writerow(header)

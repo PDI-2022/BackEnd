@@ -1,12 +1,8 @@
 from flask import jsonify, request, send_file, Blueprint
 from flask_api import status
-from api.services.storage import create_folder
+from api.services.storage import create_folder, delete_folder
 from api.constants.folders import (
-    red_extract_folder,
-    background_removed_folder,
-    white_extract_folder,
     pagination_folder,
-    imagens_cortadas_folder,
     embriao_folder,
 )
 from api.services.processing import process_data, process_embriao
@@ -29,11 +25,6 @@ device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 model = model()
 
 
-def extract_data(data, identifier) -> str:
-    payload = data[identifier]
-    return payload["image"]
-
-
 @process_bp.route("", methods=["POST"])
 def process():
     content_type = request.headers.get("Content-Type")
@@ -41,14 +32,15 @@ def process():
         return "Content-Type not supported", status.HTTP_415_UNSUPPORTED_MEDIA_TYPE
 
     token = request.headers.get("token")
-    print(token)
     user_id = extract_id(token)
+
+    delete_folder("./relatorios/{}/".format(user_id))
 
     data = request.json
 
     # base64 das duas imagens enviadas.
-    internal_img = extract_data(data, "internalImg")
-    external_img = extract_data(data, "externalImg")
+    internal_img = data["internalImg"]["image"]
+    external_img = data["externalImg"]["image"]
 
     # variáveis referentes ao limiar superior e inferior.
     #
@@ -111,7 +103,9 @@ def pagination():
     token = request.headers.get("token")
     user_id = extract_id(token)
 
-    pagination_folder_per_id = "users_folders_imgs/{}{}".format(user_id, pagination_folder)
+    pagination_folder_per_id = "users_folders_imgs/{}{}".format(
+        user_id, pagination_folder
+    )
     seeds_images = os.listdir(pagination_folder_per_id)
     images_quant = len(seeds_images)
 
@@ -155,8 +149,9 @@ def embriao():
         number = int(number)
         embriao_atual = cv2.imread(embriao_folder_per_id + f"/semente-{number}.jpg")
         embrioes.append((number, embriao_atual))
-        infosEmbriao = f"./users_folders_imgs/{user_id}/images/infosEmbriao"
-        create_folder(infosEmbriao)
-    csv_file = process_embriao(infosEmbriao, embrioes)
+
+    infosEmbriao = f"./users_folders_imgs/{user_id}/images/infosEmbriao"
+    create_folder(infosEmbriao)
+    csv_file = process_embriao(infosEmbriao, user_id, embrioes)
 
     return send_file(csv_file, "text/csv"), status.HTTP_200_OK

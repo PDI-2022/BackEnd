@@ -40,7 +40,8 @@ def process():
     if content_type != "application/json;charset=UTF-8":
         return "Content-Type not supported", status.HTTP_415_UNSUPPORTED_MEDIA_TYPE
 
-    token = request.cookies.get("token")
+    token = request.headers.get("token")
+    print(token)
     user_id = extract_id(token)
 
     data = request.json
@@ -107,10 +108,10 @@ def pagination():
     itens = data["itensPerPage"]
     page = data["page"]
 
-    token = request.cookies.get("token")
+    token = request.headers.get("token")
     user_id = extract_id(token)
 
-    pagination_folder_per_id = "{}/{}".format(user_id, pagination_folder)
+    pagination_folder_per_id = "users_folders_imgs/{}{}".format(user_id, pagination_folder)
     seeds_images = os.listdir(pagination_folder_per_id)
     images_quant = len(seeds_images)
 
@@ -137,10 +138,10 @@ def pagination():
 @process_bp.route("/embriao", methods=["GET"])
 def embriao():
 
-    token = request.cookies.get("token")
+    token = request.headers.get("token")
     user_id = extract_id(token)
 
-    embriao_folder_per_id = "{}/{}".format(user_id, embriao_folder)
+    embriao_folder_per_id = "users_folders_imgs/{}{}".format(user_id, embriao_folder)
 
     embrioes_names = os.listdir(embriao_folder_per_id)
 
@@ -152,9 +153,10 @@ def embriao():
             number + image[10] if image[10] != "." and image[10] != "j" else number + ""
         )
         number = int(number)
-        embriao_atual = cv2.imread(embriao_folder + f"/semente-{number}.jpg")
+        embriao_atual = cv2.imread(embriao_folder_per_id + f"/semente-{number}.jpg")
         embrioes.append((number, embriao_atual))
-
-    csv_file = process_embriao(embrioes)
+        infosEmbriao = f"./users_folders_imgs/{user_id}/images/infosEmbriao"
+        create_folder(infosEmbriao)
+    csv_file = process_embriao(infosEmbriao, embrioes)
 
     return send_file(csv_file, "text/csv"), status.HTTP_200_OK

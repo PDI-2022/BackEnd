@@ -7,7 +7,5 @@ def embriao_detect(embriao_model, frame):
         y1 = int(i[1])
         x2 = int(i[2])
         y2 = int(i[3])
-        if i[5] == 4:
-            [x1, y1, x2, y2] * 2
         rets.append([[x1, y1, x2, y2], i[4], int(i[5])])
     return rets

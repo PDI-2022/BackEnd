@@ -9,8 +9,6 @@ import tensorflow as tf
 import numpy as np
 import pandas as pd
 
-test_data_dir = "./images/imagens_cortadas/"
-
 batch_size = 1
 
 
@@ -30,11 +28,11 @@ def model():
 def classificate(cutted_extract_folder_per_id, model, model_path: str, classes):
 
     create_folder(cutted_extract_folder_per_id)
-
     test_datagen = ImageDataGenerator(rescale=1.0 / 255)
-
+    newFolder = cutted_extract_folder_per_id.split("imagens_cortadas/images")[0]
+    newFolder = newFolder + "imagens_cortadas"
     test_generator = test_datagen.flow_from_directory(
-        test_data_dir, target_size=(height, width), shuffle=False, batch_size=batch_size
+        f'./{newFolder}/', target_size=(height, width), shuffle=False, batch_size=batch_size
     )
 
     image_list = []

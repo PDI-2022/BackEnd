@@ -93,15 +93,9 @@ def extract_white_percentage(white_extract_folder_per_id, input_image, id=0):
     return pixels_extracted_white / pixels_number_seed
 
 
-def remove_background(background_removed_folder_per_id, input_image, id=0):
-    used_threshold, thresholded_bgr_image = cv2.threshold(
-        input_image, 110, 255, cv2.THRESH_BINARY
-    )
-    (
-        thresholded_blue_component,
-        thresholded_green_component,
-        thresholded_red_component,
-    ) = cv2.split(thresholded_bgr_image)
+def remove_background(folder_per_id, input_image, id=0):
+    used_threshold, thresholded_bgr_image = cv2.threshold( input_image, 110, 255, cv2.THRESH_BINARY )
+    thresholded_blue_component,thresholded_green_component, thresholded_red_component= cv2.split(thresholded_bgr_image)
 
     mask_filtered = cv2.medianBlur(thresholded_red_component, 5)
 
@@ -110,7 +104,7 @@ def remove_background(background_removed_folder_per_id, input_image, id=0):
     if id != -1:
         cv2.imwrite(
             "{0}/remove_background_{1}.jpg".format(
-                background_removed_folder_per_id, id
+                folder_per_id, id
             ),
             result_image,
         )
@@ -227,12 +221,12 @@ def createCutImgsFold(
     cutted_extract_folder_per_id, background_removed_folder_per_id, index
 ):
     externo = cv2.imread(
-        "{0}/remove_background_externo{index}.jpg".format(
+        "{0}/remove_background_externo{1}.jpg".format(
             background_removed_folder_per_id, index
         ),
     )
     interno = cv2.imread(
-        "{0}/remove_background_interno{index}.jpg".format(
+        "{0}/remove_background_interno{1}.jpg".format(
             background_removed_folder_per_id, index
         ),
     )
@@ -266,10 +260,10 @@ def extract_seed_information(
         white_extract_folder_per_id, seed, f"{side}{seed_id}"
     )
     light_red_percentage = extract_light_red_percentage(
-        red_extract_folder_per_id, lim_sup_red, f"{side}{seed_id}"
+        red_extract_folder_per_id,seed, lim_sup_red, f"{side}{seed_id}"
     )
     dark_red_percentage = extract_dark_red_percentage(
-        red_extract_folder_per_id, lim_inf_red, f"{side}{seed_id}"
+        red_extract_folder_per_id,seed, lim_inf_red, f"{side}{seed_id}"
     )
 
     thresholded_red_component = remove_background_and_get_mask(seed)
@@ -319,22 +313,22 @@ def process_data(
     extern_seeds = cut(input_extern_image, imgJoined)
 
     # Gera as pastas para armazenamento dos imagens processadas
-    red_extract_folder_per_id = "users_folders_imgs/{}/{}".format(
+    red_extract_folder_per_id = "users_folders_imgs/{}{}".format(
         user_id, red_extract_folder
     )
-    background_removed_folder_per_id = "users_folders_imgs/{}/{}".format(
+    background_removed_folder_per_id = "users_folders_imgs/{}{}".format(
         user_id, background_removed_folder
     )
-    embriao_extract_folder_per_id = "users_folders_imgs/{}/{}".format(
+    embriao_extract_folder_per_id = "users_folders_imgs/{}{}".format(
         user_id, embriao_folder
     )
-    white_extract_folder_per_id = "users_folders_imgs/{}/{}".format(
+    white_extract_folder_per_id = "users_folders_imgs/{}{}".format(
         user_id, white_extract_folder
     )
-    pagination_folder_per_id = "users_folders_imgs/{}/{}".format(
+    pagination_folder_per_id = "users_folders_imgs/{}{}".format(
         user_id, pagination_folder
     )
-    cutted_extract_folder_per_id = "users_folders_imgs/{}/{}".format(
+    cutted_extract_folder_per_id = "users_folders_imgs/{}{}".format(
         user_id, imagens_cortadas_folder
     )
 
@@ -379,7 +373,7 @@ def process_data(
         futures = []
         print(f"Número de processos: {executor._max_workers}")
         for i, seed in enumerate(intern_seeds):
-            if not is_empty(seed):
+            if not is_empty(background_removed_folder_per_id, seed):
                 futures.append(
                     executor.submit(
                         extract_seed_information,
@@ -395,7 +389,7 @@ def process_data(
                 )
 
         for i, seed in enumerate(extern_seeds):
-            if not is_empty(seed):
+            if not is_empty(background_removed_folder_per_id,seed):
                 futures.append(
                     executor.submit(
                         extract_seed_information,
@@ -425,9 +419,11 @@ def process_data(
 
     # Faz a detecção do embrião
     if classificationYolo:
+        create_folder(embriao_extract_folder_per_id)
         for i in range(len(extern_seeds)):
-            path = "{0}/semente-{1}.jpg".format(cutted_extract_folder_per_id, i + 1)
+            path = f"./users_folders_imgs/{user_id}/images/imagens_cortadas/images/semente-{i+1}.jpg"
             img = cv2.imread(path)
+
             deteccao(embriao_extract_folder_per_id, embriao_model, img, i)
 
     rows.sort(key=lambda value: (0 if value[1] == "Interno" else 1, value[0]))
@@ -500,8 +496,8 @@ def process_data(
     return csv_report_file_name
 
 
-def is_empty(block):
-    removed_background = remove_background(block, -1)
+def is_empty(folder_per_id, block):
+    removed_background = remove_background(folder_per_id, block, -1)
     percentage = np.count_nonzero(removed_background) / (
         block.shape[0] * block.shape[1]
     )
@@ -509,15 +505,15 @@ def is_empty(block):
     return True if percentage < 0.05 else False
 
 
-def extract_embriao_information(embriao, lim_inf_red, lim_sup_red, seed_id=0):
-    white_percentage = extract_white_percentage(embriao, f"embriao{seed_id}")
-    milky_white_percentage = extract_milky_white_percentage(
+def extract_embriao_information(folder_per_id,embriao, lim_inf_red, lim_sup_red, seed_id=0):
+    white_percentage = extract_white_percentage(folder_per_id,embriao, f"embriao{seed_id}")
+    milky_white_percentage = extract_milky_white_percentage(folder_per_id,
         embriao, f"embriao{seed_id}"
     )
-    light_red_percentage = extract_light_red_percentage(
+    light_red_percentage = extract_light_red_percentage(folder_per_id,
         embriao, lim_sup_red, f"embriao{seed_id}"
     )
-    dark_red_percentage = extract_dark_red_percentage(
+    dark_red_percentage = extract_dark_red_percentage(folder_per_id,
         embriao, lim_inf_red, f"embriao{seed_id}"
     )
 
@@ -530,7 +526,7 @@ def extract_embriao_information(embriao, lim_inf_red, lim_sup_red, seed_id=0):
     ]
 
 
-def process_embriao(embrioes, limInfRed=168, limSupRed=190):
+def process_embriao(embriao_folder_per_id, embrioes, limInfRed=168, limSupRed=190):
 
     header = [
         "Semente",
@@ -547,10 +543,11 @@ def process_embriao(embrioes, limInfRed=168, limSupRed=190):
         futures = []
         print(f"Número de processos: {executor._max_workers}")
         for i, seed in embrioes:
-            if not is_empty(seed):
+            if not is_empty(embriao_folder_per_id, seed):
                 futures.append(
                     executor.submit(
                         extract_embriao_information,
+                        folder_per_id=embriao_folder_per_id,
                         embriao=seed,
                         lim_inf_red=limInfRed,
                         lim_sup_red=limSupRed,

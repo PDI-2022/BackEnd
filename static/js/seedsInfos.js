@@ -33,15 +33,21 @@ async function paginacao () {
         backdrop: 'static',
         keyboard: false
     });  
+    let token = document.cookie
+    token = token.split(`token=`)[1]
+
     const url = new String("http://127.0.0.1:5000/api/v1/process/pagination");
     const Img = await fetch(url, {
         method:"POST", 
-        headers: {"Content-Type": "application/json"},
+        headers: {"Content-Type": "application/json","token":`${token}`},
         body: JSON.stringify(json)
     }).catch(err=>{
         console.error(err)
     })
-    
+    if(Img.status != 200){
+        $('#modal-comp').modal('hide');
+        window.alert("Ops, alguma coisa deu errado!")
+    }
     const response = await Img.json()
     response["externSeeds"]
     $('#modal-comp').modal('hide');
@@ -61,8 +67,13 @@ window.onload = async function () {
                 backdrop: 'static',
                 keyboard: false
             });  
+            let token = document.cookie
+            token = token.split(`token=`)[1]
             let respEmbriao = await fetch("http://localhost:5000/api/v1/process/embriao", {
-                method:"GET", 
+                method:"GET",
+                headers:{
+                    "token":`${token}`
+                } 
             }).catch(err=>{
                 console.error(err)
             })

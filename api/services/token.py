@@ -16,7 +16,7 @@ def generate(usr: User):
     )
 
 
-def extract_id(token) -> int:
+def extract_id(token):
     decoded = jwt.decode(token, secret, algorithms=["HS256"])
     return decoded["user_data"]["id"]
 

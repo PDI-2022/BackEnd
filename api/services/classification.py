@@ -13,60 +13,61 @@ test_data_dir = "./images/imagens_cortadas/"
 
 batch_size = 1
 
+
 def model():
     base_model = InceptionResNetV2(include_top=False, weights="imagenet")
     x = base_model.output
     x = GlobalAveragePooling2D()(x)
-    x = Dense(1024, activation='sigmoid')(x)
-    x = Dense(128, activation='relu')(x)
-    x = Dense(32, activation='relu')(x)
+    x = Dense(1024, activation="sigmoid")(x)
+    x = Dense(128, activation="relu")(x)
+    x = Dense(32, activation="relu")(x)
     x = Dropout(0.2)(x)
-    predictions = Dense(7, activation='softmax')(x)
+    predictions = Dense(7, activation="softmax")(x)
     model = Model(inputs=base_model.input, outputs=predictions)
     return model
 
-def classificate(model ,model_path : str, classes):
 
-        create_folder(test_data_dir)
+def classificate(cutted_extract_folder_per_id, model, model_path: str, classes):
 
-        test_datagen = ImageDataGenerator(rescale=1./255)
+    create_folder(cutted_extract_folder_per_id)
 
-        test_generator = test_datagen.flow_from_directory(
-                test_data_dir,
-                target_size=(height, width),
-                shuffle=False,
-                batch_size=batch_size)
+    test_datagen = ImageDataGenerator(rescale=1.0 / 255)
 
-        image_list = []      
-        files = test_generator.filenames
-        for img_path in files:
-                label = img_path.split("-")
-                label = label[-1].split(".jpg")
-                dados = int(label[0])
-                image_list.append(dados)
+    test_generator = test_datagen.flow_from_directory(
+        test_data_dir, target_size=(height, width), shuffle=False, batch_size=batch_size
+    )
 
-        labels = {0: "classe_1",
-                1: "classe_2",
-                2: "classe_3",
-                3: "classe_4",
-                4: "classe_5",
-                5: "classe_6",
-                6: "classe_7"}
+    image_list = []
+    files = test_generator.filenames
+    for img_path in files:
+        label = img_path.split("-")
+        label = label[-1].split(".jpg")
+        dados = int(label[0])
+        image_list.append(dados)
 
-        model = tf.keras.models.load_model(model_path)
+    labels = {
+        0: "classe_1",
+        1: "classe_2",
+        2: "classe_3",
+        3: "classe_4",
+        4: "classe_5",
+        5: "classe_6",
+        6: "classe_7",
+    }
 
-        predictions = model.predict(test_generator)
+    model = tf.keras.models.load_model(model_path)
 
-        y_pred = (np.floor((np.argmax(predictions, axis=1) * classes/7)) + 1)
+    predictions = model.predict(test_generator)
 
+    y_pred = np.floor((np.argmax(predictions, axis=1) * classes / 7)) + 1
 
-        list_csv = []
-        for i in range(len(y_pred)):
-                csv = [image_list[i], y_pred[i]]
-                list_csv.append(csv)
+    list_csv = []
+    for i in range(len(y_pred)):
+        csv = [image_list[i], y_pred[i]]
+        list_csv.append(csv)
 
-        df = pd.DataFrame(list_csv, columns=['SEMENTE', 'CLASSE'])
-        df = df.sort_values(by=['SEMENTE'])
-        predicao = df['CLASSE'].to_numpy()
+    df = pd.DataFrame(list_csv, columns=["SEMENTE", "CLASSE"])
+    df = df.sort_values(by=["SEMENTE"])
+    predicao = df["CLASSE"].to_numpy()
 
-        return predicao
+    return predicao

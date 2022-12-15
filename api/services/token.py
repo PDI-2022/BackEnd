@@ -16,14 +16,14 @@ def generate(usr: User):
     )
 
 
-def extract_role(token) -> str:
+def extract_id(token) -> int:
     decoded = jwt.decode(token, secret, algorithms=["HS256"])
-    return decoded["user_date"]["role"]
+    return decoded["user_data"]["id"]
 
 
 def validate(token):
     try:
         decode = jwt.decode(token, secret, algorithms=["HS256"])
     except (jwt.ExpiredSignatureError, jwt.InvalidSignatureError):
-        return False,""
-    return True,decode["user_data"]["role"]
+        return False, ""
+    return True, decode["user_data"]["role"]

@@ -10,6 +10,11 @@ body{
 section,main{
     height: 100%;
 }
+#salvar button,
+#update button{
+    background: linear-gradient(180deg, #159038 0%, #2DC457 100%);
+    border: none;
+}
 .cadastroContainer{
     display: flex;
     flex-direction: column;
@@ -72,7 +77,21 @@ section,main{
     display: flex;
     align-items: center;
     justify-content: center;
+    flex-direction: row;
 }
 .buttonRow button{
     min-width: 200px;
+}
+#salvar,
+#update{
+    margin-right: 24px;
+}
+@media (max-width:480px) {
+    .buttonRow{
+        flex-direction: column;
+    }
+    #salvar,
+    #update{
+        margin-right: 0;
+    }
 }

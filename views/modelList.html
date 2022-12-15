@@ -13,17 +13,21 @@
 
     <title>TetraSeed - Ferramenta de Classificação de sementes</title>
     <link rel="icon" type="image/x-icon" href="./static/Assets/Logo/logo.svg">
-    <link href="./static/stylesheets/seedsInfos.css" rel="stylesheet">
     <link href="./static/stylesheets/Header.css" rel="stylesheet">
     <link href="./static/stylesheets/Footer.css" rel="stylesheet">
+    <link href="./static/stylesheets/modelList.css" rel="stylesheet">
     <link href="./static/stylesheets/componentsSeeds.css" rel="stylesheet">
+
 
 </head>
 
-<body class="downloadScreen"  style="background-color: #FAFAFA">
-    <modal-loading></modal-loading>
-    <modal-error></modal-error>
-    <modal-redirecting></modal-redirecting>
+<body style="background-color: #FAFAFA;
+            display: flex;
+            align-items: center;
+            height: 100vh;
+            justify-content: space-between;
+            flex-direction: column;">
+
     <header>
         {% if role == "ADMIN"  %}
         <navbar-admin></navbar-admin>
@@ -31,18 +35,39 @@
         <navbar-user></navbar-user>
         {% endif %}
     </header>
-
-    <footer >
+    <div class="content-holder">
+        <h1>Listagem dos Modelos</h1>
+        <div class="table-container">
+            <table class="table table-hover table-danger table-bordered table-striped">
+                <thead>
+                  <tr class="bg-danger">
+                    <th scope="col">Id</th>
+                    <th scope="col">Nome</th>
+                    <th scope="col">Descrição</th>
+                    <th scope="col"></th>
+                  </tr>
+                </thead>
+                <tbody class="modelTbody">
+                </tbody>
+              </table>
+        </div>
+        
+    </div>
+    <modal-loading></modal-loading>
+    <modal-error></modal-error>
+    <modal-redirecting></modal-redirecting>
+    <footer>
         <main-footer></main-footer>
     </footer>
-
+    
 </body>
+
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/css/bootstrap.min.css">
 
-<script src="{{ url_for('static', filename='js/seedsInfos.js') }}"></script>
 <script src="{{ url_for('static', filename='js/auth.js') }}"></script>
+<script src="{{ url_for('static', filename='js/modelList.js') }}"></script>
 <script src="{{ url_for('static', filename='js/components/index.js') }}"></script>
-<script src="{{ url_for('static', filename='js/auth.js') }}"></script>
+
 
 
 <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"

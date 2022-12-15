@@ -120,6 +120,9 @@ async function sendToBack() {
         const url = new String("http://127.0.0.1:5000/api/v1/process");
         req.open('POST',url,true);
         req.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
+        let token = document.cookie
+        token = token.split(`token=`)[1]
+        req.setRequestHeader("token", `${token}`);
 
         data = {
             "displayClassificationInfos":displayClassificationInfos,
@@ -190,8 +193,13 @@ async function sendToBack() {
 
 async function generateDownloadScreen(){
     if(localStorage.getItem("classificationYolo") == "true"){
+        let token = document.cookie
+        token = token.split(`token=`)[1]
         let respEmbriao = await fetch("http://localhost:5000/api/v1/process/embriao", {
             method:"GET", 
+            headers:{
+                "token":`${token}`
+            } 
         }).catch(err=>{
             console.error(err)
         })

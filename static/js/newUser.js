@@ -25,19 +25,23 @@ const deleteUser = (index) => {
     localSet(dadosUsuario)
 }
 
-//validacao de cadastro
 const validFields = () => {
     return document.getElementById('form').reportValidity()
 }
 
 const saveUser = async () => {
     await auth()
-    let url = "http://localhost:5000/api/v1/register"
+    let url = "http://localhost:5000/api/v1/users"
     if(validFields()){
         const usuario = {
             user: document.getElementById('email').value,
             password: document.getElementById('senha').value
         }
+        $('#modal-comp').modal({
+            show:true,
+            backdrop: 'static',
+            keyboard: false
+        })
         let response = await fetch(url,{
             method:"POST",
             headers: {
@@ -45,18 +49,28 @@ const saveUser = async () => {
             },
             body:JSON.stringify(usuario)
         }).then(response=>{
-            if(response.status != 201)
+            if(response.status != 201){
+                $('#modal-comp').modal('hide');
                 window.alert("Ops, alguma coisa deu errado!")
+            }
             else{
+                $('#modal-comp').modal('hide');
+                $('#modal-redirecting').modal({
+                    show:true,
+                    backdrop: 'static',
+                    keyboard: false
+                })
                 window.location.href = "/"
             }
+        }).catch(err=>{
+            $('#modal-comp').modal('hide');
+            window.alert("Ops, alguma coisa deu errado!")
         })
         let responseJson = await response.json()
         createUser(responseJson)
     }
 }
 
-//evento ao clicar em salvar
 document.getElementById('salvar').addEventListener('click', saveUser)
 document.getElementById('cancelar').addEventListener('click', ()=>{
     window.location.href = document.referrer

@@ -19,90 +19,70 @@
 
 </head>
 
-<body style="background-color: #FAFAFA">
+<body class="modelBody">
     <modal-loading></modal-loading>
     <modal-error></modal-error>
     <modal-redirecting></modal-redirecting>
     <header>
-        <nav class="navbar fixed-top navbar-expand-lg navbar-light logo">
-            <a href="/" class="navbar-brand">
-                <div style="display: flex;">
-                    <img src="{{ url_for('static', filename='Assets/Logo/logo.svg') }}"
-                        style="width: 50px;height: 50px;" alt="logo">
-                    <div class="brandName"><strong>Tetra</strong>Seed</div>
-
-                </div>
-            </a>
-            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
-                aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="container-fluid">
-
-                <div class="collapse navbar-collapse" id="navbarNav">
-                    <ul class="navbar-nav ml-auto float-right" style="margin-left:10px ;">
-                        <li class="nav-item">
-                            <a class="nav-link itensNavLink" href="/">Home</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link itensNavLink" href="/uploadModel">Upload de modelo</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link itensNavLink" href="/new-user">Novo Usuário</a>
-                        </li>
-                    </ul>
-                </div>
-            </div>
-        </nav>
+        {% if role == "ADMIN" %}
+        <navbar-admin></navbar-admin>
+        {% else %}
+        <navbar-user></navbar-user>
+        {% endif %}
     </header>
 
-    <div style="width: 100%;display:flex;align-items:center;justify-content: center;">
-        <div class="container-drag ext">
-            <div class="img-container" id="drag-drop-ext" ondrop="dropHandler(event);"
-                ondragover="dragOverHandler(event);">
-                <div class="img-titles flex">
-                    <h2 class="img-title">Upload do <span class="red-text">modelo</span></h2>
-                    <h4 style="font-weight: 300;">Arraste e solte o modelo aqui</h4>
+    <div style="width: 100%;display:flex;align-items:center;justify-content: center; flex-direction: column;">
+        <section style="margin-bottom: 24px;">
+            <h2>Modelo utilizado para a Classificação das sementes. Espera-se um arquivo .zip</h2>
+        </section>
+        <div class="model-container-drag">
+            <div class="container-drag ext" style="max-width: none;">
+                <div class="img-container" id="drag-drop-ext" ondrop="dropHandler(event);"
+                    ondragover="dragOverHandler(event);">
+                    <div class="img-titles flex">
+                        <h2 class="img-title">Upload do <span class="red-text">modelo</span></h2>
+                        <h4 style="font-weight: 300;">Arraste e solte o modelo aqui</h4>
+                    </div>
+                    <button class="upload-button">
+                        <label class="label-button" for="fileButton">Ou selecione o arquivo</label>
+
+                        <input class="input-button" type="file" name="fileButton" id="fileButton" style="display: none;"
+                            accept=".zip" onchange="uploadFileInput(event)">
+                    </button>
+
+                    <div class="image-icons">
+                        <img src="{{ url_for('static', filename='Assets/Icons/zipIcon.svg') }}" alt="">
+                    </div>
+
                 </div>
-                <button class="upload-button">
-                    <label class="label-button" for="fileButton">Ou selecione o arquivo</label>
-
-                    <input class="input-button" type="file" name="fileButton" id="fileButton" style="display: none;"
-                        accept=".zip" onchange="uploadFileInput(event)">
-                </button>
-
-                <div class="image-icons">
-                    <img src="{{ url_for('static', filename='Assets/Icons/zipIcon.svg') }}" alt="">
+                <div class="fileContainer">
                 </div>
+            </div>
 
+            <div style="display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin-left: 24px;">
+                <div style="display: flex;align-items:center;flex-direction: column;">
+                    <h4 class="img-title">Nome do modelo a ser salvo</h4>
+                    <input type="text" name="InputName" id="InputName" class="inputUpload">
+                </div>
+                <div style="display: flex;align-items:center;flex-direction: column;">
+                    <h4 class="img-title">Descrição do modelo a ser salvo</h4>
+                    <textarea name="InputDescription" id="InputDescription" class="inputUpload"></textarea>
+                </div>
+                <div id="botao" class="mt-5 defaultButton" style="margin-bottom: 180px;">
+                    <button type="button" id="sendModelBtn" class="btn btn-danger btn-lg botaoEnviar"
+                        onclick="sendModel()">Enviar Modelo</button>
+                </div>
             </div>
-            <div class="fileContainer">
-            </div>
-            <div style="display: flex;align-items:center;flex-direction: column;">
-                <h3 class="img-title">Nome do modelo a ser salvo</h3>
-                <input type="text" name="InputName" id="InputName" class="inputUpload">
-            </div>
-            <div id="botao" class="mt-5 defaultButton" style="margin-bottom: 180px;">
-                <button type="button" id="sendModelBtn" class="btn btn-danger btn-lg botaoEnviar"
-                    onclick="sendModel()">Enviar Model</button>
-            </div>
+
         </div>
 
     </div>
 
-    <footer class="flex-row" style="display: flex; align-items: center; bottom: 0;margin: 0!important;width: 100%;">
-        <a href="/">
-            <span class="logo flex-row">
-                <img src="{{ url_for('static', filename='Assets/Logo/logo.svg') }}" alt="logo">
-                <strong>Tetra</strong>
-                <div>Seed</div>
-            </span>
-        </a>
-        <nav>
-            <a href="https://github.com/PDI-2022" target="_blank">
-                <img src="{{ url_for('static', filename='Assets/Icons/githubIcon.svg') }}" alt="">
-            </a>
-        </nav>
+    <footer>
+        <main-footer></main-footer>
     </footer>
 </body>
 

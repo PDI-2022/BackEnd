@@ -3,8 +3,10 @@ function displayApplication(){
     applicationBody.removeAttribute("class")
     sessionStorage.setItem("displayWelcomeScreen","false")
     let animation = document.querySelector("#animation")
-    let main = document.querySelector("body")
-    main.removeChild(animation)
+    let body = document.querySelector("body")
+    body.removeChild(animation)
+    let main = document.querySelector("main")
+    main.style.display = "block"
 }
 
 function animationLoadFunction(applicationBody){

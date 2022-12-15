@@ -21,15 +21,18 @@
 
 </head>
 
-<body style="background-color: #FAFAFA">
+<body style="background: radial-gradient(circle, rgba(247,200,200,1) 20%, rgba(217,38,38,1) 90%);">
     
     <section id="animation">
         <div class="animationHolder">
-            <div class="main-text-animation">
-                <h1>TetraSeed</h1>
+            <img src="{{ url_for('static', filename='Assets/img/intro.jpg') }}" style="border-radius: 24px;max-width: 540px;max-height: 540px; margin-bottom: 48px">
+            <div class="main-text-animation" style="display: flex;justify-content: center;">
+                <h1 style="font-size: 64px;"><strong>Tetra</strong>Seed</h1>
             </div>
-            <div class="secondary-text-animation">
+            <div class="secondary-text-animation" style="display: flex;align-items: center;">
+                <img class="img-left" src="{{ url_for('static', filename='Assets/Img/Semente Externa1.png') }}" style="max-width: 120px; margin-right: 20px;">
                 <h2>Ferramenta de Classificação de Sementes</h2>
+                <img class="img-right" src="{{ url_for('static', filename='Assets/Img/Semente Interna1.png') }}" style="max-width: 120px; margin-left: 20px;">
             </div>
             <div class="button-text-animation">
                 <div id="botao" class="mt-5 defaultButton">
@@ -42,7 +45,7 @@
         <section>
             <div class="loginContainer">
                 <div class="loginLogoName">
-                    <img src="{{ url_for('static', filename='Assets/Logo/logo-brown.svg') }}">
+                    <img src="{{ url_for('static', filename='Assets/Logo/logo-brown.svg') }}" style="filter: drop-shadow(1px 1px 2px black);">
                     <strong>Tetra</strong><span class="red-text">Seed</span>            
                 </div>
                 <div class="loginSubText">
@@ -60,7 +63,7 @@
                         <div id="Login" class="mt-5 defaultButton">
                             <button id="botaoLogin" type="button" class="btn btn-danger btn-lg botaoEnviar" onclick="login()">Entrar</button>
                         </div>
-                        <a href="forgot-password">Esqueci a senha</a>
+                        <!-- <a href="forgot-password">Esqueci a senha</a> -->
                     </div>
                 </div>
             </div>

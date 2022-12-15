@@ -33,15 +33,21 @@ async function paginacao () {
         backdrop: 'static',
         keyboard: false
     });  
+    let token = document.cookie
+    token = token.split(`token=`)[1]
+
     const url = new String("http://127.0.0.1:5000/api/v1/process/pagination");
     const Img = await fetch(url, {
         method:"POST", 
-        headers: {"Content-Type": "application/json"},
+        headers: {"Content-Type": "application/json","token":`${token}`},
         body: JSON.stringify(json)
     }).catch(err=>{
         console.error(err)
     })
-    
+    if(Img.status != 200){
+        $('#modal-comp').modal('hide');
+        window.alert("Ops, alguma coisa deu errado!")
+    }
     const response = await Img.json()
     response["externSeeds"]
     $('#modal-comp').modal('hide');
@@ -61,8 +67,13 @@ window.onload = async function () {
                 backdrop: 'static',
                 keyboard: false
             });  
+            let token = document.cookie
+            token = token.split(`token=`)[1]
             let respEmbriao = await fetch("http://localhost:5000/api/v1/process/embriao", {
-                method:"GET", 
+                method:"GET",
+                headers:{
+                    "token":`${token}`
+                } 
             }).catch(err=>{
                 console.error(err)
             })
@@ -128,7 +139,6 @@ async function changePage(action){
     let hasClass = (localStorage.getItem("hasClass") == "true")
     let maxItem = hasClass ? arrayCsv.length - 5 : arrayCsv.length - 2
     state.totalPages = Math.ceil(maxItem / (2*state.perPage))
-    console.log(state.totalPages)
 
     switch (action){
         case 'inc':
@@ -173,7 +183,6 @@ function clearScreenElement(body,mainFooter, hasVigorTable){
     if(imgContainer.length > 0){
         imgContainer.forEach(img=>{
             container.removeChild(img)
-            // body.removeChild(img)
         })
         body.removeChild(container)
         let downloadSection = document.querySelector("download-section")
@@ -191,6 +200,9 @@ function fillTable(externSeeds,internSeeds,arrayCsv){
     const finalValue = ((state.perPage*state.page)+1)
 
     let hasClass = localStorage.getItem("hasClass")
+    if(hasClass){
+        bulletMap.push("Classe")
+    }
     let maxNumberOfColumns = hasClass == "true" ? 9 : 8
     
 
@@ -200,9 +212,6 @@ function fillTable(externSeeds,internSeeds,arrayCsv){
         imgsContainer.push(
             makeSeedCard(internSeeds[i-1], (initialValue+(2*i)-2), externSeeds[i-1], (initialValue+(2*i)-1), maxNumberOfColumns, hasClass == "true" ? true : false)
         )
-
-        // imgsContainer.push(makeTable(internSeeds[i-1], (initialValue+(2*i)-2), maxNumberOffColumns))
-        // imgsContainer.push(makeTable(externSeeds[i-1], (initialValue+(2*i)-1), maxNumberOffColumns))
     }
 
     return imgsContainer
@@ -287,7 +296,6 @@ function makeSeedCard(internSeedImage, internSeedDataIndex, externSeedImage, ext
 
         leftList.appendChild(li)
 
-        // arrayCsv[externSeedDataIndex][i]
     }
 
     leftDataCol.appendChild(leftList)
@@ -333,7 +341,6 @@ function makeSeedCard(internSeedImage, internSeedDataIndex, externSeedImage, ext
 
         rightList.appendChild(li)
 
-        // arrayCsv[externSeedDataIndex][i]
     }
 
     rightDataCol.appendChild(rightList)
@@ -341,54 +348,6 @@ function makeSeedCard(internSeedImage, internSeedDataIndex, externSeedImage, ext
 
     return card
 
-    //terminar
-
-
-
-
-
-
-    // let imgsContainer
-   
-    // let a = image.slice(2,image.lastIndexOf("'"))
-    // let base64 = "data:image/jpg;base64,"+ a
-    // imgsContainer = document.createElement("div")
-
-    // imgsContainer.setAttribute("class","imgs-container")
-
-    // let img = document.createElement("img")
-    // img.setAttribute("src",base64)
-    // imgsContainer.appendChild(img)
-
-    // let tableWrapper = document.createElement("div")
-    // tableWrapper.setAttribute("class","table-responsive")
-
-    // let table = document.createElement("table")
-    // table.setAttribute("class","f1-table")
-
-    // let thead = document.createElement("thead")
-
-    // let tr = document.createElement("tr")
-    // for(let i = 0; i < maxNumberOffColumns; i++){
-    //     let th = document.createElement("th")
-    //     th.innerHTML= arrayCsv[0][i]
-    //     tr.appendChild(th)
-    // }
-    // thead.appendChild(tr)
-    // table.appendChild(thead)
-
-    // let tbody = document.createElement("tbody")
-    // tr = document.createElement("tr")
-    // for(let i = 0; i < maxNumberOffColumns; i++){
-    //     let td = document.createElement("td")
-    //     td.innerHTML = arrayCsv[item][i]
-    //     tr.appendChild(td)
-    // }
-    // tbody.appendChild(tr)
-    // table.appendChild(tbody)
-    // tableWrapper.appendChild(table)
-    // imgsContainer.appendChild(tableWrapper)
-    // return imgsContainer
 }
 
 function goBack(){

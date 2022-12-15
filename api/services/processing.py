@@ -173,7 +173,7 @@ def extract_light_red_percentage(
 
 
 def extract_milky_white_percentage(white_extract_folder_per_id, input_image, id=0):
-    converted = cv2.cvtColor(input_image, cv2.COLOR_BGR2HSV)
+    converted = cv2.cvtColor(input_image, cv2.COLOR_BGR2RGB)
     rgb = np.copy(converted)
 
     inf_red = 169
@@ -492,7 +492,7 @@ def process_data(
 
     folder = "./relatorios/{}".format(user_id)
     create_folder(folder)
-    csv_report_file_name = "{}/{}_{}.csv".format(
+    csv_report_file_name = "./relatorios/{}/{}_{}.csv".format(
         user_id, "relatorio", str(uuid.uuid4())
     )
     with open(csv_report_file_name, "w+", encoding="UTF8", newline="") as f:

@@ -26,6 +26,8 @@ const html = {
     }
 }
 
+var generatedVigorTable = false;
+
 async function paginacao () {
     let json = {
         "page": state.page,
@@ -104,14 +106,16 @@ function generateTable(externSeeds,internSeeds) {
     let hasVigorTable = document.querySelector("#vigorTable")
     clearScreenElement(body,mainFooter,hasVigorTable)
   
-    if(localStorage.getItem("hasClass") == "true"){
+    if(localStorage.getItem("hasClass") == "true" && !generatedVigorTable){
         let vigorTable = makeVigorTable()
         body.appendChild(vigorTable)
+        generatedVigorTable = true
     }
     let imgsContainer = fillTable(externSeeds,internSeeds,arrayCsv)
 
     let container = document.createElement("div")
     container.setAttribute("class","container")
+    container.setAttribute("id","seed-container")
 
     let pageTitle = document.createElement("h2")
     pageTitle.innerHTML = "Análise Individual por Semente"
@@ -175,12 +179,12 @@ async function changePage(action){
 
 
 function clearScreenElement(body,mainFooter, hasVigorTable){
-    const mainNav = document.getElementsByTagName("header")[0]
-    if(!!hasVigorTable){
-        body.removeChild(hasVigorTable)
-    }
+    // const mainNav = document.getElementsByTagName("header")[0]
+    // if(!!hasVigorTable){
+        // body.removeChild(hasVigorTable)
+    // }
     let imgContainer = document.querySelectorAll(".seed-card")
-    let container = document.querySelector(".container")
+    let container = document.querySelector("#seed-container")
 
 
     if(imgContainer.length > 0){
@@ -194,7 +198,7 @@ function clearScreenElement(body,mainFooter, hasVigorTable){
         body.removeChild(pag)
     }
 
-    body.appendChild(mainNav)
+    // body.appendChild(mainNav)
     mainFooter.remove()
 }
 
@@ -454,6 +458,7 @@ function makeVigorTable(){
 
     let tableWrapper = document.createElement("div")
     tableWrapper.setAttribute("class","container")
+    tableWrapper.setAttribute("style","padding-top:10px!")
 
     let h3 = document.createElement("h2")
     h3.innerHTML = "Resumo das Classes"

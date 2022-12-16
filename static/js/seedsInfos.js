@@ -1,3 +1,6 @@
+google.charts.load('current', {'packages':['corechart'],'language': 'pt'});
+
+
 var csv
 var arrayCsv = []
 var bulletMap = [
@@ -450,37 +453,109 @@ function makeTable(image, item, maxNumberOffColumns){
 function makeVigorTable(){
 
     let tableWrapper = document.createElement("div")
-    tableWrapper.setAttribute("class","table-responsive")
+    tableWrapper.setAttribute("class","container")
 
-    let h3 = document.createElement("h3")
+    let h3 = document.createElement("h2")
     h3.innerHTML = "Resumo das Classes"
     tableWrapper.appendChild(h3)
-    
-    let table = document.createElement("table")
-    table.setAttribute("class","f1-table")
 
-    let thead = document.createElement("thead")
 
-    let tr = document.createElement("tr")
+    //
+
+    let table = document.createElement("table");
+    table.setAttribute("class","table table-striped");
+
+    let thead = document.createElement("thead");
+    let tr = document.createElement("tr");
     for(let i = 0; i < 9; i++){
         let th = document.createElement("th")
+        th.setAttribute("scope","col")
+
+
         th.innerHTML= arrayCsv[arrayCsv.length-3][i]
         tr.appendChild(th)
     }
-    thead.appendChild(tr)
-    table.appendChild(thead)
 
-    let tbody = document.createElement("tbody")
-    tr = document.createElement("tr")
+    thead.appendChild(tr);
+    table.appendChild(thead);
 
+    let tbody = document.createElement("tbody");
+    let tbodytr = document.createElement("tr");
     for(let i = 0; i < 9; i++){
         let td = document.createElement("td")
         td.innerHTML = arrayCsv[arrayCsv.length-2][i]
-        tr.appendChild(td)
+        tbodytr.appendChild(td)
     }
-    tbody.appendChild(tr)
-    table.appendChild(tbody)
+
+    tbody.appendChild(tbodytr);
+    table.appendChild(tbody);
+
+    //
+    
+    // let table = document.createElement("table")
+    // table.setAttribute("class","f1-table")
+
+    // let thead = document.createElement("thead")
+
+    // let tr = document.createElement("tr")
+    // for(let i = 0; i < 9; i++){
+    //     let th = document.createElement("th")
+    //     th.innerHTML= arrayCsv[arrayCsv.length-3][i]
+    //     tr.appendChild(th)
+    // }
+    // thead.appendChild(tr)
+    // table.appendChild(thead)
+
+    // let tbody = document.createElement("tbody")
+    // tr = document.createElement("tr")
+
+    // for(let i = 0; i < 9; i++){
+    //     let td = document.createElement("td")
+    //     td.innerHTML = arrayCsv[arrayCsv.length-2][i]
+    //     tr.appendChild(td)
+    // }
+    // tbody.appendChild(tr)
+    // table.appendChild(tbody)
+    
+    // tableWrapper.setAttribute("id","vigorTable")
+    //
+
+    let chartDiv = document.createElement("div")
+    chartDiv.setAttribute("id","chart_div")
+
+    
     tableWrapper.appendChild(table)
-    tableWrapper.setAttribute("id","vigorTable")
+    tableWrapper.appendChild(chartDiv)
+    
+    //
+
+    google.charts.setOnLoadCallback(drawChart);
+    
     return tableWrapper
+}
+
+function drawChart(){
+    let dataList = []
+
+    dataList.push(['Classe','Porcentagem']);
+
+    for(let i = 2; i < 9; i++){
+        let rawPercentage = arrayCsv[arrayCsv.length-2][i];
+        let percentage = rawPercentage.replace("%","");
+        let percentageConverted = parseFloat(percentage);
+
+        dataList.push(['Classe ' + (i-1), percentageConverted]);
+    }
+
+    console.log(dataList)
+
+    let options = {
+        title: 'Histograma da Distribuição das Sementes entre as Classes',
+        backgroundColor:'#FAFAFA'
+    };
+
+    var data = google.visualization.arrayToDataTable(dataList)
+
+    var chart = new google.visualization.PieChart(document.getElementById('chart_div'));
+    chart.draw(data, options);
 }

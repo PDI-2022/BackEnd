@@ -36,10 +36,10 @@ def seed_default_model():
 def seed_default_user():
     from db.models import User
 
-    user_email = "usuario_admin@alu.ufc.br"
+    user_email = "usuario_admin@ufc.br"
     default_user = db.session.query(User).filter_by(email=user_email).first()
     if default_user is None:
-        default_user = User(user_email, "12345678", "ADMIN")
+        default_user = User(user_email, "Tr3t@s33d", "ADMIN")
         db.session.add(default_user)
         db.session.commit()
 

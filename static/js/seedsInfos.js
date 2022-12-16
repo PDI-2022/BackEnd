@@ -490,44 +490,12 @@ function makeVigorTable(){
     tbody.appendChild(tbodytr);
     table.appendChild(tbody);
 
-    //
-    
-    // let table = document.createElement("table")
-    // table.setAttribute("class","f1-table")
-
-    // let thead = document.createElement("thead")
-
-    // let tr = document.createElement("tr")
-    // for(let i = 0; i < 9; i++){
-    //     let th = document.createElement("th")
-    //     th.innerHTML= arrayCsv[arrayCsv.length-3][i]
-    //     tr.appendChild(th)
-    // }
-    // thead.appendChild(tr)
-    // table.appendChild(thead)
-
-    // let tbody = document.createElement("tbody")
-    // tr = document.createElement("tr")
-
-    // for(let i = 0; i < 9; i++){
-    //     let td = document.createElement("td")
-    //     td.innerHTML = arrayCsv[arrayCsv.length-2][i]
-    //     tr.appendChild(td)
-    // }
-    // tbody.appendChild(tr)
-    // table.appendChild(tbody)
-    
-    // tableWrapper.setAttribute("id","vigorTable")
-    //
-
     let chartDiv = document.createElement("div")
     chartDiv.setAttribute("id","chart_div")
 
     
     tableWrapper.appendChild(table)
     tableWrapper.appendChild(chartDiv)
-    
-    //
 
     google.charts.setOnLoadCallback(drawChart);
     
@@ -547,10 +515,8 @@ function drawChart(){
         dataList.push(['Classe ' + (i-1), percentageConverted]);
     }
 
-    console.log(dataList)
-
     let options = {
-        title: 'Histograma da Distribuição das Sementes entre as Classes',
+        title: 'Distribuição das Sementes entre as Classes',
         backgroundColor:'#FAFAFA'
     };
 

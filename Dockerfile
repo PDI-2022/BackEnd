@@ -12,8 +12,6 @@ EXPOSE 5000
 
 COPY . /project
 
-RUN dir
-
 RUN chmod +x ./run.sh
 
 ENTRYPOINT ["/bin/bash", "./run.sh"]

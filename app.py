@@ -19,4 +19,4 @@ app.register_blueprint(auth_bp)
 app.register_blueprint(forgot_password_bp)
 
 if __name__ == "main":
-    app.run()
+    app.run(host="0.0.0.0")

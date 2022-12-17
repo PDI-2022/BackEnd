@@ -1,15 +1,19 @@
-FROM python:3.8-alpine
+FROM tensorflow/tensorflow
 
-WORKDIR /code
-
-RUN apk add --no-cache gcc musl-dev linux-headers
+WORKDIR /project
 
 COPY requirements.txt requirements.txt
 
 RUN pip install -r requirements.txt
+RUN apt-get update
+RUN apt-get install ffmpeg libsm6 libxext6  -y
 
 EXPOSE 5000
 
-COPY . .
+COPY . /project
 
-CMD ["sh", "run.sh"]
+RUN dir
+
+RUN chmod +x ./run.sh
+
+ENTRYPOINT ["/bin/bash", "./run.sh"]

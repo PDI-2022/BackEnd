@@ -43,6 +43,27 @@ def seed_default_user():
         db.session.add(default_user)
         db.session.commit()
 
+@click.command(name="create_cortez_and_lucimara")
+@with_appcontext
+def create_cortez_and_lucimara():
+    from db.models import User
+
+    user_email_cortez = "cortez.paulo@ufc.br"
+    cortez_user = db.session.query(User).filter_by(email=user_email_cortez).first()
+    if cortez_user is None:
+        default_user = User(user_email_cortez, "cor12tez", "ADMIN")
+        db.session.add(default_user)
+        db.session.commit()
+
+    user_email_lucimara = "venialluci@gmail.com"
+    lucimara_user = db.session.query(User).filter_by(email=user_email_lucimara).first()
+    if lucimara_user is None:
+        default_user = User(user_email_lucimara, "alegria2022", "ADMIN")
+        db.session.add(default_user)
+        db.session.commit()
+
 
 app.cli.add_command(seed_default_model)
 app.cli.add_command(seed_default_user)
+app.cli.add_command(create_cortez_and_lucimara)
+

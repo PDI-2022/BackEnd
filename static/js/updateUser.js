@@ -20,7 +20,7 @@ async function updateUser(){
         user:document.querySelector("#email").value,
         password:document.querySelector("#senha").value,
     }
-    let url = `http://localhost:5000/api/v1/users/${infos.id}`
+    let url = setUserId(infos.id)
     await fetch(url,{
         method:"PATCH",
         headers:{

@@ -11,7 +11,7 @@ async function getUsers(){
         backdrop: 'static',
         keyboard: false
     });  
-    let url = `http://localhost:5000/api/v1/users?offset=${page}&limit=${itensPerPage}`
+    let url = setUserPagePerPage(page,itensPerPage)
     let res = await fetch(url,{
         method: "GET"
     })
@@ -104,7 +104,7 @@ async function deleteUser(userId) {
             backdrop: 'static',
             keyboard: false
         });  
-        let url = `http://localhost:5000/api/v1/users/${userId}`
+        let url = setUserId(userId)
         let res = await fetch(url,{
             method: "DELETE"
         }).catch(err=>{

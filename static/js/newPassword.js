@@ -31,7 +31,7 @@ function validateButton(){
 }
 
 async function sendData(){
-    let url = "http://localhost:5000/api/v1/forgot-password"
+    let url = forgetPasswordUrl
     body = formatBody()
     let buttonSend = document.querySelector("#botaoNewPassword").disabled
     if(!buttonSend){

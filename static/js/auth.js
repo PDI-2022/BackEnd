@@ -1,5 +1,5 @@
 async function auth(){
-    let url = "http://localhost:5000/api/v1/authenticate"
+    let url = authenticateUrl
     let token = sessionStorage.getItem("token")
     if(!!token){
         await fetch(url,{

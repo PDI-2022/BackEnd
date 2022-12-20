@@ -31,7 +31,7 @@ const validFields = () => {
 
 const saveUser = async () => {
     await auth()
-    let url = "http://localhost:5000/api/v1/users"
+    let url = createUserUrl
     if(validFields()){
         const usuario = {
             user: document.getElementById('email').value,

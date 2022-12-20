@@ -117,7 +117,7 @@ async function sendToBack() {
     if(!!json["interna"] && !!json["externa"]){
         var req = new XMLHttpRequest();
         req.timeout = 10 * 60 * 1000;
-        const url = new String("http://127.0.0.1:5000/api/v1/process");
+        const url = processUrl
         req.open('POST',url,true);
         req.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
         let token = document.cookie
@@ -195,7 +195,7 @@ async function generateDownloadScreen(){
     if(localStorage.getItem("classificationYolo") == "true"){
         let token = document.cookie
         token = token.split(`token=`)[1]
-        let respEmbriao = await fetch("http://localhost:5000/api/v1/process/embriao", {
+        let respEmbriao = await fetch(getEmbriaoCSVUrl, {
             method:"GET", 
             headers:{
                 "token":`${token}`

@@ -41,7 +41,7 @@ async function paginacao () {
     let token = document.cookie
     token = token.split(`token=`)[1]
 
-    const url = new String("http://127.0.0.1:5000/api/v1/process/pagination");
+    const url = seedsPaginateUrl
     const Img = await fetch(url, {
         method:"POST", 
         headers: {"Content-Type": "application/json","token":`${token}`},
@@ -74,7 +74,7 @@ window.onload = async function () {
             });  
             let token = document.cookie
             token = token.split(`token=`)[1]
-            let respEmbriao = await fetch("http://localhost:5000/api/v1/process/embriao", {
+            let respEmbriao = await fetch(getEmbriaoCSVUrl, {
                 method:"GET",
                 headers:{
                     "token":`${token}`
@@ -179,10 +179,7 @@ async function changePage(action){
 
 
 function clearScreenElement(body,mainFooter, hasVigorTable){
-    // const mainNav = document.getElementsByTagName("header")[0]
-    // if(!!hasVigorTable){
-        // body.removeChild(hasVigorTable)
-    // }
+
     let imgContainer = document.querySelectorAll(".seed-card")
     let container = document.querySelector("#seed-container")
 
@@ -198,7 +195,6 @@ function clearScreenElement(body,mainFooter, hasVigorTable){
         body.removeChild(pag)
     }
 
-    // body.appendChild(mainNav)
     mainFooter.remove()
 }
 

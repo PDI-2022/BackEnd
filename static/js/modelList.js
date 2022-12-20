@@ -11,7 +11,7 @@ async function getModels(){
         backdrop: 'static',
         keyboard: false
     });  
-    let url = `http://localhost:5000/api/v1/models?offset=${page}&limit=${itensPerPage}`
+    let url = setModelPagePerPage(page,itensPerPage)
     let res = await fetch(url,{
         method: "GET"
     })
@@ -86,9 +86,7 @@ function createPagination(){
     next.appendChild(imgNext)
 
 }
-function updateUser(userId) {
 
-}
 async function deleteModel(modelId) {
     result = window.confirm("Tem certeza que deseja deletar esse modelo? essa ação não poderá ser desfeita")
     if(result){
@@ -97,7 +95,7 @@ async function deleteModel(modelId) {
             backdrop: 'static',
             keyboard: false
         });  
-        let url = `http://localhost:5000/api/v1/models/${modelId}`
+        let url = setModelId(modelId)
         let res = await fetch(url,{
             method: "DELETE"
         }).catch(err=>{
